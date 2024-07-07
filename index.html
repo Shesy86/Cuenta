@@ -6,53 +6,68 @@
     <title>Juego de Cuentas Mentales</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
         }
         .controls {
-            background-color: #f0f0f0; /* Fondo gris claro */
+            background-color: #f0f0f0;
             padding: 20px;
-            display: inline-block;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             margin-bottom: 20px;
-            width: 300px; /* Ancho fijo para los controles */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .controls label {
             display: block;
             margin-bottom: 10px;
         }
         .controls input[type="range"] {
-            width: calc(100% - 20px); /* Ancho del slider menos el padding */
+            width: 100%;
             margin-bottom: 10px;
         }
-        .start-button, .blue-button {
-            background-color: blue;
-            color: white;
+        .blue-button, .red-button, .round-button {
             padding: 10px 20px;
             font-size: 20px;
             border: none;
             cursor: pointer;
-            margin: 20px 10px;
+            margin: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .blue-button {
+            background-color: #3498db;
+            color: white;
         }
         .red-button {
-            background-color: red;
+            background-color: #e74c3c;
             color: white;
-            padding: 10px 20px;
-            font-size: 20px;
-            border: none;
-            cursor: pointer;
-            margin: 20px 10px;
         }
         .round-button {
-            background-color: green;
+            background-color: #2ecc71;
             color: white;
-            padding: 10px 15px;
-            font-size: 20px;
             border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            margin: 20px 10px;
+            padding: 10px 15px;
+        }
+        .blue-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .red-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        .round-button:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
         }
         #game {
             margin: 20px 0;
@@ -64,44 +79,59 @@
         #result {
             font-size: 24px;
             margin: 20px 0;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #answer {
+            padding: 10px;
+            font-size: 20px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            width: calc(100% - 30px);
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Juego de Cuentas Mentales</h1>
-    
-    <div class="controls">
-        <label for="speed">Velocidad (ms): </label>
-        <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
-        <span id="speedLabel">1000</span> ms
-    </div>
-    
-    <div class="controls">
-        <label for="amount">Cantidad de Números (5-10): </label>
-        <input type="range" id="amount" min="5" max="10" value="5" oninput="updateAmountLabel()">
-        <span id="amountLabel">5</span>
-    </div>
-    
-    <div class="controls">
-        <label for="topRange">Tope Superior del Rango (10-20): </label>
-        <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
-        <span id="topRangeLabel">15</span>
-    </div>
-    
-    <div id="game">
-        <div id="operations"></div>
-        <input type="text" id="answer" placeholder="Ingresa tu respuesta">
-        <button class="round-button" onclick="checkResult()">&#8594;</button>
-    </div>
-    
-    <button class="blue-button" onclick="startGame()">Iniciar</button>
-    <button class="red-button" onclick="stopGame()">Parar</button>
-    <div id="result"></div>
+    <div class="container">
+        <h1>Juego de Cuentas Mentales</h1>
+        <p>Intenta resolver la operación matemática en tu mente antes de que termine el tiempo.</p>
+        
+        <div class="controls">
+            <label for="speed">Velocidad (ms): </label>
+            <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
+            <span id="speedLabel">1000</span> ms
+        </div>
+        
+        <div class="controls">
+            <label for="amount">Cantidad de Números (5-10): </label>
+            <input type="range" id="amount" min="5" max="10" value="5" oninput="updateAmountLabel()">
+            <span id="amountLabel">5</span>
+        </div>
+        
+        <div class="controls">
+            <label for="topRange">Tope Superior del Rango (10-20): </label>
+            <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
+            <span id="topRangeLabel">15</span>
+        </div>
+        
+        <div id="game">
+            <div id="operations"></div>
+            <input type="text" id="answer" placeholder="Ingresa tu respuesta">
+            <button class="round-button" onclick="checkResult()">&#8594;</button>
+        </div>
+        
+        <button class="blue-button" onclick="startGame()">Iniciar</button>
+        <button class="red-button" onclick="stopGame()">Parar</button>
+        <div id="result"></div>
 
-    <!-- Elemento de audio para el sonido -->
-    <audio id="sound" src="bip.mp3"></audio>
-    <audio id="soundCorrect" src="correcto.mp3"></audio>
-    <audio id="soundIncorrect" src="incorrecto.mp3"></audio>
+        <!-- Elemento de audio para el sonido -->
+        <audio id="sound" src="bip.mp3"></audio>
+        <audio id="soundCorrect" src="correcto.mp3"></audio>
+        <audio id="soundIncorrect" src="incorrecto.mp3"></audio>
+    </div>
     
     <script>
     let operations = [];
