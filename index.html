@@ -105,6 +105,7 @@
     
     <script>
     let operations = [];
+    let initialResult = 0;
     let result = 0;
     let counter = 0;
     let speed = 1000;
@@ -133,7 +134,8 @@
 
     function generateOperations() {
         operations = [];
-        result = Math.floor(Math.random() * topRange) + 1;
+        initialResult = Math.floor(Math.random() * topRange) + 1;
+        result = initialResult;
         counter = 0;
         document.getElementById('operations').innerText = result;
 
@@ -173,7 +175,11 @@
     function checkResult() {
         let userResult = parseInt(document.getElementById('answer').value);
         let message;
-        let operationSequence = operations.reduce((acc, curr) => acc + ` ${curr.operation} ${curr.number}`, result);
+        let operationSequence = `${initialResult}`;
+        operations.forEach(op => {
+            operationSequence += ` ${op.operation} ${op.number}`;
+        });
+        operationSequence += ` = ${result}`;
 
         if (userResult === result) {
             message = '¡Correcto!';
