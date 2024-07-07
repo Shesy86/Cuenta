@@ -21,6 +21,15 @@
             font-size: 24px;
             margin: 20px 0;
         }
+        .start-button {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -36,6 +45,7 @@
         <button onclick="checkResult()">Enviar</button>
         <button onclick="resetGame()">Reiniciar</button>
     </div>
+    <button class="start-button" onclick="startGame()">Iniciar</button>
     <div id="result"></div>
 
     <script>
@@ -95,22 +105,13 @@
         function resetGame() {
             document.getElementById('result').innerText = '';
             document.getElementById('answer').value = '';
-            countdown(3);
+            document.getElementById('operations').innerText = '';
         }
 
-        function countdown(seconds) {
-            let countdownInterval = setInterval(() => {
-                if (seconds > 0) {
-                    document.getElementById('operations').innerText = seconds;
-                    seconds--;
-                } else {
-                    clearInterval(countdownInterval);
-                    generateOperations();
-                }
-            }, 1000);
+        function startGame() {
+            resetGame();
+            generateOperations();
         }
-
-        resetGame();  // Start with a countdown
     </script>
 </body>
 </html>
