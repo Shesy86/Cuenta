@@ -64,9 +64,9 @@
         <span id="amountLabel">5</span>
     </div>
     <div>
-        <label for="range">Rango de Números (10-20): </label>
-        <input type="range" id="range" min="10" max="20" value="15" oninput="updateRangeLabel()">
-        <span id="rangeLabel">10-20</span>
+        <label for="topRange">Tope Superior del Rango (10-20): </label>
+        <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
+        <span id="topRangeLabel">15</span>
     </div>
     <div id="game">
         <div id="operations"></div>
@@ -86,8 +86,7 @@
         let counter = 0;
         let speed = 1000;
         let amount = 5; // Cantidad inicial de números a mostrar
-        let rangeMin = 10;
-        let rangeMax = 20;
+        let topRange = 15; // Valor inicial del tope superior del rango
         let timeoutId;
 
         function updateSpeedLabel() {
@@ -100,21 +99,19 @@
             document.getElementById('amountLabel').innerText = amount;
         }
 
-        function updateRangeLabel() {
-            let rangeValue = document.getElementById('range').value;
-            rangeMin = parseInt(rangeValue);
-            rangeMax = rangeMin + 10;
-            document.getElementById('rangeLabel').innerText = `${rangeMin}-${rangeMax}`;
+        function updateTopRangeLabel() {
+            topRange = document.getElementById('topRange').value;
+            document.getElementById('topRangeLabel').innerText = topRange;
         }
 
         function generateOperations() {
             operations = [];
-            result = Math.floor(Math.random() * (rangeMax - rangeMin + 1)) + rangeMin;
+            result = Math.floor(Math.random() * topRange) + 1;
             counter = 0;
             document.getElementById('operations').innerText = result;
 
             for (let i = 0; i < amount - 1; i++) {
-                let number = Math.floor(Math.random() * (rangeMax - rangeMin + 1)) + rangeMin;
+                let number = Math.floor(Math.random() * topRange) + 1;
                 let operation;
                 if (result >= number) {
                     operation = Math.random() < 0.5 ? '+' : '-';
