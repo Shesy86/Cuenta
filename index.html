@@ -21,14 +21,14 @@
             font-size: 24px;
             margin: 20px 0;
         }
-        .start-button {
-            background-color: red;
+        .start-button, .blue-button {
+            background-color: blue;
             color: white;
             padding: 10px 20px;
             font-size: 20px;
             border: none;
             cursor: pointer;
-            margin: 20px 0;
+            margin: 20px 10px;
         }
         .round-button {
             background-color: green;
@@ -36,15 +36,6 @@
             padding: 10px 15px;
             font-size: 20px;
             border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            margin: 20px 10px;
-        }
-        .blue-button {
-            background-color: blue;
-            color: white;
-            padding: 10px 20px;
-            font-size: 20px;
             border: none;
             cursor: pointer;
             margin: 20px 10px;
@@ -62,16 +53,20 @@
         <div id="operations"></div>
         <input type="text" id="answer" placeholder="Ingresa tu respuesta">
         <button class="round-button" onclick="checkResult()">&#8594;</button>
-        <button class="blue-button" onclick="stopGame()">Parar</button>
     </div>
     <button class="start-button" onclick="startGame()">Iniciar</button>
+    <button class="blue-button" onclick="stopGame()">Parar</button>
     <div id="result"></div>
+
+    <!-- Elemento de audio para el sonido -->
+    <audio id="sound" src="bip.mp3"></audio>
 
     <script>
         let operations = [];
         let result = 0;
         let counter = 0;
         let speed = 1000;
+        let timeoutId;
 
         function updateSpeedLabel() {
             speed = document.getElementById('speed').value;
@@ -95,7 +90,7 @@
                 operations.push({ operation, number });
             }
 
-            setTimeout(nextOperation, speed);
+            timeoutId = setTimeout(nextOperation, speed);
         }
 
         function nextOperation() {
@@ -103,8 +98,9 @@
                 let { operation, number } = operations[counter];
                 let newText = `${operation} ${number}`;
                 document.getElementById('operations').innerText = newText;
+                document.getElementById('sound').play(); // Reproducir el sonido
                 counter++;
-                setTimeout(nextOperation, speed);
+                timeoutId = setTimeout(nextOperation, speed);
             } else {
                 document.getElementById('operations').innerText = '= ?';
             }
@@ -133,7 +129,7 @@
         }
 
         function stopGame() {
-            clearTimeout();
+            clearTimeout(timeoutId); // Detener la generación de números
             resetGame();
         }
     </script>
