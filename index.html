@@ -30,6 +30,25 @@
             cursor: pointer;
             margin: 20px 0;
         }
+        .round-button {
+            background-color: green;
+            color: white;
+            padding: 10px 15px;
+            font-size: 20px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
+        .blue-button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
     </style>
 </head>
 <body>
@@ -42,8 +61,8 @@
     <div id="game">
         <div id="operations"></div>
         <input type="text" id="answer" placeholder="Ingresa tu respuesta">
-        <button onclick="checkResult()">Enviar</button>
-        <button onclick="resetGame()">Reiniciar</button>
+        <button class="round-button" onclick="checkResult()">&#8594;</button>
+        <button class="blue-button" onclick="stopGame()">Parar</button>
     </div>
     <button class="start-button" onclick="startGame()">Iniciar</button>
     <div id="result"></div>
@@ -111,6 +130,11 @@
         function startGame() {
             resetGame();
             generateOperations();
+        }
+
+        function stopGame() {
+            clearTimeout();
+            resetGame();
         }
     </script>
 </body>
