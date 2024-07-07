@@ -21,8 +21,8 @@
             font-size: 24px;
             margin: 20px 0;
         }
-        .start-button, .blue-button {
-            background-color: blue;
+        .start-button, .red-button {
+            background-color: red;
             color: white;
             padding: 10px 20px;
             font-size: 20px;
@@ -55,7 +55,7 @@
         <button class="round-button" onclick="checkResult()">&#8594;</button>
     </div>
     <button class="start-button" onclick="startGame()">Iniciar</button>
-    <button class="blue-button" onclick="stopGame()">Parar</button>
+    <button class="red-button" onclick="stopGame()">Parar</button>
     <div id="result"></div>
 
     <!-- Elemento de audio para el sonido -->
@@ -81,11 +81,17 @@
 
             for (let i = 0; i < 9; i++) {
                 let number = Math.floor(Math.random() * 20) + 1;
-                let operation = Math.random() < 0.5 ? '+' : '-';
-                if (operation === '+') {
-                    result += number;
+                let operation;
+                if (result >= number) {
+                    operation = Math.random() < 0.5 ? '+' : '-';
+                    if (operation === '+') {
+                        result += number;
+                    } else {
+                        result -= number;
+                    }
                 } else {
-                    result -= number;
+                    operation = '+';
+                    result += number;
                 }
                 operations.push({ operation, number });
             }
