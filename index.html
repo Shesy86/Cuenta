@@ -25,6 +25,7 @@
             margin-bottom: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
         }
         .controls label {
             display: block;
@@ -73,8 +74,14 @@
             margin: 20px 0;
         }
         #operations {
-            font-size: 48px;
+            font-size: 64px;
             margin: 20px 0;
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            min-width: 200px;
         }
         #result {
             font-size: 24px;
@@ -91,6 +98,13 @@
             border-radius: 8px;
             width: calc(100% - 30px);
             margin-bottom: 10px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
         }
     </style>
 </head>
@@ -194,11 +208,19 @@
             let { operation, number } = operations[counter];
             let newText = `${operation} ${number}`;
             document.getElementById('operations').innerText = newText;
+            document.getElementById('operations').classList.add('fade-in');
             document.getElementById('sound').play(); // Reproducir el sonido
             counter++;
+            setTimeout(() => {
+                document.getElementById('operations').classList.remove('fade-in');
+            }, 500); // Duración de la animación
             timeoutId = setTimeout(nextOperation, speed);
         } else {
             document.getElementById('operations').innerText = '= ?';
+            document.getElementById('operations').classList.add('fade-in');
+            setTimeout(() => {
+                document.getElementById('operations').classList.remove('fade-in');
+            }, 500); // Duración de la animación
         }
     }
 
@@ -218,7 +240,7 @@
             message = `Incorrecto. La respuesta correcta era ${result}.`;
             soundIncorrect.play(); // Reproducir sonido de incorrecto
         }
-        document.getElementById('result').innerText = `${message} La secuencia fue: ${operationSequence}`;
+        document.getElementById('result').innerText = `${message} ${operationSequence}`;
     }
 
     function resetGame() {
