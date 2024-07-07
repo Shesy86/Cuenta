@@ -100,96 +100,105 @@
 
     <!-- Elemento de audio para el sonido -->
     <audio id="sound" src="bip.mp3"></audio>
-
+    <audio id="soundCorrect" src="correcto.mp3"></audio>
+    <audio id="soundIncorrect" src="incorrecto.mp3"></audio>
+    
     <script>
-        let operations = [];
-        let result = 0;
-        let counter = 0;
-        let speed = 1000;
-        let amount = 5; // Cantidad inicial de números a mostrar
-        let topRange = 15; // Valor inicial del tope superior del rango
-        let timeoutId;
+    let operations = [];
+    let result = 0;
+    let counter = 0;
+    let speed = 1000;
+    let amount = 5; // Cantidad inicial de números a mostrar
+    let topRange = 15; // Valor inicial del tope superior del rango
+    let timeoutId;
 
-        function updateSpeedLabel() {
-            speed = document.getElementById('speed').value;
-            document.getElementById('speedLabel').innerText = speed;
-        }
+    // Sonidos
+    const soundCorrect = document.getElementById('soundCorrect');
+    const soundIncorrect = document.getElementById('soundIncorrect');
 
-        function updateAmountLabel() {
-            amount = document.getElementById('amount').value;
-            document.getElementById('amountLabel').innerText = amount;
-        }
+    function updateSpeedLabel() {
+        speed = document.getElementById('speed').value;
+        document.getElementById('speedLabel').innerText = speed;
+    }
 
-        function updateTopRangeLabel() {
-            topRange = document.getElementById('topRange').value;
-            document.getElementById('topRangeLabel').innerText = topRange;
-        }
+    function updateAmountLabel() {
+        amount = document.getElementById('amount').value;
+        document.getElementById('amountLabel').innerText = amount;
+    }
 
-        function generateOperations() {
-            operations = [];
-            result = Math.floor(Math.random() * topRange) + 1;
-            counter = 0;
-            document.getElementById('operations').innerText = result;
+    function updateTopRangeLabel() {
+        topRange = document.getElementById('topRange').value;
+        document.getElementById('topRangeLabel').innerText = topRange;
+    }
 
-            for (let i = 0; i < amount - 1; i++) {
-                let number = Math.floor(Math.random() * topRange) + 1;
-                let operation;
-                if (result >= number) {
-                    operation = Math.random() < 0.5 ? '+' : '-';
-                    if (operation === '+') {
-                        result += number;
-                    } else {
-                        result -= number;
-                    }
-                } else {
-                    operation = '+';
+    function generateOperations() {
+        operations = [];
+        result = Math.floor(Math.random() * topRange) + 1;
+        counter = 0;
+        document.getElementById('operations').innerText = result;
+
+        for (let i = 0; i < amount - 1; i++) {
+            let number = Math.floor(Math.random() * topRange) + 1;
+            let operation;
+            if (result >= number) {
+                operation = Math.random() < 0.5 ? '+' : '-';
+                if (operation === '+') {
                     result += number;
+                } else {
+                    result -= number;
                 }
-                operations.push({ operation, number });
+            } else {
+                operation = '+';
+                result += number;
             }
+            operations.push({ operation, number });
+        }
 
+        timeoutId = setTimeout(nextOperation, speed);
+    }
+
+    function nextOperation() {
+        if (counter < amount - 1) {
+            let { operation, number } = operations[counter];
+            let newText = `${operation} ${number}`;
+            document.getElementById('operations').innerText = newText;
+            document.getElementById('sound').play(); // Reproducir el sonido
+            counter++;
             timeoutId = setTimeout(nextOperation, speed);
+        } else {
+            document.getElementById('operations').innerText = '= ?';
         }
+    }
 
-        function nextOperation() {
-            if (counter < amount - 1) {
-                let { operation, number } = operations[counter];
-                let newText = `${operation} ${number}`;
-                document.getElementById('operations').innerText = newText;
-                document.getElementById('sound').play(); // Reproducir el sonido
-                counter++;
-                timeoutId = setTimeout(nextOperation, speed);
-            } else {
-                document.getElementById('operations').innerText = '= ?';
-            }
+    function checkResult() {
+        let userResult = parseInt(document.getElementById('answer').value);
+        let message;
+        if (userResult === result) {
+            message = '¡Correcto!';
+            soundCorrect.play(); // Reproducir sonido de correcto
+        } else {
+            message = `Incorrecto. La respuesta correcta era ${result}.`;
+            soundIncorrect.play(); // Reproducir sonido de incorrecto
         }
+        document.getElementById('result').innerText = message;
+    }
 
-        function checkResult() {
-            let userResult = parseInt(document.getElementById('answer').value);
-            let message;
-            if (userResult === result) {
-                message = '¡Correcto!';
-            } else {
-                message = `Incorrecto. La respuesta correcta era ${result}.`;
-            }
-            document.getElementById('result').innerText = message;
-        }
+    function resetGame() {
+        document.getElementById('result').innerText = '';
+        document.getElementById('answer').value = '';
+        document.getElementById('operations').innerText = '';
+    }
 
-        function resetGame() {
-            document.getElementById('result').innerText = '';
-            document.getElementById('answer').value = '';
-            document.getElementById('operations').innerText = '';
-        }
+    function startGame() {
+        resetGame();
+        generateOperations();
+    }
 
-        function startGame() {
-            resetGame();
-            generateOperations();
-        }
-
-        function stopGame() {
-            clearTimeout(timeoutId); // Detener la generación de números
-            resetGame();
-        }
+    function stopGame() {
+        clearTimeout(timeoutId); // Detener la generación de números
+        resetGame();
+    }
     </script>
+    
 </body>
 </html>
