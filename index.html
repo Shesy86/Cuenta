@@ -21,7 +21,16 @@
             font-size: 24px;
             margin: 20px 0;
         }
-        .start-button, .red-button {
+        .start-button, .blue-button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
+        .red-button {
             background-color: red;
             color: white;
             padding: 10px 20px;
@@ -49,12 +58,17 @@
         <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
         <span id="speedLabel">1000</span> ms
     </div>
+    <div>
+        <label for="amount">Cantidad de Números (5-10): </label>
+        <input type="range" id="amount" min="5" max="10" value="5" oninput="updateAmountLabel()">
+        <span id="amountLabel">5</span>
+    </div>
     <div id="game">
         <div id="operations"></div>
         <input type="text" id="answer" placeholder="Ingresa tu respuesta">
         <button class="round-button" onclick="checkResult()">&#8594;</button>
     </div>
-    <button class="start-button" onclick="startGame()">Iniciar</button>
+    <button class="blue-button" onclick="startGame()">Iniciar</button>
     <button class="red-button" onclick="stopGame()">Parar</button>
     <div id="result"></div>
 
@@ -66,11 +80,17 @@
         let result = 0;
         let counter = 0;
         let speed = 1000;
+        let amount = 5; // Cantidad inicial de números a mostrar
         let timeoutId;
 
         function updateSpeedLabel() {
             speed = document.getElementById('speed').value;
             document.getElementById('speedLabel').innerText = speed;
+        }
+
+        function updateAmountLabel() {
+            amount = document.getElementById('amount').value;
+            document.getElementById('amountLabel').innerText = amount;
         }
 
         function generateOperations() {
@@ -79,7 +99,7 @@
             counter = 0;
             document.getElementById('operations').innerText = result;
 
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < amount - 1; i++) {
                 let number = Math.floor(Math.random() * 20) + 1;
                 let operation;
                 if (result >= number) {
@@ -100,7 +120,7 @@
         }
 
         function nextOperation() {
-            if (counter < 9) {
+            if (counter < amount - 1) {
                 let { operation, number } = operations[counter];
                 let newText = `${operation} ${number}`;
                 document.getElementById('operations').innerText = newText;
