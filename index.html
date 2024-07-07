@@ -173,6 +173,8 @@
     function checkResult() {
         let userResult = parseInt(document.getElementById('answer').value);
         let message;
+        let operationSequence = operations.reduce((acc, curr) => acc + ` ${curr.operation} ${curr.number}`, result);
+
         if (userResult === result) {
             message = '¡Correcto!';
             soundCorrect.play(); // Reproducir sonido de correcto
@@ -180,7 +182,7 @@
             message = `Incorrecto. La respuesta correcta era ${result}.`;
             soundIncorrect.play(); // Reproducir sonido de incorrecto
         }
-        document.getElementById('result').innerText = message;
+        document.getElementById('result').innerText = `${message} La secuencia fue: ${operationSequence}`;
     }
 
     function resetGame() {
