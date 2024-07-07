@@ -49,5 +49,68 @@
             document.getElementById('speedLabel').innerText = speed;
         }
 
-        fun
-        
+        function generateOperations() {
+            operations = [];
+            result = Math.floor(Math.random() * 20) + 1;
+            counter = 0;
+            document.getElementById('operations').innerText = result;
+
+            for (let i = 0; i < 9; i++) {
+                let number = Math.floor(Math.random() * 20) + 1;
+                let operation = Math.random() < 0.5 ? '+' : '-';
+                if (operation === '+') {
+                    result += number;
+                } else {
+                    result -= number;
+                }
+                operations.push({ operation, number });
+            }
+
+            setTimeout(nextOperation, speed);
+        }
+
+        function nextOperation() {
+            if (counter < 9) {
+                let { operation, number } = operations[counter];
+                let newText = `${operation} ${number}`;
+                document.getElementById('operations').innerText = newText;
+                counter++;
+                setTimeout(nextOperation, speed);
+            } else {
+                document.getElementById('operations').innerText = '= ?';
+            }
+        }
+
+        function checkResult() {
+            let userResult = parseInt(document.getElementById('answer').value);
+            let message;
+            if (userResult === result) {
+                message = '¡Correcto!';
+            } else {
+                message = `Incorrecto. La respuesta correcta era ${result}.`;
+            }
+            document.getElementById('result').innerText = message;
+        }
+
+        function resetGame() {
+            document.getElementById('result').innerText = '';
+            document.getElementById('answer').value = '';
+            countdown(3);
+        }
+
+        function countdown(seconds) {
+            let countdownInterval = setInterval(() => {
+                if (seconds > 0) {
+                    document.getElementById('operations').innerText = seconds;
+                    seconds--;
+                } else {
+                    clearInterval(countdownInterval);
+                    generateOperations();
+                }
+            }, 1000);
+        }
+
+        resetGame();  // Start with a countdown
+    </script>
+</body>
+</html>
