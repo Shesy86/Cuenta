@@ -10,16 +10,16 @@
             text-align: center;
             padding: 20px;
         }
-        #game {
-            margin: 20px 0;
+        .controls {
+            background-color: #f0f0f0; /* Fondo gris claro */
+            padding: 20px;
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 20px;
         }
-        #operations {
-            font-size: 48px;
-            margin: 20px 0;
-        }
-        #result {
-            font-size: 24px;
-            margin: 20px 0;
+        .controls label {
+            display: block;
+            margin-bottom: 10px;
         }
         .start-button, .blue-button {
             background-color: blue;
@@ -49,30 +49,46 @@
             cursor: pointer;
             margin: 20px 10px;
         }
+        #game {
+            margin: 20px 0;
+        }
+        #operations {
+            font-size: 48px;
+            margin: 20px 0;
+        }
+        #result {
+            font-size: 24px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <h1>Juego de Cuentas Mentales</h1>
-    <div>
+    
+    <div class="controls">
         <label for="speed">Velocidad (ms): </label>
         <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
         <span id="speedLabel">1000</span> ms
     </div>
-    <div>
+    
+    <div class="controls">
         <label for="amount">Cantidad de Números (5-10): </label>
         <input type="range" id="amount" min="5" max="10" value="5" oninput="updateAmountLabel()">
         <span id="amountLabel">5</span>
     </div>
-    <div>
+    
+    <div class="controls">
         <label for="topRange">Tope Superior del Rango (10-20): </label>
         <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
         <span id="topRangeLabel">15</span>
     </div>
+    
     <div id="game">
         <div id="operations"></div>
         <input type="text" id="answer" placeholder="Ingresa tu respuesta">
         <button class="round-button" onclick="checkResult()">&#8594;</button>
     </div>
+    
     <button class="blue-button" onclick="startGame()">Iniciar</button>
     <button class="red-button" onclick="stopGame()">Parar</button>
     <div id="result"></div>
