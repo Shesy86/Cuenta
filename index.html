@@ -16,9 +16,14 @@
             display: inline-block;
             text-align: left;
             margin-bottom: 20px;
+            width: 300px; /* Ancho fijo para los controles */
         }
         .controls label {
             display: block;
+            margin-bottom: 10px;
+        }
+        .controls input[type="range"] {
+            width: calc(100% - 20px); /* Ancho del slider menos el padding */
             margin-bottom: 10px;
         }
         .start-button, .blue-button {
