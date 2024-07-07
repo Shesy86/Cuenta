@@ -13,6 +13,10 @@
         #game {
             margin: 20px 0;
         }
+        #operations {
+            font-size: 48px;
+            margin: 20px 0;
+        }
         #result {
             font-size: 24px;
             margin: 20px 0;
@@ -67,13 +71,12 @@
         function nextOperation() {
             if (counter < 9) {
                 let { operation, number } = operations[counter];
-                let currentText = document.getElementById('operations').innerText;
-                let newText = `${currentText} ${operation} ${number}`;
+                let newText = `${operation} ${number}`;
                 document.getElementById('operations').innerText = newText;
                 counter++;
                 setTimeout(nextOperation, speed);
             } else {
-                document.getElementById('operations').innerText += ' = ?';
+                document.getElementById('operations').innerText = '= ?';
             }
         }
 
