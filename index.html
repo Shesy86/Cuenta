@@ -7,22 +7,22 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            text-align: center;
             padding: 20px;
             background-color: #f9f9f9;
             color: #333;
+            display: flex;
+            justify-content: center;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: auto;
-        }
-        .controls {
-            background-color: #f0f0f0;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            gap: 20px;
+        }
+        .controls, #game {
+            background-color: #f0f0f0;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
@@ -70,9 +70,6 @@
             background-color: #27ae60;
             transform: translateY(-2px);
         }
-        #game {
-            margin: 20px 0;
-        }
         #operations {
             font-size: 64px;
             margin: 20px 0;
@@ -106,29 +103,47 @@
         .fade-in {
             animation: fadeIn 0.5s;
         }
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+            .controls {
+                flex: 1;
+                max-width: 400px;
+            }
+            #game {
+                flex: 2;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Juego de Cuentas Mentales</h1>
-        <p>Intenta resolver la operación matemática en tu mente antes de que termine el tiempo.</p>
-        
         <div class="controls">
-            <label for="speed">Velocidad (ms): </label>
-            <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
-            <span id="speedLabel">1000</span> ms
-        </div>
-        
-        <div class="controls">
-            <label for="amount">Cantidad de Números (5-10): </label>
-            <input type="range" id="amount" min="5" max="10" value="5" oninput="updateAmountLabel()">
-            <span id="amountLabel">5</span>
-        </div>
-        
-        <div class="controls">
-            <label for="topRange">Tope Superior del Rango (10-20): </label>
-            <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
-            <span id="topRangeLabel">15</span>
+            <h1>Juego de Cuentas Mentales</h1>
+            <p>Intenta resolver la operación matemática en tu mente antes de que termine el tiempo.</p>
+            
+            <div>
+                <label for="speed">Velocidad (ms): </label>
+                <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
+                <span id="speedLabel">1000</span> ms
+            </div>
+            
+            <div>
+                <label for="amount">Cantidad de Números (5-10): </label>
+                <input type="range" id="amount" min="5" max="10" value="5" oninput="updateAmountLabel()">
+                <span id="amountLabel">5</span>
+            </div>
+            
+            <div>
+                <label for="topRange">Tope Superior del Rango (10-20): </label>
+                <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
+                <span id="topRangeLabel">15</span>
+            </div>
+            
+            <button class="blue-button" onclick="startGame()">Iniciar</button>
+            <button class="red-button" onclick="stopGame()">Parar</button>
+            <div id="result"></div>
         </div>
         
         <div id="game">
@@ -136,16 +151,12 @@
             <input type="text" id="answer" placeholder="Ingresa tu respuesta">
             <button class="round-button" onclick="checkResult()">&#8594;</button>
         </div>
-        
-        <button class="blue-button" onclick="startGame()">Iniciar</button>
-        <button class="red-button" onclick="stopGame()">Parar</button>
-        <div id="result"></div>
-
-        <!-- Elemento de audio para el sonido -->
-        <audio id="sound" src="bip.mp3"></audio>
-        <audio id="soundCorrect" src="correcto.mp3"></audio>
-        <audio id="soundIncorrect" src="incorrecto.mp3"></audio>
     </div>
+
+    <!-- Elemento de audio para el sonido -->
+    <audio id="sound" src="bip.mp3"></audio>
+    <audio id="soundCorrect" src="correcto.mp3"></audio>
+    <audio id="soundIncorrect" src="incorrecto.mp3"></audio>
     
     <script>
     let operations = [];
@@ -258,7 +269,13 @@
         clearTimeout(timeoutId); // Detener la generación de números
         resetGame();
     }
+
+    // Permitir enviar respuesta presionando Enter
+    document.getElementById('answer').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            checkResult();
+        }
+    });
     </script>
-    
 </body>
 </html>
