@@ -12,8 +12,6 @@
             color: #333;
             display: flex;
             justify-content: center;
-            flex-direction: column;
-            align-items: center;
         }
         .container {
             max-width: 1200px;
@@ -21,12 +19,6 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            width: 100%;
-        }
-        .header {
-            text-align: center;
-            width: 100%;
-            margin-bottom: 20px;
         }
         .controls, #game {
             background-color: #f0f0f0;
@@ -34,7 +26,6 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
         }
         .controls label {
             display: block;
@@ -49,12 +40,9 @@
             font-size: 20px;
             border: none;
             cursor: pointer;
-            margin: 10px 0;
+            margin: 10px;
             border-radius: 8px;
             transition: background-color 0.3s, transform 0.3s;
-            display: block;
-            width: 100%;
-            text-align: center;
         }
         .blue-button {
             background-color: #3498db;
@@ -69,8 +57,6 @@
             color: white;
             border-radius: 50%;
             padding: 10px 15px;
-            width: auto;
-            margin: 0 auto;
         }
         .blue-button:hover {
             background-color: #2980b9;
@@ -121,21 +107,22 @@
             .container {
                 flex-direction: row;
             }
-            .controls, #game {
+            .controls {
                 flex: 1;
                 max-width: 400px;
+            }
+            #game {
+                flex: 2;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Juego de Cuentas Mentales</h1>
-            <p class="description">Intenta resolver la operación matemática en tu mente antes de que termine el tiempo.</p>
-        </div>
-        
         <div class="controls">
+            <h1>Juego de Cuentas Mentales</h1>
+            <p>Intenta resolver la operación matemática en tu mente antes de que termine el tiempo.</p>
+            
             <div>
                 <label for="speed">Velocidad (ms): </label>
                 <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
@@ -153,18 +140,18 @@
                 <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
                 <span id="topRangeLabel">15</span>
             </div>
+            
+            <button class="blue-button" onclick="startGame()">Iniciar</button>
+            <button class="red-button" onclick="stopGame()">Parar</button>
+            <div id="result"></div>
         </div>
         
-        <div id="game" class="controls">
-            <button class="blue-button" onclick="startGame()">Iniciar</button>
+        <div id="game">
             <div id="operations"></div>
             <input type="text" id="answer" placeholder="Ingresa tu respuesta">
             <button class="round-button" onclick="checkResult()">&#8594;</button>
-            <button class="red-button" onclick="stopGame()">Parar</button>
         </div>
     </div>
-
-    <div id="result"></div>
 
     <!-- Elemento de audio para el sonido -->
     <audio id="sound" src="bip.mp3"></audio>
