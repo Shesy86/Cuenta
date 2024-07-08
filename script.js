@@ -96,4 +96,18 @@ function checkResult() {
 function resetGame() {
     document.getElementById('result').innerText = '';
     document.getElementById('answer').value = '';
-    document.getElement
+    document.getElementContinuación del archivo `script.js`:
+
+```javascript
+    document.getElementById('operations').innerText = '';
+}
+
+function startGame() {
+    resetGame();
+    generateOperations();
+}
+
+function stopGame() {
+    clearTimeout(timeoutId); // Detener la generación de números
+    resetGame();
+}
