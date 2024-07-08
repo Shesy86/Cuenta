@@ -20,7 +20,7 @@
             flex-direction: column;
             gap: 20px;
         }
-        .controls, #game {
+        .controls, #game, .buttons {
             background-color: #f0f0f0;
             padding: 20px;
             border-radius: 8px;
@@ -114,6 +114,11 @@
             #game {
                 flex: 2;
             }
+            .buttons {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -140,10 +145,6 @@
                 <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
                 <span id="topRangeLabel">15</span>
             </div>
-            
-            <button class="blue-button" onclick="startGame()">Iniciar</button>
-            <button class="red-button" onclick="stopGame()">Parar</button>
-            <div id="result"></div>
         </div>
         
         <div id="game">
@@ -152,6 +153,13 @@
             <button class="round-button" onclick="checkResult()">&#8594;</button>
         </div>
     </div>
+    
+    <div class="buttons">
+        <button class="blue-button" onclick="startGame()">Iniciar</button>
+        <button class="red-button" onclick="stopGame()">Parar</button>
+    </div>
+
+    <div id="result"></div>
 
     <!-- Elemento de audio para el sonido -->
     <audio id="sound" src="bip.mp3"></audio>
