@@ -1,0 +1,101 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+.controls {
+    background-color: #f0f0f0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+}
+.controls input[type="range"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.blue-button, .red-button, .round-button {
+    padding: 10px 20px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.blue-button {
+    background-color: #3498db;
+    color: white;
+}
+.red-button {
+    background-color: #e74c3c;
+    color: white;
+}
+.round-button {
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 50%;
+    padding: 10px 15px;
+}
+.blue-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+.red-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+.round-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+#game {
+    margin: 20px 0;
+}
+#operations {
+    font-size: 64px;
+    margin: 20px 0;
+    background-color: #D7F4F1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    min-width: 200px;
+}
+#result {
+    font-size: 24px;
+    margin: 20px 0;
+    background-color: #ecf0f1;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+#answer {
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    width: calc(100% - 30px);
+    margin-bottom: 10px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.fade-in {
+    animation: fadeIn 0.5s;
+}
