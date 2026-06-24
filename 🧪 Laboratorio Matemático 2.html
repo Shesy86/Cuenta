@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧪 Laboratorio Matemático</title>
+<title>🧪 Laboratorio Matemático v3.3</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,7 +17,6 @@ body {
 
 .contenedor { max-width: 860px; margin: auto; }
 
-/* ── CARD Y LABELS ── */
 .card {
   background: #ffffff;
   border-radius: 20px;
@@ -44,16 +43,13 @@ input[type=text], input[type=number] {
 }
 input:focus { outline: none; border-color: #3b82f6; }
 
-/* ── CONFIGURACIONES ADICIONALES ── */
 .config-checkbox {
   display: flex; align-items: center; gap: 10px; margin: 16px 0;
   cursor: pointer; font-weight: 600; color: #334155; font-size: 0.95rem;
 }
 .config-checkbox input { width: 18px; height: 18px; cursor: pointer; }
 
-.inputs-personalizados {
-  display: flex; gap: 12px; margin-bottom: 16px;
-}
+.inputs-personalizados { display: flex; gap: 12px; margin-bottom: 16px; }
 
 /* ── MODOS Y NIVELES ── */
 .modos, .niveles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
@@ -82,10 +78,7 @@ input:focus { outline: none; border-color: #3b82f6; }
 .btn-primario:hover { background: #1e40af; }
 
 .area-acciones-juego { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-.btn-juego {
-  padding: 12px 20px; border: none; border-radius: 12px;
-  font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .18s;
-}
+.btn-juego { padding: 12px 20px; border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .18s; }
 .btn-verificar { background: #10b981; color: white; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
 .btn-verificar:hover { background: #059669; }
 .btn-pista { background: #eab308; color: #451a03; box-shadow: 0 4px 10px rgba(234, 179, 8, 0.2); }
@@ -98,8 +91,7 @@ input:focus { outline: none; border-color: #3b82f6; }
 /* ── PUNTAJE ── */
 .panel-puntaje {
   display: flex; gap: 12px; flex-wrap: wrap;
-  background: #1e3a8a; border-radius: 16px;
-  padding: 16px; margin-bottom: 20px;
+  background: #1e3a8a; border-radius: 16px; padding: 16px; margin-bottom: 20px;
   box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
 }
 .stat { text-align: center; flex: 1; min-width: 80px; }
@@ -121,13 +113,14 @@ th, td { border: 1px solid #cbd5e1; padding: 12px 10px; text-align: center; vert
 .fil-total td, .fil-total th { background: #f8fafc; font-weight: 700; color: #334155; border-top: 2px solid #94a3b8; }
 
 .inp-celda {
-  width: 95px; padding: 8px 6px; border: 2px solid #cbd5e1;
-  border-radius: 8px; text-align: center; font-size: 1rem; font-weight: 600;
-  transition: all .15s;
+  width: 95px; padding: 8px 6px; border: 2px solid #cbd5e1; border-radius: 8px;
+  text-align: center; font-size: 1rem; font-weight: 600; transition: all .15s;
 }
 .inp-celda:focus { outline: none; border-color: #3b82f6; background: #fff; }
 .inp-celda.correcto { border-color: #10b981; background: #ecfdf5; color: #065f46; }
 .inp-celda.incorrecto { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+.inp-guia { width: 80px; background: #fffbeb; border-color: #f59e0b; color: #b45309; }
 
 /* ── MENSAJES Y PISTAS ── */
 .mensaje { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-weight: 600; font-size: .95rem; display: none; }
@@ -144,6 +137,12 @@ th, td { border: 1px solid #cbd5e1; padding: 12px 10px; text-align: center; vert
   display: inline-flex; flex-direction: column; align-items: flex-end; margin: 0 auto;
 }
 .linea-cuenta { border-top: 3px solid #334155; margin: 4px 0; width: 100%; display: block; }
+
+/* ── HISTORIAL ── */
+.historial-box { margin-top: 20px; padding: 18px; background: #f1f5f9; border-radius: 14px; border: 1px dashed #cbd5e1; }
+.historial-box h4 { font-size: .85rem; color: #475569; text-transform: uppercase; margin-bottom: 10px; letter-spacing: .5px; }
+.historial-lista { display: flex; gap: 8px; flex-wrap: wrap; }
+.historial-item { background: white; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; color: #1e3a8a; border: 1px solid #e2e8f0; }
 
 @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 .pop { animation: pop .3s ease; }
@@ -169,12 +168,17 @@ th, td { border: 1px solid #cbd5e1; padding: 12px 10px; text-align: center; vert
         <div class="modo-btn sel" data-modo="mostrar" onclick="selModo(this)">
           <span class="modo-icono">👀</span>
           Mostrar Proceso
-          <div class="modo-desc">La tabla aparece resuelta paso a paso</div>
+          <div class="modo-desc">La tabla aparece resuelta automáticamente</div>
         </div>
         <div class="modo-btn" data-modo="todo" onclick="selModo(this)">
           <span class="modo-icono">🧠</span>
-          Completar Todo
-          <div class="modo-desc">Resuelve celdas, sumas y total</div>
+          Completar Tabla
+          <div class="modo-desc">El sistema descompone, tú calculas la tabla</div>
+        </div>
+        <div class="modo-btn" data-modo="descomp" onclick="selModo(this)">
+          <span class="modo-icono">🧪</span>
+          Descomposición Manual
+          <div class="modo-desc">¡Tú tienes que descomponer los números guía!</div>
         </div>
       </div>
 
@@ -200,7 +204,7 @@ th, td { border: 1px solid #cbd5e1; padding: 12px 10px; text-align: center; vert
 
       <label class="config-checkbox">
         <input type="checkbox" id="chk-ceros" checked>
-        Permitir números con cero (Ej: 20, 105)
+        Permitir números con cero al azar (Ej: 20, 105)
       </label>
 
       <div id="panel-manual" style="display: none; background: #f8fafc; padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px dashed #cbd5e1;">
@@ -234,13 +238,20 @@ th, td { border: 1px solid #cbd5e1; padding: 12px 10px; text-align: center; vert
       <div class="area-acciones-juego" id="area-botones"></div>
       <div id="area-algoritmo"></div>
     </div>
+
+    <div class="historial-box">
+      <h4>📋 Historial de Experimentos de Hoy</h4>
+      <div class="historial-lista" id="lista-historial">
+        <span style="color:#64748b; font-size:0.85rem; font-style:italic;">Ningún experimento completado aún.</span>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 let g = {
   modo: "mostrar", nivel: "2x3", nombre: "", puntos: 0, racha: 0, ejercicios: 0,
-  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true
+  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true, historial: []
 };
 
 window.onload = function () {
@@ -264,7 +275,7 @@ function selNivel(el) {
 function numRandomSinCeros(cifras) {
   let numStr = "";
   for(let i=0; i<cifras; i++) {
-    let d = Math.floor(Math.random() * 9) + 1; // dígitos del 1 al 9
+    let d = Math.floor(Math.random() * 9) + 1;
     numStr += d.toString();
   }
   return parseInt(numStr);
@@ -297,13 +308,20 @@ function actualizarPanel() {
   document.getElementById("txt-ejercicios").textContent = g.ejercicios;
 }
 
+function agregarHistorial(item) {
+  g.historial.push(item);
+  const caja = document.getElementById("lista-historial");
+  caja.innerHTML = g.historial.map(h => `<span class="historial-item">✓ ${h}</span>`).join("");
+}
+
 function iniciar() {
   const nombre = document.getElementById("nombre").value.trim();
   if (nombre) { g.nombre = nombre; localStorage.setItem("lab_nombre", nombre); }
   g.modo = document.querySelector(".modo-btn.sel").dataset.modo;
   g.nivel = document.querySelector(".niv-btn.sel").dataset.nivel;
   g.permitirCeros = document.getElementById("chk-ceros").checked;
-  g.puntos = 0; g.racha = 0; g.ejercicios = 0;
+  g.puntos = 0; g.racha = 0; g.ejercicios = 0; g.historial = [];
+  document.getElementById("lista-historial").innerHTML = `<span style="color:#64748b; font-size:0.85rem; font-style:italic;">Ningún experimento completado aún.</span>`;
   actualizarPanel();
   document.getElementById("pantalla-inicio").style.display = "none";
   document.getElementById("pantalla-juego").style.display = "block";
@@ -343,38 +361,56 @@ function nuevoEjercicio() {
   g.ejercicios++;
 
   document.getElementById("txt-operacion").textContent = `${g.n1} × ${g.n2}`;
-  document.getElementById("txt-descomp").innerHTML =
-    `🔬 Descomposición: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
+  
+  if (g.modo === "descomp") {
+    document.getElementById("txt-descomp").innerHTML = `🔬 <b>¡Alerta de Desafío!</b> Descompón los números guía en los casilleros amarillos con <span style="color:#b45309"><b>?</b></span> antes de empezar a multiplicar.`;
+  } else {
+    document.getElementById("txt-descomp").innerHTML =
+      `🔬 Descomposición: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
+  }
 
   const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
   const resultado = g.n1 * g.n2;
-  const mostrar = g.modo === "mostrar";
+  const modoMostrar = g.modo === "mostrar";
+  const modoDescomp = g.modo === "descomp";
 
   let filas = "";
   g.partes1.forEach((f, fi) => {
-    filas += `<tr><th class="enc-fil">${f}</th>`;
+    let celdaGuiaFil = modoDescomp 
+      ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-fil" placeholder="?"></th>`
+      : `<th class="enc-fil">${f}</th>`;
+      
+    filas += `<tr>${celdaGuiaFil}`;
+    
     g.partes2.forEach(c => {
       const val = f * c;
-      filas += mostrar
+      filas += modoMostrar
         ? `<td>${val}</td>`
-        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod"></td>`;
+        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod" disabled></td>`;
     });
+    
     const sv = sumasFila[fi];
-    filas += mostrar
+    filas += modoMostrar
       ? `<td class="col-suma">${sv}</td>`
-      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:100px"></td>`;
+      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:100px" disabled></td>`;
     filas += `</tr>`;
   });
 
-  const celdaRes = mostrar
+  const celdaRes = modoMostrar
     ? `<td class="cel-resultado">${resultado}</td>`
-    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:110px"></td>`;
+    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:110px" disabled></td>`;
+
+  let cabeceraColumnas = g.partes2.map((c, ci) => {
+    return modoDescomp 
+      ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-col" placeholder="?"></th>`
+      : `<th class="enc-col">${c}</th>`;
+  }).join("");
 
   const tabla = `
     <table>
       <thead><tr>
         <th></th>
-        ${g.partes2.map(c=>`<th class="enc-col">${c}</th>`).join("")}
+        ${cabeceraColumnas}
         <th class="enc-col" style="background:#fefce8;color:#92400e;">Suma fila</th>
       </tr></thead>
       <tbody>
@@ -390,7 +426,7 @@ function nuevoEjercicio() {
   document.getElementById("area-tabla").innerHTML = tabla;
 
   let bots = "";
-  if (!mostrar) {
+  if (!modoMostrar) {
     bots += `<button class="btn-juego btn-verificar" onclick="verificar()">✓ Verificar respuestas</button>`;
     bots += `<button class="btn-juego btn-pista" onclick="darPista()">💡 Dame una pista</button>`;
   }
@@ -398,40 +434,148 @@ function nuevoEjercicio() {
   bots += `<button class="btn-juego btn-volver" onclick="volverAlMenu()">🏠 Volver al inicio</button>`;
   
   document.getElementById("area-botones").innerHTML = bots;
-  if (mostrar) mostrarCuentaEscolar();
+  
+  if (!modoMostrar && !modoDescomp) {
+    document.querySelectorAll(".inp-celda").forEach(i => i.disabled = false);
+  }
+
+  if (modoMostrar) mostrarCuentaEscolar();
   actualizarPanel();
+
+  if (modoDescomp) {
+    const guias = document.querySelectorAll(".inp-guia");
+    guias.forEach(g => g.addEventListener("input", verificarGuiasAlVuelo));
+  }
+}
+
+function verificarGuiasAlVuelo() {
+  const inputsFil = Array.from(document.querySelectorAll("[data-tipo='guia-fil']"));
+  const inputsCol = Array.from(document.querySelectorAll("[data-tipo='guia-col']"));
+  
+  const valoresFil = inputsFil.map(i => i.value !== "" ? Number(i.value) : null);
+  const valoresCol = inputsCol.map(i => i.value !== "" ? Number(i.value) : null);
+
+  // Buscamos qué intención de orden tomó el niño basándonos en la PRIMERA celda con datos válidos
+  let ordenElegido = null; // "normal" o "invertido"
+
+  // Revisamos la primera celda de las filas para definir el destino estricto del eje
+  if (valoresFil[0] !== null) {
+    if (valoresFil[0] === g.partes1[0]) {
+      ordenElegido = "normal";
+    } else if (valoresFil[0] === g.partes2[0]) {
+      ordenElegido = "invertido";
+    }
+  } else if (valoresCol[0] !== null) {
+    if (valoresCol[0] === g.partes2[0]) {
+      ordenElegido = "normal";
+    } else if (valoresCol[0] === g.partes1[0]) {
+      ordenElegido = "invertido";
+    }
+  }
+
+  // Si no se puede deducir el orden todavía, mantenemos evaluación básica limpia
+  let metaFil = ordenElegido === "invertido" ? g.partes2 : g.partes1;
+  let metaCol = ordenElegido === "invertido" ? g.partes1 : g.partes2;
+
+  // Verificamos si las dimensiones estructurales de la inversión son correctas
+  if (ordenElegido === "invertido" && (inputsFil.length !== g.partes2.length || inputsCol.length !== g.partes1.length)) {
+    ordenElegido = "normal"; // Forzar normal si las dimensiones de matriz no coinciden
+    metaFil = g.partes1;
+    metaCol = g.partes2;
+  }
+
+  // Candado estricto contra duplicaciones incorrectas
+  if (g.n1 !== g.n2 && ordenElegido) {
+    let todoIgual = valoresFil.length === valoresCol.length && valoresFil.every((v, i) => v !== null && v === valoresCol[i]);
+    if (todoIgual) {
+      document.getElementById("txt-descomp").innerHTML = `🔬 <b>¡Cuidado!</b> Estás duplicando el mismo factor en ambos ejes. Debes usar ambos números.`;
+      inputsFil.forEach(i => { i.classList.add("incorrecto"); i.classList.remove("correcto"); });
+      inputsCol.forEach(i => { i.classList.add("incorrecto"); i.classList.remove("correcto"); });
+      return;
+    }
+  }
+
+  // Pintar colores POSICIONALMENTE ESTRICTOS (Compara índice exacto)
+  inputsFil.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaFil[idx]) {
+      inp.classList.add("correcto"); inp.classList.remove("incorrecto");
+    } else {
+      inp.classList.add("incorrecto"); inp.classList.remove("correcto");
+    }
+  });
+
+  inputsCol.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaCol[idx]) {
+      inp.classList.add("correcto"); inp.classList.remove("incorrecto");
+    } else {
+      inp.classList.add("incorrecto"); inp.classList.remove("correcto");
+    }
+  });
+
+  // El sistema se libera SÓLO si la cuadrícula cumple las metas posicionales completas
+  let estructuraFilOk = metaFil.every((val, idx) => valoresFil[idx] === val);
+  let estructuraColOk = metaCol.every((val, idx) => valoresCol[idx] === val);
+
+  if (estructuraFilOk && estructuraColOk) {
+    // Reconfiguramos las respuestas correctas de las celdas interiores dinámicamente según el orden validado
+    const prods = document.querySelectorAll("[data-tipo='prod']");
+    prods.forEach(p => {
+      let fVal = Number(p.closest("tr").querySelector("[data-tipo='guia-fil']").value);
+      let cIndex = Array.from(p.closest("tr").querySelectorAll("[data-tipo='prod']")).indexOf(p);
+      let cVal = Number(document.querySelectorAll("[data-tipo='guia-col']")[cIndex].value);
+      
+      p.dataset.correcto = fVal * cVal;
+      p.disabled = false;
+    });
+
+    const sumas = document.querySelectorAll("[data-tipo='suma']");
+    sumas.forEach(s => {
+      let filaProds = Array.from(s.closest("tr").querySelectorAll("[data-tipo='prod']"));
+      let sumaFilaCorrecta = filaProds.reduce((acc, curr) => acc + Number(curr.dataset.correcto), 0);
+      s.dataset.correcto = sumaFilaCorrecta;
+      s.disabled = false;
+    });
+
+    document.querySelector("[data-tipo='resultado']").disabled = false;
+    document.getElementById("txt-descomp").innerHTML = `🎉 ¡Descomposición perfecta! Casilleros desbloqueados. ¡A multiplicar!`;
+    
+    inputsFil.forEach(i => i.disabled = true);
+    inputsCol.forEach(i => i.disabled = true);
+  }
 }
 
 function darPista() {
   const inputs = document.querySelectorAll(".inp-celda");
   let vacio = null;
   
-  // Buscar la primera celda que el niño no haya contestado o esté vacía
   for (let inp of inputs) {
-    if (inp.value === "") { vacio = inp; break; }
+    if (inp.value === "" && !inp.disabled) { vacio = inp; break; }
+  }
+  
+  if (!vacio) {
+    vacio = document.querySelector(".inp-guia[value='']");
   }
   
   const boxPista = document.getElementById("box-pista-id");
   if (!vacio) {
-    boxPista.textContent = "¡Ya llenaste todas las celdas! Haz clic en Verificar.";
+    boxPista.textContent = "¡Ya llenaste todas las celdas disponibles! Haz clic en Verificar.";
     boxPista.style.display = "block";
     return;
   }
 
   const tipo = vacio.dataset.tipo;
-  if (tipo === "prod") {
-    const f1 = parseInt(vacio.dataset.f1);
-    const f2 = parseInt(vacio.dataset.f2);
-    // Cuenta simplificada sin ceros
-    const s1 = parseInt(f1.toString().replace(/0/g, ''));
-    const s2 = parseInt(f2.toString().replace(/0/g, ''));
-    const cerosTotal = (f1.toString().match(/0/g) || []).length + (f2.toString().match(/0/g) || []).length;
-    
-    boxPista.innerHTML = `💡 <b>Pista para la celda seleccionada:</b> Multiplica los números guía sin los ceros: <b>${s1} × ${s2} = ${s1*s2}</b>. Luego agrégale los <b>${cerosTotal}</b> ceros al final.`;
+  if (tipo === "guia-fil" || tipo === "guia-col") {
+    boxPista.innerHTML = `💡 <b>Pista Descomposición:</b> Escribe las partes en orden estricto (Decenas, Unidades, etc.) de arriba a abajo o de izquierda a derecha. ¡No mezcles el orden posicional!`;
+  } else if (tipo === "prod") {
+    boxPista.innerHTML = `💡 <b>Pista de Multiplicación:</b> Multiplica los dos números guía correspondientes a este casillero. Si tienen ceros, multiplica los números base y añade los ceros al final.`;
   } else if (tipo === "suma") {
-    boxPista.innerHTML = `💡 <b>Pista para Suma Fila:</b> Suma de forma horizontal todos los números que calculaste en esa misma fila.`;
+    boxPista.innerHTML = `💡 <b>Pista para Suma Fila:</b> Suma horizontalmente los resultados de los casilleros blancos de esta fila.`;
   } else {
-    boxPista.innerHTML = `💡 <b>Pista para el Total:</b> Suma hacia abajo todos los resultados de la columna amarilla (Suma fila) para conseguir el gran total.`;
+    boxPista.innerHTML = `💡 <b>Pista para el Total:</b> Suma de arriba a abajo toda la columna amarilla de "Suma fila".`;
   }
   boxPista.style.display = "block";
 }
@@ -441,33 +585,41 @@ function verificar() {
   let errores = 0; let puntosGanados = 0;
 
   inputs.forEach(inp => {
+    if (inp.dataset.tipo.startsWith("guia") && inp.disabled) {
+      puntosGanados += 5; 
+      return;
+    }
     const correcto = Number(inp.dataset.correcto);
     const val = Number(inp.value);
     inp.classList.remove("correcto","incorrecto");
     if (inp.value === "" || val !== correcto) {
       inp.classList.add("incorrecto"); errores++;
     } else {
-      inp.classList.add("correcto"); puntosGanados += 10;
+      inp.classList.add("correcto"); 
+      puntosGanados += 10;
     }
   });
 
   const msg = document.getElementById("msg");
   if (errores === 0) {
-    g.puntos += puntosGanados + 50; g.racha++;
+    let bonusModo = g.modo === "descomp" ? 80 : 50; 
+    g.puntos += puntosGanados + bonusModo; g.racha++;
     actualizarPanel();
 
     const el = document.getElementById("txt-puntos");
     el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
 
     msg.className = "mensaje ok";
-    msg.textContent = `🎉 ¡Científico/a brillante! Todo correcto. +${puntosGanados + 50} puntos obtenidos.`;
+    msg.textContent = `🎉 ¡Excelente, Científico/a! Todo correcto. Ganaste +${puntosGanados + bonusModo} puntos.`;
     msg.style.display = "block";
     inputs.forEach(i => i.disabled = true);
+    
+    agregarHistorial(`${g.n1} × ${g.n2} = ${g.n1 * g.n2}`);
     mostrarCuentaEscolar();
   } else {
     g.racha = 0; actualizarPanel();
     msg.className = "mensaje err";
-    msg.textContent = `🔬 El experimento arrojó ${errores} anomalía(s) en rojo. ¡Revísalas y vuelve a verificar!`;
+    msg.textContent = `🔬 El experimento detectó ${errores} casillero(s) erróneo(s) en rojo. ¡A revisarlos!`;
     msg.style.display = "block";
   }
 }
@@ -482,7 +634,9 @@ function mostrarCuentaEscolar() {
   for (let i = strAbajo.length - 1; i >= 0; i--) {
     const cifra = parseInt(strAbajo[i]);
     const valorEscalon = cifra * arriba * Math.pow(10, strAbajo.length - 1 - i);
-    escalones.push(valorEscalon);
+    if (valorEscalon !== 0 || strAbajo.length === 1) {
+      escalones.push(valorEscalon);
+    }
   }
 
   let htmlPasos = "";
