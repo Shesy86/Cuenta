@@ -1,0 +1,533 @@
+HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧪 Laboratorio Matemático</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f0f4ff;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.contenedor { max-width: 860px; margin: auto; }
+
+/* ── CARD ── */
+.card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.09);
+  margin-bottom: 20px;
+}
+
+/* ── CABECERA ── */
+.cabecera { text-align: center; margin-bottom: 24px; }
+.cabecera h1 { font-size: 2rem; color: #1e3a8a; }
+.cabecera p  { color: #6b7280; margin-top: 4px; font-size: .95rem; }
+
+/* ── FORM ── */
+.campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.campo label {
+  font-size: .82rem; font-weight: 600; color: #374151;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.campo input[type=text] {
+  padding: 10px 12px; border: 2px solid #d1d5db;
+  border-radius: 10px; font-size: 1rem; width: 100%;
+  transition: border-color .2s;
+}
+.campo input:focus { outline: none; border-color: #4f8ef7; }
+
+/* ── MODOS ── */
+.modos { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.modo-btn {
+  flex: 1; min-width: 140px; padding: 12px 8px;
+  border: 2px solid #d1d5db; border-radius: 12px;
+  background: #f9fafb; cursor: pointer; text-align: center;
+  font-size: .9rem; font-weight: 600; color: #374151;
+  transition: all .18s; user-select: none;
+}
+.modo-btn.sel { border-color: #4f8ef7; background: #eff6ff; color: #1d4ed8; }
+.modo-icono { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+.modo-desc { font-size: .75rem; font-weight: 400; color: #6b7280; margin-top: 2px; }
+.modo-btn.sel .modo-desc { color: #3b82f6; }
+
+/* ── NIVELES ── */
+.niveles { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.niv-btn {
+  flex: 1; min-width: 100px; padding: 10px 6px;
+  border: 2px solid #d1d5db; border-radius: 10px;
+  background: #f9fafb; cursor: pointer; text-align: center;
+  font-size: .85rem; font-weight: 600; color: #374151;
+  transition: all .18s; user-select: none;
+}
+.niv-btn.sel { border-color: #7c3aed; background: #f5f3ff; color: #6d28d9; }
+.niv-stars { font-size: 1rem; display: block; margin-bottom: 2px; }
+.niv-desc { font-size: .72rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
+.niv-btn.sel .niv-desc { color: #8b5cf6; }
+
+/* ── BOTONES ── */
+.btn-primario {
+  width: 100%; padding: 13px; border: none; border-radius: 12px;
+  background: #1d4ed8; color: white; font-size: 1rem;
+  font-weight: 700; cursor: pointer; transition: background .18s;
+}
+.btn-primario:hover { background: #1e40af; }
+
+.btn-verificar {
+  margin-top: 18px; padding: 11px 24px; border: none;
+  border-radius: 10px; background: #059669; color: white;
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  transition: background .18s; margin-right: 10px;
+}
+.btn-verificar:hover { background: #047857; }
+
+.btn-nuevo {
+  margin-top: 18px; padding: 11px 24px; border: none;
+  border-radius: 10px; background: #7c3aed; color: white;
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  transition: background .18s; margin-right: 10px;
+}
+.btn-nuevo:hover { background: #6d28d9; }
+
+.btn-volver {
+  margin-top: 18px; padding: 11px 24px; border: 2px solid #94a3b8;
+  border-radius: 10px; background: white; color: #475569;
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  transition: all .18s;
+}
+.btn-volver:hover { background: #f1f5f9; color: #1e293b; border-color: #64748b; }
+
+/* ── PUNTAJE ── */
+.panel-puntaje {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  background: #1e3a8a; border-radius: 14px;
+  padding: 14px 20px; margin-bottom: 20px;
+  align-items: center;
+}
+.stat { text-align: center; flex: 1; }
+.stat-num { font-size: 1.6rem; font-weight: 800; color: #fff; }
+.stat-lbl { font-size: .72rem; color: #93c5fd; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+
+/* ── ENUNCIADO ── */
+.enunciado { text-align: center; margin-bottom: 20px; }
+.operacion { font-size: 2.2rem; font-weight: 800; color: #1e3a8a; }
+.descomposicion { color: #6b7280; margin-top: 6px; font-size: .93rem; }
+
+/* ── TABLA ── */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; min-width: 280px; }
+th, td { border: 2px solid #d1d5db; padding: 10px 8px; text-align: center; vertical-align: middle; }
+.enc-col { background: #eff6ff; color: #1d4ed8; font-weight: 700; }
+.enc-fil { background: #f0fdf4; color: #15803d; font-weight: 700; }
+.col-suma { background: #fefce8; font-weight: 700; color: #92400e; border-left: 3px solid #fbbf24; }
+.cel-resultado { background: #fef2f2; font-weight: 800; color: #b91c1c; border: 3px solid #f87171; font-size: 1.1rem; }
+.fil-total td, .fil-total th { background: #f8fafc; font-weight: 700; color: #374151; border-top: 3px solid #9ca3af; }
+
+/* ── INPUTS TABLA ── */
+.inp-celda {
+  width: 80px; padding: 6px 4px; border: 2px solid #d1d5db;
+  border-radius: 7px; text-align: center; font-size: .95rem;
+  transition: border-color .15s, background .15s;
+}
+.inp-celda:focus { outline: none; border-color: #4f8ef7; }
+.inp-celda.correcto { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
+.inp-celda.incorrecto { border-color: #dc2626; background: #fef2f2; }
+
+/* ── MENSAJES ── */
+.mensaje {
+  margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+  font-weight: 600; font-size: .95rem; display: none;
+}
+.mensaje.ok   { background: #d1fae5; color: #065f46; border: 1.5px solid #6ee7b7; }
+.mensaje.err { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+
+/* ── ALGORITMO ESCOLARES ── */
+.algoritmo {
+  margin-top: 20px; padding: 20px; background: #f8fafc;
+  border-radius: 12px; border: 1.5px solid #e2e8f0;
+}
+.algoritmo h3 {
+  font-size: .85rem; text-transform: uppercase; letter-spacing: .5px;
+  color: #475569; margin-bottom: 12px; text-align: center;
+}
+.cuenta-vertical {
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #1e3a8a;
+  display: inline-block;
+  text-align: right;
+  margin: 0 auto;
+}
+.flex-centro { display: flex; justify-content: center; }
+.linea-cuenta { border-top: 3px solid #334155; margin: 4px 0; width: 100%; display: block; }
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+
+  <div class="cabecera">
+    <h1>🧪 Laboratorio Matemático</h1>
+    <p>Multiplicación por descomposición</p>
+  </div>
+
+  <div id="pantalla-inicio">
+    <div class="card">
+
+      <div class="campo">
+        <label>Nombre</label>
+        <input id="nombre" type="text" placeholder="Tu nombre…">
+      </div>
+
+      <label style="font-size:.82rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px;">Modo</label>
+      <div class="modos">
+        <div class="modo-btn sel" data-modo="mostrar" onclick="selModo(this)">
+          <span class="modo-icono">👀</span>
+          Mostrar todo
+          <div class="modo-desc">La tabla aparece completa</div>
+        </div>
+        <div class="modo-btn" data-modo="todo" onclick="selModo(this)">
+          <span class="modo-icono">🧠</span>
+          Completar todo
+          <div class="modo-desc">Celdas + sumas + resultado</div>
+        </div>
+      </div>
+
+      <label style="font-size:.82rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px;">Nivel</label>
+      <div class="niveles">
+        <div class="niv-btn" data-nivel="2x2" onclick="selNivel(this)">
+          <span class="niv-stars">⭐</span>
+          2 × 2 cifras
+          <div class="niv-desc">ej: 24 × 35</div>
+        </div>
+        <div class="niv-btn sel" data-nivel="2x3" onclick="selNivel(this)">
+          <span class="niv-stars">⭐⭐</span>
+          2 × 3 cifras
+          <div class="niv-desc">ej: 24 × 123</div>
+        </div>
+        <div class="niv-btn" data-nivel="3x3" onclick="selNivel(this)">
+          <span class="niv-stars">⭐⭐⭐</span>
+          3 × 3 cifras
+          <div class="niv-desc">ej: 124 × 235</div>
+        </div>
+      </div>
+
+      <button class="btn-primario" onclick="iniciar()">▶ Comenzar</button>
+    </div>
+  </div>
+
+  <div id="pantalla-juego" style="display:none;">
+
+    <div class="panel-puntaje">
+      <div class="stat">
+        <div class="stat-num" id="txt-puntos">0</div>
+        <div class="stat-lbl">Puntos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="txt-racha">0</div>
+        <div class="stat-lbl">Racha ✓</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="txt-medalla">—</div>
+        <div class="stat-lbl">Medalla</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="txt-ejercicios">0</div>
+        <div class="stat-lbl">Ejercicios</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="enunciado">
+        <div class="operacion" id="txt-operacion"></div>
+        <div class="descomposicion" id="txt-descomp"></div>
+      </div>
+      <div class="tabla-wrap" id="area-tabla"></div>
+      <div id="area-botones"></div>
+      <div id="msg" class="mensaje"></div>
+      <div id="area-algoritmo"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════
+   ESTADO GLOBAL
+══════════════════════════════════ */
+let g = {
+  modo: "mostrar",
+  nivel: "2x3",
+  nombre: "",
+  puntos: 0,
+  racha: 0,
+  ejercicios: 0,
+  n1: 0, n2: 0,
+  partes1: [], partes2: [],
+};
+
+/* ── Persistencia nombre ── */
+window.onload = function () {
+  const n = localStorage.getItem("lab_nombre");
+  if (n) document.getElementById("nombre").value = n;
+};
+
+/* ── Selección modo/nivel ── */
+function selModo(el) {
+  document.querySelectorAll(".modo-btn").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  g.modo = el.dataset.modo;
+}
+function selNivel(el) {
+  document.querySelectorAll(".niv-btn").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  g.nivel = el.dataset.nivel;
+}
+
+/* ── Generar número aleatorio sin ceros intermedios ── */
+function numRandom(cifras) {
+  const min = Math.pow(10, cifras - 1);
+  const max = Math.pow(10, cifras) - 1;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/* ── Descomponer ── */
+function descomponer(n) {
+  const txt = n.toString();
+  const partes = [];
+  for (let i = 0; i < txt.length; i++) {
+    const d = parseInt(txt[i]);
+    if (d !== 0) partes.push(d * Math.pow(10, txt.length - i - 1));
+  }
+  return partes;
+}
+
+/* ── Medalla según racha ── */
+function medalla(r) {
+  if (r >= 10) return "🏆";
+  if (r >= 7)  return "🥇";
+  if (r >= 5)  return "🥈";
+  if (r >= 3)  return "🥉";
+  return "—";
+}
+
+/* ── Actualizar panel puntaje ── */
+function actualizarPanel() {
+  document.getElementById("txt-puntos").textContent    = g.puntos;
+  document.getElementById("txt-racha").textContent     = g.racha;
+  document.getElementById("txt-medalla").textContent   = medalla(g.racha);
+  document.getElementById("txt-ejercicios").textContent = g.ejercicios;
+}
+
+/* ══════════════════════════════════
+   INICIAR Y VOLVER
+══════════════════════════════════ */
+function iniciar() {
+  const nombre = document.getElementById("nombre").value.trim();
+  if (nombre) { g.nombre = nombre; localStorage.setItem("lab_nombre", nombre); }
+  g.modo  = document.querySelector(".modo-btn.sel").dataset.modo;
+  g.nivel = document.querySelector(".niv-btn.sel").dataset.nivel;
+  g.puntos = 0; g.racha = 0; g.ejercicios = 0;
+  actualizarPanel();
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("pantalla-juego").style.display  = "block";
+  nuevoEjercicio();
+}
+
+function volverAlMenu() {
+  document.getElementById("pantalla-juego").style.display  = "none";
+  document.getElementById("pantalla-inicio").style.display = "block";
+}
+
+/* ══════════════════════════════════
+   NUEVO EJERCICIO
+══════════════════════════════════ */
+function nuevoEjercicio() {
+  const [c1, c2] = g.nivel === "2x2" ? [2,2] : g.nivel === "2x3" ? [2,3] : [3,3];
+  g.n1 = numRandom(c1);
+  g.n2 = numRandom(c2);
+  g.partes1 = descomponer(g.n1);
+  g.partes2 = descomponer(g.n2);
+  g.ejercicios++;
+
+  // Enunciado
+  document.getElementById("txt-operacion").textContent = `${g.n1} × ${g.n2}`;
+  document.getElementById("txt-descomp").innerHTML =
+    `${g.n1} = ${g.partes1.join(" + ")} &nbsp;|&nbsp; ${g.n2} = ${g.partes2.join(" + ")}`;
+
+  // Limpiar
+  document.getElementById("msg").style.display = "none";
+  document.getElementById("area-algoritmo").innerHTML = "";
+
+  // Construir tabla
+  const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
+  const resultado = g.n1 * g.n2;
+  const mostrar = g.modo === "mostrar";
+
+  let filas = "";
+  g.partes1.forEach((f, fi) => {
+    filas += `<tr><th class="enc-fil">${f}</th>`;
+    g.partes2.forEach(c => {
+      const val = f * c;
+      filas += mostrar
+        ? `<td>${val}</td>`
+        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-tipo="prod"></td>`;
+    });
+    // columna suma fila
+    const sv = sumasFila[fi];
+    filas += mostrar
+      ? `<td class="col-suma">${sv}</td>`
+      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:90px"></td>`;
+    filas += `</tr>`;
+  });
+
+  // fila total
+  const celdaRes = mostrar
+    ? `<td class="cel-resultado">${resultado}</td>`
+    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:100px;font-size:1rem"></td>`;
+
+  const tabla = `
+    <table>
+      <thead><tr>
+        <th></th>
+        ${g.partes2.map(c=>`<th class="enc-col">${c}</th>`).join("")}
+        <th class="enc-col" style="background:#fefce8;color:#92400e;">Suma fila</th>
+      </tr></thead>
+      <tbody>
+        ${filas}
+        <tr class="fil-total">
+          <th>Total</th>
+          ${g.partes2.map(()=>`<td></td>`).join("")}
+          ${celdaRes}
+        </tr>
+      </tbody>
+    </table>`;
+
+  document.getElementById("area-tabla").innerHTML = tabla;
+
+  // Botones
+  let bots = "";
+  if (!mostrar) {
+    bots += `<button class="btn-verificar" onclick="verificar()">✓ Verificar</button>`;
+  }
+  bots += `<button class="btn-nuevo" onclick="nuevoEjercicio()">🔀 Nuevo ejercicio</button>`;
+  bots += `<button class="btn-volver" onclick="volverAlMenu()">🏠 Menú inicial</button>`;
+  
+  if (mostrar) {
+    mostrarCuentaEscolar();
+  }
+  document.getElementById("area-botones").innerHTML = bots;
+  actualizarPanel();
+}
+
+/* ══════════════════════════════════
+   VERIFICAR
+══════════════════════════════════ */
+function verificar() {
+  const inputs = document.querySelectorAll(".inp-celda");
+  let errores = 0;
+  let puntosGanados = 0;
+
+  inputs.forEach(inp => {
+    const correcto = Number(inp.dataset.correcto);
+    const val = Number(inp.value);
+    inp.classList.remove("correcto","incorrecto");
+    if (inp.value === "" || val !== correcto) {
+      inp.classList.add("incorrecto");
+      errores++;
+    } else {
+      inp.classList.add("correcto");
+      puntosGanados += 10;
+    }
+  });
+
+  const msg = document.getElementById("msg");
+
+  if (errores === 0) {
+    g.puntos += puntosGanados + 50; // +50 bonus tabla completa
+    g.racha++;
+    actualizarPanel();
+
+    // Animación puntaje
+    const el = document.getElementById("txt-puntos");
+    el.classList.remove("pop");
+    void el.offsetWidth;
+    el.classList.add("pop");
+
+    const bonusMedalla = g.racha >= 3 ? ` ${medalla(g.racha)}` : "";
+    msg.className = "mensaje ok";
+    msg.textContent = `🎉 ¡Perfecto! +${puntosGanados + 50} puntos${bonusMedalla}`;
+    msg.style.display = "block";
+
+    inputs.forEach(i => i.disabled = true);
+
+    // Mostrar cuenta parada escolar
+    mostrarCuentaEscolar();
+
+  } else {
+    g.racha = 0;
+    actualizarPanel();
+    msg.className = "mensaje err";
+    msg.textContent = `Hay ${errores} respuesta${errores>1?"s":""} incorrecta${errores>1?"s":""}. Revisalas (en rojo).`;
+    msg.style.display = "block";
+  }
+}
+
+/* ══════════════════════════════════
+   ALGORITMO TRADICIONAL ESCOLAR (PARADO)
+══════════════════════════════════ */
+function mostrarCuentaEscolar() {
+  // Ponemos el número más largo arriba para que quede cómodo estéticamente como en la escuela
+  const arriba = Math.max(g.n1, g.n2);
+  const abajo = Math.min(g.n1, g.n2);
+  const total = arriba * abajo;
+  
+  // Convertimos el de abajo a texto para iterar sus cifras desde las unidades
+  const strAbajo = abajo.toString();
+  const escalones = [];
+  
+  // Creamos los productos parciales de la escuela (desde las unidades hacia arriba)
+  for (let i = strAbajo.length - 1; i >= 0; i--) {
+    const cifra = parseInt(strAbajo[i]);
+    // El valor real con los ceros correspondientes al escalón escolar
+    const valorEscalon = cifra * arriba * Math.pow(10, strAbajo.length - 1 - i);
+    escalones.push(valorEscalon);
+  }
+
+  // Generamos el HTML alineando los espacios en blanco de forma exacta
+  let htmlPasos = "";
+  escalones.forEach(es => {
+    htmlPasos += `<div>${es}</div>`;
+  });
+
+  const html = `
+    <div class="algoritmo">
+      <h3>✏️ Cuenta vertical tradicional</h3>
+      <div class="flex-centro">
+        <div class="cuenta-vertical">
+          <div>&nbsp;&nbsp;${arriba}</div>
+          <div>×&nbsp;${abajo}</div>
+          <span class="linea-cuenta"></span>
+          ${htmlPasos}
+          <span class="linea-cuenta"></span>
+          <div style="color: #b91c1c;">${total}</div>
+        </div>
+      </div>
+    </div>`;
+    
+  document.getElementById("area-algoritmo").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
