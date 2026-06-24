@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,240 +9,218 @@ HTML
 
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f0f4ff;
+  background: #f0f7ff;
   min-height: 100vh;
   padding: 24px 16px;
+  color: #1e293b;
 }
 
 .contenedor { max-width: 860px; margin: auto; }
 
-/* ── CARD ── */
+/* ── CARD Y LABELS ── */
 .card {
-  background: #fff;
-  border-radius: 18px;
-  padding: 24px;
-  box-shadow: 0 2px 16px rgba(0,0,0,.09);
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
   margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
 }
 
-/* ── CABECERA ── */
 .cabecera { text-align: center; margin-bottom: 24px; }
-.cabecera h1 { font-size: 2rem; color: #1e3a8a; }
-.cabecera p  { color: #6b7280; margin-top: 4px; font-size: .95rem; }
+.cabecera h1 { font-size: 2.2rem; color: #1e3a8a; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.cabecera p  { color: #64748b; margin-top: 6px; font-size: 1rem; font-weight: 500; }
 
-/* ── FORM ── */
-.campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-.campo label {
-  font-size: .82rem; font-weight: 600; color: #374151;
-  text-transform: uppercase; letter-spacing: .5px;
+.campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.seccion-label {
+  font-size: .85rem; font-weight: 700; color: #334155;
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; display: block;
 }
-.campo input[type=text] {
-  padding: 10px 12px; border: 2px solid #d1d5db;
-  border-radius: 10px; font-size: 1rem; width: 100%;
+
+input[type=text], input[type=number] {
+  padding: 12px 14px; border: 2px solid #cbd5e1;
+  border-radius: 12px; font-size: 1rem; width: 100%;
   transition: border-color .2s;
 }
-.campo input:focus { outline: none; border-color: #4f8ef7; }
+input:focus { outline: none; border-color: #3b82f6; }
 
-/* ── MODOS ── */
-.modos { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-.modo-btn {
-  flex: 1; min-width: 140px; padding: 12px 8px;
-  border: 2px solid #d1d5db; border-radius: 12px;
-  background: #f9fafb; cursor: pointer; text-align: center;
-  font-size: .9rem; font-weight: 600; color: #374151;
+/* ── CONFIGURACIONES ADICIONALES ── */
+.config-checkbox {
+  display: flex; align-items: center; gap: 10px; margin: 16px 0;
+  cursor: pointer; font-weight: 600; color: #334155; font-size: 0.95rem;
+}
+.config-checkbox input { width: 18px; height: 18px; cursor: pointer; }
+
+.inputs-personalizados {
+  display: flex; gap: 12px; margin-bottom: 16px;
+}
+
+/* ── MODOS Y NIVELES ── */
+.modos, .niveles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+.modo-btn, .niv-btn {
+  flex: 1; min-width: 145px; padding: 14px 10px;
+  border: 2px solid #e2e8f0; border-radius: 14px;
+  background: #f8fafc; cursor: pointer; text-align: center;
+  font-size: .9rem; font-weight: 700; color: #475569;
   transition: all .18s; user-select: none;
 }
-.modo-btn.sel { border-color: #4f8ef7; background: #eff6ff; color: #1d4ed8; }
-.modo-icono { font-size: 1.4rem; display: block; margin-bottom: 3px; }
-.modo-desc { font-size: .75rem; font-weight: 400; color: #6b7280; margin-top: 2px; }
-.modo-btn.sel .modo-desc { color: #3b82f6; }
+.modo-btn.sel { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+.niv-btn.sel { border-color: #8b5cf6; background: #f5f3ff; color: #6d28d9; }
 
-/* ── NIVELES ── */
-.niveles { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-.niv-btn {
-  flex: 1; min-width: 100px; padding: 10px 6px;
-  border: 2px solid #d1d5db; border-radius: 10px;
-  background: #f9fafb; cursor: pointer; text-align: center;
-  font-size: .85rem; font-weight: 600; color: #374151;
-  transition: all .18s; user-select: none;
-}
-.niv-btn.sel { border-color: #7c3aed; background: #f5f3ff; color: #6d28d9; }
-.niv-stars { font-size: 1rem; display: block; margin-bottom: 2px; }
-.niv-desc { font-size: .72rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
-.niv-btn.sel .niv-desc { color: #8b5cf6; }
+.modo-icono, .niv-stars { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+.modo-desc, .niv-desc { font-size: .75rem; font-weight: 400; color: #64748b; margin-top: 4px; }
+.modo-btn.sel .modo-desc { color: #2563eb; }
+.niv-btn.sel .niv-desc { color: #7c3aed; }
 
 /* ── BOTONES ── */
 .btn-primario {
-  width: 100%; padding: 13px; border: none; border-radius: 12px;
-  background: #1d4ed8; color: white; font-size: 1rem;
+  width: 100%; padding: 14px; border: none; border-radius: 14px;
+  background: #1d4ed8; color: white; font-size: 1.1rem;
   font-weight: 700; cursor: pointer; transition: background .18s;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
 }
 .btn-primario:hover { background: #1e40af; }
 
-.btn-verificar {
-  margin-top: 18px; padding: 11px 24px; border: none;
-  border-radius: 10px; background: #059669; color: white;
-  font-size: .95rem; font-weight: 700; cursor: pointer;
-  transition: background .18s; margin-right: 10px;
+.area-acciones-juego { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.btn-juego {
+  padding: 12px 20px; border: none; border-radius: 12px;
+  font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .18s;
 }
-.btn-verificar:hover { background: #047857; }
-
-.btn-nuevo {
-  margin-top: 18px; padding: 11px 24px; border: none;
-  border-radius: 10px; background: #7c3aed; color: white;
-  font-size: .95rem; font-weight: 700; cursor: pointer;
-  transition: background .18s; margin-right: 10px;
-}
-.btn-nuevo:hover { background: #6d28d9; }
-
-.btn-volver {
-  margin-top: 18px; padding: 11px 24px; border: 2px solid #94a3b8;
-  border-radius: 10px; background: white; color: #475569;
-  font-size: .95rem; font-weight: 700; cursor: pointer;
-  transition: all .18s;
-}
-.btn-volver:hover { background: #f1f5f9; color: #1e293b; border-color: #64748b; }
+.btn-verificar { background: #10b981; color: white; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+.btn-verificar:hover { background: #059669; }
+.btn-pista { background: #eab308; color: #451a03; box-shadow: 0 4px 10px rgba(234, 179, 8, 0.2); }
+.btn-pista:hover { background: #ca8a04; }
+.btn-nuevo { background: #8b5cf6; color: white; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2); }
+.btn-nuevo:hover { background: #7c3aed; }
+.btn-volver { background: #ffffff; color: #475569; border: 2px solid #cbd5e1; }
+.btn-volver:hover { background: #f8fafc; color: #1e293b; border-color: #94a3b8; }
 
 /* ── PUNTAJE ── */
 .panel-puntaje {
-  display: flex; gap: 16px; flex-wrap: wrap;
-  background: #1e3a8a; border-radius: 14px;
-  padding: 14px 20px; margin-bottom: 20px;
-  align-items: center;
+  display: flex; gap: 12px; flex-wrap: wrap;
+  background: #1e3a8a; border-radius: 16px;
+  padding: 16px; margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
 }
-.stat { text-align: center; flex: 1; }
-.stat-num { font-size: 1.6rem; font-weight: 800; color: #fff; }
-.stat-lbl { font-size: .72rem; color: #93c5fd; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+.stat { text-align: center; flex: 1; min-width: 80px; }
+.stat-num { font-size: 1.7rem; font-weight: 800; color: #ffffff; }
+.stat-lbl { font-size: .75rem; color: #93c5fd; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; font-weight: 600; }
 
-/* ── ENUNCIADO ── */
-.enunciado { text-align: center; margin-bottom: 20px; }
-.operacion { font-size: 2.2rem; font-weight: 800; color: #1e3a8a; }
-.descomposicion { color: #6b7280; margin-top: 6px; font-size: .93rem; }
+/* ── ENUNCIADO Y TABLA ── */
+.enunciado { text-align: center; margin-bottom: 22px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; }
+.operacion { font-size: 2.4rem; font-weight: 800; color: #1e3a8a; letter-spacing: 1px; }
+.descomposicion { color: #475569; margin-top: 6px; font-size: 1rem; font-weight: 500; }
 
-/* ── TABLA ── */
-.tabla-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: .95rem; min-width: 280px; }
-th, td { border: 2px solid #d1d5db; padding: 10px 8px; text-align: center; vertical-align: middle; }
+.tabla-wrap { overflow-x: auto; margin-bottom: 10px; border-radius: 12px; border: 1px solid #cbd5e1; }
+table { width: 100%; border-collapse: collapse; font-size: 1rem; min-width: 400px; background: white; }
+th, td { border: 1px solid #cbd5e1; padding: 12px 10px; text-align: center; vertical-align: middle; }
 .enc-col { background: #eff6ff; color: #1d4ed8; font-weight: 700; }
 .enc-fil { background: #f0fdf4; color: #15803d; font-weight: 700; }
-.col-suma { background: #fefce8; font-weight: 700; color: #92400e; border-left: 3px solid #fbbf24; }
-.cel-resultado { background: #fef2f2; font-weight: 800; color: #b91c1c; border: 3px solid #f87171; font-size: 1.1rem; }
-.fil-total td, .fil-total th { background: #f8fafc; font-weight: 700; color: #374151; border-top: 3px solid #9ca3af; }
+.col-suma { background: #fefce8; font-weight: 700; color: #92400e; border-left: 2px solid #fef08a; }
+.cel-resultado { background: #fef2f2; font-weight: 800; color: #b91c1c; font-size: 1.15rem; }
+.fil-total td, .fil-total th { background: #f8fafc; font-weight: 700; color: #334155; border-top: 2px solid #94a3b8; }
 
-/* ── INPUTS TABLA ── */
 .inp-celda {
-  width: 80px; padding: 6px 4px; border: 2px solid #d1d5db;
-  border-radius: 7px; text-align: center; font-size: .95rem;
-  transition: border-color .15s, background .15s;
+  width: 95px; padding: 8px 6px; border: 2px solid #cbd5e1;
+  border-radius: 8px; text-align: center; font-size: 1rem; font-weight: 600;
+  transition: all .15s;
 }
-.inp-celda:focus { outline: none; border-color: #4f8ef7; }
-.inp-celda.correcto { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
-.inp-celda.incorrecto { border-color: #dc2626; background: #fef2f2; }
+.inp-celda:focus { outline: none; border-color: #3b82f6; background: #fff; }
+.inp-celda.correcto { border-color: #10b981; background: #ecfdf5; color: #065f46; }
+.inp-celda.incorrecto { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
 
-/* ── MENSAJES ── */
-.mensaje {
-  margin-top: 14px; padding: 12px 16px; border-radius: 10px;
-  font-weight: 600; font-size: .95rem; display: none;
-}
+/* ── MENSAJES Y PISTAS ── */
+.mensaje { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-weight: 600; font-size: .95rem; display: none; }
 .mensaje.ok   { background: #d1fae5; color: #065f46; border: 1.5px solid #6ee7b7; }
-.mensaje.err { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+.mensaje.err  { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+.box-pista { background: #fef9c3; color: #713f12; border: 1.5px solid #fef08a; padding: 12px 16px; border-radius: 10px; margin-top: 14px; font-size: 0.95rem; font-weight: 600; display: none; }
 
-/* ── ALGORITMO ESCOLARES ── */
-.algoritmo {
-  margin-top: 20px; padding: 20px; background: #f8fafc;
-  border-radius: 12px; border: 1.5px solid #e2e8f0;
-}
-.algoritmo h3 {
-  font-size: .85rem; text-transform: uppercase; letter-spacing: .5px;
-  color: #475569; margin-bottom: 12px; text-align: center;
-}
-.cuenta-vertical {
-  font-family: 'Courier New', monospace;
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.6;
-  color: #1e3a8a;
-  display: inline-block;
-  text-align: right;
-  margin: 0 auto;
-}
+/* ── ALGORITMO VERTICAL ── */
+.algoritmo { margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 14px; border: 1.5px solid #e2e8f0; }
+.algoritmo h3 { font-size: .9rem; text-transform: uppercase; letter-spacing: .5px; color: #475569; margin-bottom: 14px; text-align: center; }
 .flex-centro { display: flex; justify-content: center; }
+.cuenta-vertical {
+  font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 700; line-height: 1.5; color: #1e3a8a;
+  display: inline-flex; flex-direction: column; align-items: flex-end; margin: 0 auto;
+}
 .linea-cuenta { border-top: 3px solid #334155; margin: 4px 0; width: 100%; display: block; }
+
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+.pop { animation: pop .3s ease; }
 </style>
 </head>
 <body>
 
 <div class="contenedor">
-
   <div class="cabecera">
     <h1>🧪 Laboratorio Matemático</h1>
-    <p>Multiplicación por descomposición</p>
+    <p>Experimentos y Descomposiciones Numéricas</p>
   </div>
 
   <div id="pantalla-inicio">
     <div class="card">
-
       <div class="campo">
-        <label>Nombre</label>
-        <input id="nombre" type="text" placeholder="Tu nombre…">
+        <label class="seccion-label">Nombre del Científico/a</label>
+        <input id="nombre" type="text" placeholder="Tu nombre o código de laboratorio…">
       </div>
 
-      <label style="font-size:.82rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px;">Modo</label>
+      <label class="seccion-label">Modo de Trabajo</label>
       <div class="modos">
         <div class="modo-btn sel" data-modo="mostrar" onclick="selModo(this)">
           <span class="modo-icono">👀</span>
-          Mostrar todo
-          <div class="modo-desc">La tabla aparece completa</div>
+          Mostrar Proceso
+          <div class="modo-desc">La tabla aparece resuelta paso a paso</div>
         </div>
         <div class="modo-btn" data-modo="todo" onclick="selModo(this)">
           <span class="modo-icono">🧠</span>
-          Completar todo
-          <div class="modo-desc">Celdas + sumas + resultado</div>
+          Completar Todo
+          <div class="modo-desc">Resuelve celdas, sumas y total</div>
         </div>
       </div>
 
-      <label style="font-size:.82rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px;">Nivel</label>
+      <label class="seccion-label">Tipo de Ejercicio / Nivel</label>
       <div class="niveles">
         <div class="niv-btn" data-nivel="2x2" onclick="selNivel(this)">
-          <span class="niv-stars">⭐</span>
-          2 × 2 cifras
-          <div class="niv-desc">ej: 24 × 35</div>
+          <span class="niv-stars">⭐</span>Nivel 2×2
+          <div class="niv-desc">Ej: 23 × 14</div>
         </div>
         <div class="niv-btn sel" data-nivel="2x3" onclick="selNivel(this)">
-          <span class="niv-stars">⭐⭐</span>
-          2 × 3 cifras
-          <div class="niv-desc">ej: 24 × 123</div>
+          <span class="niv-stars">⭐⭐</span>Nivel 2×3
+          <div class="niv-desc">Ej: 24 × 123</div>
         </div>
         <div class="niv-btn" data-nivel="3x3" onclick="selNivel(this)">
-          <span class="niv-stars">⭐⭐⭐</span>
-          3 × 3 cifras
-          <div class="niv-desc">ej: 124 × 235</div>
+          <span class="niv-stars">⭐⭐⭐</span>Nivel 3×3
+          <div class="niv-desc">Ej: 124 × 235</div>
+        </div>
+        <div class="niv-btn" data-nivel="manual" onclick="selNivel(this)">
+          <span class="niv-stars">✏️</span>Personalizado
+          <div class="niv-desc">Elige tus números</div>
         </div>
       </div>
 
-      <button class="btn-primario" onclick="iniciar()">▶ Comenzar</button>
+      <label class="config-checkbox">
+        <input type="checkbox" id="chk-ceros" checked>
+        Permitir números con cero (Ej: 20, 105)
+      </label>
+
+      <div id="panel-manual" style="display: none; background: #f8fafc; padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px dashed #cbd5e1;">
+        <label class="seccion-label" style="font-size: 0.78rem;">Ingresa tus propios factores:</label>
+        <div class="inputs-personalizados">
+          <input type="number" id="num-manual-1" placeholder="Número 1" min="10" max="999">
+          <input type="number" id="num-manual-2" placeholder="Número 2" min="10" max="999">
+        </div>
+      </div>
+
+      <button class="btn-primario" onclick="iniciar()">▶ Iniciar Experimento</button>
     </div>
   </div>
 
   <div id="pantalla-juego" style="display:none;">
-
     <div class="panel-puntaje">
-      <div class="stat">
-        <div class="stat-num" id="txt-puntos">0</div>
-        <div class="stat-lbl">Puntos</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="txt-racha">0</div>
-        <div class="stat-lbl">Racha ✓</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="txt-medalla">—</div>
-        <div class="stat-lbl">Medalla</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="txt-ejercicios">0</div>
-        <div class="stat-lbl">Ejercicios</div>
-      </div>
+      <div class="stat"><div class="stat-num" id="txt-puntos">0</div><div class="stat-lbl">Puntos</div></div>
+      <div class="stat"><div class="stat-num" id="txt-racha">0</div><div class="stat-lbl">Racha ✓</div></div>
+      <div class="stat"><div class="stat-num" id="txt-medalla">—</div><div class="stat-lbl">Medalla</div></div>
+      <div class="stat"><div class="stat-num" id="txt-ejercicios">0</div><div class="stat-lbl">Ejercicios</div></div>
     </div>
 
     <div class="card">
@@ -252,56 +229,53 @@ th, td { border: 2px solid #d1d5db; padding: 10px 8px; text-align: center; verti
         <div class="descomposicion" id="txt-descomp"></div>
       </div>
       <div class="tabla-wrap" id="area-tabla"></div>
-      <div id="area-botones"></div>
+      <div id="box-pista-id" class="box-pista"></div>
       <div id="msg" class="mensaje"></div>
+      <div class="area-acciones-juego" id="area-botones"></div>
       <div id="area-algoritmo"></div>
     </div>
-
   </div>
-
 </div>
 
 <script>
-/* ══════════════════════════════════
-   ESTADO GLOBAL
-══════════════════════════════════ */
 let g = {
-  modo: "mostrar",
-  nivel: "2x3",
-  nombre: "",
-  puntos: 0,
-  racha: 0,
-  ejercicios: 0,
-  n1: 0, n2: 0,
-  partes1: [], partes2: [],
+  modo: "mostrar", nivel: "2x3", nombre: "", puntos: 0, racha: 0, ejercicios: 0,
+  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true
 };
 
-/* ── Persistencia nombre ── */
 window.onload = function () {
   const n = localStorage.getItem("lab_nombre");
   if (n) document.getElementById("nombre").value = n;
 };
 
-/* ── Selección modo/nivel ── */
 function selModo(el) {
   document.querySelectorAll(".modo-btn").forEach(b => b.classList.remove("sel"));
   el.classList.add("sel");
   g.modo = el.dataset.modo;
 }
+
 function selNivel(el) {
   document.querySelectorAll(".niv-btn").forEach(b => b.classList.remove("sel"));
   el.classList.add("sel");
   g.nivel = el.dataset.nivel;
+  document.getElementById("panel-manual").style.display = (g.nivel === "manual") ? "block" : "none";
 }
 
-/* ── Generar número aleatorio sin ceros intermedios ── */
+function numRandomSinCeros(cifras) {
+  let numStr = "";
+  for(let i=0; i<cifras; i++) {
+    let d = Math.floor(Math.random() * 9) + 1; // dígitos del 1 al 9
+    numStr += d.toString();
+  }
+  return parseInt(numStr);
+}
+
 function numRandom(cifras) {
   const min = Math.pow(10, cifras - 1);
   const max = Math.pow(10, cifras) - 1;
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/* ── Descomponer ── */
 function descomponer(n) {
   const txt = n.toString();
   const partes = [];
@@ -312,64 +286,66 @@ function descomponer(n) {
   return partes;
 }
 
-/* ── Medalla según racha ── */
 function medalla(r) {
-  if (r >= 10) return "🏆";
-  if (r >= 7)  return "🥇";
-  if (r >= 5)  return "🥈";
-  if (r >= 3)  return "🥉";
-  return "—";
+  if (r >= 10) return "🏆"; if (r >= 7) return "🥇"; if (r >= 5) return "🥈"; if (r >= 3) return "🥉"; return "—";
 }
 
-/* ── Actualizar panel puntaje ── */
 function actualizarPanel() {
-  document.getElementById("txt-puntos").textContent    = g.puntos;
-  document.getElementById("txt-racha").textContent     = g.racha;
-  document.getElementById("txt-medalla").textContent   = medalla(g.racha);
+  document.getElementById("txt-puntos").textContent = g.puntos;
+  document.getElementById("txt-racha").textContent = g.racha;
+  document.getElementById("txt-medalla").textContent = medalla(g.racha);
   document.getElementById("txt-ejercicios").textContent = g.ejercicios;
 }
 
-/* ══════════════════════════════════
-   INICIAR Y VOLVER
-══════════════════════════════════ */
 function iniciar() {
   const nombre = document.getElementById("nombre").value.trim();
   if (nombre) { g.nombre = nombre; localStorage.setItem("lab_nombre", nombre); }
-  g.modo  = document.querySelector(".modo-btn.sel").dataset.modo;
+  g.modo = document.querySelector(".modo-btn.sel").dataset.modo;
   g.nivel = document.querySelector(".niv-btn.sel").dataset.nivel;
+  g.permitirCeros = document.getElementById("chk-ceros").checked;
   g.puntos = 0; g.racha = 0; g.ejercicios = 0;
   actualizarPanel();
   document.getElementById("pantalla-inicio").style.display = "none";
-  document.getElementById("pantalla-juego").style.display  = "block";
+  document.getElementById("pantalla-juego").style.display = "block";
   nuevoEjercicio();
 }
 
 function volverAlMenu() {
-  document.getElementById("pantalla-juego").style.display  = "none";
+  document.getElementById("pantalla-juego").style.display = "none";
   document.getElementById("pantalla-inicio").style.display = "block";
 }
 
-/* ══════════════════════════════════
-   NUEVO EJERCICIO
-══════════════════════════════════ */
 function nuevoEjercicio() {
-  const [c1, c2] = g.nivel === "2x2" ? [2,2] : g.nivel === "2x3" ? [2,3] : [3,3];
-  g.n1 = numRandom(c1);
-  g.n2 = numRandom(c2);
+  document.getElementById("box-pista-id").style.display = "none";
+  document.getElementById("msg").style.display = "none";
+  document.getElementById("area-algoritmo").innerHTML = "";
+
+  if (g.nivel === "manual") {
+    let v1 = parseInt(document.getElementById("num-manual-1").value);
+    let v2 = parseInt(document.getElementById("num-manual-2").value);
+    if (isNaN(v1) || isNaN(v2) || v1 < 2 || v2 < 2) {
+      alert("Por favor ingresa números válidos mayores a 1 para experimentar.");
+      volverAlMenu();
+      return;
+    }
+    g.n1 = v1; g.n2 = v2;
+  } else {
+    const [c1, c2] = g.nivel === "2x2" ? [2,2] : g.nivel === "2x3" ? [2,3] : [3,3];
+    if (g.permitirCeros) {
+      g.n1 = numRandom(c1); g.n2 = numRandom(c2);
+    } else {
+      g.n1 = numRandomSinCeros(c1); g.n2 = numRandomSinCeros(c2);
+    }
+  }
+
   g.partes1 = descomponer(g.n1);
   g.partes2 = descomponer(g.n2);
   g.ejercicios++;
 
-  // Enunciado
   document.getElementById("txt-operacion").textContent = `${g.n1} × ${g.n2}`;
   document.getElementById("txt-descomp").innerHTML =
-    `${g.n1} = ${g.partes1.join(" + ")} &nbsp;|&nbsp; ${g.n2} = ${g.partes2.join(" + ")}`;
+    `🔬 Descomposición: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
 
-  // Limpiar
-  document.getElementById("msg").style.display = "none";
-  document.getElementById("area-algoritmo").innerHTML = "";
-
-  // Construir tabla
   const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
   const resultado = g.n1 * g.n2;
   const mostrar = g.modo === "mostrar";
@@ -381,20 +357,18 @@ function nuevoEjercicio() {
       const val = f * c;
       filas += mostrar
         ? `<td>${val}</td>`
-        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-tipo="prod"></td>`;
+        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod"></td>`;
     });
-    // columna suma fila
     const sv = sumasFila[fi];
     filas += mostrar
       ? `<td class="col-suma">${sv}</td>`
-      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:90px"></td>`;
+      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:100px"></td>`;
     filas += `</tr>`;
   });
 
-  // fila total
   const celdaRes = mostrar
     ? `<td class="cel-resultado">${resultado}</td>`
-    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:100px;font-size:1rem"></td>`;
+    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:110px"></td>`;
 
   const tabla = `
     <table>
@@ -415,104 +389,108 @@ function nuevoEjercicio() {
 
   document.getElementById("area-tabla").innerHTML = tabla;
 
-  // Botones
   let bots = "";
   if (!mostrar) {
-    bots += `<button class="btn-verificar" onclick="verificar()">✓ Verificar</button>`;
+    bots += `<button class="btn-juego btn-verificar" onclick="verificar()">✓ Verificar respuestas</button>`;
+    bots += `<button class="btn-juego btn-pista" onclick="darPista()">💡 Dame una pista</button>`;
   }
-  bots += `<button class="btn-nuevo" onclick="nuevoEjercicio()">🔀 Nuevo ejercicio</button>`;
-  bots += `<button class="btn-volver" onclick="volverAlMenu()">🏠 Menú inicial</button>`;
+  bots += `<button class="btn-juego btn-nuevo" onclick="nuevoEjercicio()">🔀 Siguiente</button>`;
+  bots += `<button class="btn-juego btn-volver" onclick="volverAlMenu()">🏠 Volver al inicio</button>`;
   
-  if (mostrar) {
-    mostrarCuentaEscolar();
-  }
   document.getElementById("area-botones").innerHTML = bots;
+  if (mostrar) mostrarCuentaEscolar();
   actualizarPanel();
 }
 
-/* ══════════════════════════════════
-   VERIFICAR
-══════════════════════════════════ */
+function darPista() {
+  const inputs = document.querySelectorAll(".inp-celda");
+  let vacio = null;
+  
+  // Buscar la primera celda que el niño no haya contestado o esté vacía
+  for (let inp of inputs) {
+    if (inp.value === "") { vacio = inp; break; }
+  }
+  
+  const boxPista = document.getElementById("box-pista-id");
+  if (!vacio) {
+    boxPista.textContent = "¡Ya llenaste todas las celdas! Haz clic en Verificar.";
+    boxPista.style.display = "block";
+    return;
+  }
+
+  const tipo = vacio.dataset.tipo;
+  if (tipo === "prod") {
+    const f1 = parseInt(vacio.dataset.f1);
+    const f2 = parseInt(vacio.dataset.f2);
+    // Cuenta simplificada sin ceros
+    const s1 = parseInt(f1.toString().replace(/0/g, ''));
+    const s2 = parseInt(f2.toString().replace(/0/g, ''));
+    const cerosTotal = (f1.toString().match(/0/g) || []).length + (f2.toString().match(/0/g) || []).length;
+    
+    boxPista.innerHTML = `💡 <b>Pista para la celda seleccionada:</b> Multiplica los números guía sin los ceros: <b>${s1} × ${s2} = ${s1*s2}</b>. Luego agrégale los <b>${cerosTotal}</b> ceros al final.`;
+  } else if (tipo === "suma") {
+    boxPista.innerHTML = `💡 <b>Pista para Suma Fila:</b> Suma de forma horizontal todos los números que calculaste en esa misma fila.`;
+  } else {
+    boxPista.innerHTML = `💡 <b>Pista para el Total:</b> Suma hacia abajo todos los resultados de la columna amarilla (Suma fila) para conseguir el gran total.`;
+  }
+  boxPista.style.display = "block";
+}
+
 function verificar() {
   const inputs = document.querySelectorAll(".inp-celda");
-  let errores = 0;
-  let puntosGanados = 0;
+  let errores = 0; let puntosGanados = 0;
 
   inputs.forEach(inp => {
     const correcto = Number(inp.dataset.correcto);
     const val = Number(inp.value);
     inp.classList.remove("correcto","incorrecto");
     if (inp.value === "" || val !== correcto) {
-      inp.classList.add("incorrecto");
-      errores++;
+      inp.classList.add("incorrecto"); errores++;
     } else {
-      inp.classList.add("correcto");
-      puntosGanados += 10;
+      inp.classList.add("correcto"); puntosGanados += 10;
     }
   });
 
   const msg = document.getElementById("msg");
-
   if (errores === 0) {
-    g.puntos += puntosGanados + 50; // +50 bonus tabla completa
-    g.racha++;
+    g.puntos += puntosGanados + 50; g.racha++;
     actualizarPanel();
 
-    // Animación puntaje
     const el = document.getElementById("txt-puntos");
-    el.classList.remove("pop");
-    void el.offsetWidth;
-    el.classList.add("pop");
+    el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
 
-    const bonusMedalla = g.racha >= 3 ? ` ${medalla(g.racha)}` : "";
     msg.className = "mensaje ok";
-    msg.textContent = `🎉 ¡Perfecto! +${puntosGanados + 50} puntos${bonusMedalla}`;
+    msg.textContent = `🎉 ¡Científico/a brillante! Todo correcto. +${puntosGanados + 50} puntos obtenidos.`;
     msg.style.display = "block";
-
     inputs.forEach(i => i.disabled = true);
-
-    // Mostrar cuenta parada escolar
     mostrarCuentaEscolar();
-
   } else {
-    g.racha = 0;
-    actualizarPanel();
+    g.racha = 0; actualizarPanel();
     msg.className = "mensaje err";
-    msg.textContent = `Hay ${errores} respuesta${errores>1?"s":""} incorrecta${errores>1?"s":""}. Revisalas (en rojo).`;
+    msg.textContent = `🔬 El experimento arrojó ${errores} anomalía(s) en rojo. ¡Revísalas y vuelve a verificar!`;
     msg.style.display = "block";
   }
 }
 
-/* ══════════════════════════════════
-   ALGORITMO TRADICIONAL ESCOLAR (PARADO)
-══════════════════════════════════ */
 function mostrarCuentaEscolar() {
-  // Ponemos el número más largo arriba para que quede cómodo estéticamente como en la escuela
   const arriba = Math.max(g.n1, g.n2);
   const abajo = Math.min(g.n1, g.n2);
   const total = arriba * abajo;
-  
-  // Convertimos el de abajo a texto para iterar sus cifras desde las unidades
   const strAbajo = abajo.toString();
   const escalones = [];
   
-  // Creamos los productos parciales de la escuela (desde las unidades hacia arriba)
   for (let i = strAbajo.length - 1; i >= 0; i--) {
     const cifra = parseInt(strAbajo[i]);
-    // El valor real con los ceros correspondientes al escalón escolar
     const valorEscalon = cifra * arriba * Math.pow(10, strAbajo.length - 1 - i);
     escalones.push(valorEscalon);
   }
 
-  // Generamos el HTML alineando los espacios en blanco de forma exacta
   let htmlPasos = "";
-  escalones.forEach(es => {
-    htmlPasos += `<div>${es}</div>`;
-  });
+  escalones.forEach(es => { htmlPasos += `<div>${es}</div>`; });
 
   const html = `
     <div class="algoritmo">
-      <h3>✏️ Cuenta vertical tradicional</h3>
+      <h3>✏️ Conexión con el Cuaderno (Algoritmo Vertical)</h3>
       <div class="flex-centro">
         <div class="cuenta-vertical">
           <div>&nbsp;&nbsp;${arriba}</div>
@@ -528,6 +506,5 @@ function mostrarCuentaEscolar() {
   document.getElementById("area-algoritmo").innerHTML = html;
 }
 </script>
-
 </body>
 </html>
