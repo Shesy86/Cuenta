@@ -1,110 +1,131 @@
-    let operations = [];
-    let initialResult = 0;
-    let result = 0;
-    let counter = 0;
-    let speed = 1000;
-    let amount = 5; // Cantidad inicial de números a mostrar
-    let topRange = 15; // Valor inicial del tope superior del rango
-    let timeoutId;
+let operations = [];
+let initialResult = 0;
+let result = 0;
+let counter = 0;
+let speed = 1000;
+let amount = 5; 
+let topRange = 15; 
+let timeoutId;
 
-    // Sonidos
-    const soundCorrect = document.getElementById('soundCorrect');
-    const soundIncorrect = document.getElementById('soundIncorrect');
+const soundCorrect = document.getElementById('soundCorrect');
+const soundIncorrect = document.getElementById('soundIncorrect');
 
-    function updateSpeedLabel() {
-        speed = document.getElementById('speed').value;
-        document.getElementById('speedLabel').innerText = speed;
-    }
+function updateSpeedLabel() {
+    speed = document.getElementById('speed').value;
+    document.getElementById('speedLabel').innerText = speed;
+}
 
-    function updateAmountLabel() {
-        amount = document.getElementById('amount').value;
-        document.getElementById('amountLabel').innerText = amount;
-    }
+function updateAmountLabel() {
+    amount = document.getElementById('amount').value;
+    document.getElementById('amountLabel').innerText = amount;
+}
 
-    function updateTopRangeLabel() {
-        topRange = document.getElementById('topRange').value;
-        document.getElementById('topRangeLabel').innerText = topRange;
-    }
+function updateTopRangeLabel() {
+    topRange = document.getElementById('topRange').value;
+    document.getElementById('topRangeLabel').innerText = topRange;
+}
 
-    function generateOperations() {
-        operations = [];
-        initialResult = Math.floor(Math.random() * topRange) + 1;
-        result = initialResult;
-        counter = 0;
-        document.getElementById('operations').innerText = result;
+function generateOperations() {
+    operations = [];
+    initialResult = Math.floor(Math.random() * topRange) + 1;
+    result = initialResult;
+    counter = 0;
+    
+    const opsDisplay = document.getElementById('operations');
+    opsDisplay.innerText = result;
 
-        for (let i = 0; i < amount - 1; i++) {
-            let number = Math.floor(Math.random() * topRange) + 1;
-            let operation;
-            if (result >= number) {
-                operation = Math.random() < 0.5 ? '+' : '-';
-                if (operation === '+') {
-                    result += number;
-                } else {
-                    result -= number;
-                }
-            } else {
-                operation = '+';
+    for (let i = 0; i < amount - 1; i++) {
+        let number = Math.floor(Math.random() * topRange) + 1;
+        let operation;
+        if (result >= number) {
+            operation = Math.random() < 0.5 ? '+' : '-';
+            if (operation === '+') {
                 result += number;
+            } else {
+                result -= number;
             }
-            operations.push({ operation, number });
+        } else {
+            operation = '+';
+            result += number;
         }
+        operations.push({ operation, number });
+    }
 
+    timeoutId = setTimeout(nextOperation, speed);
+}
+
+function nextOperation() {
+    const opsDisplay = document.getElementById('operations');
+    if (counter < amount - 1) {
+        let { operation, number } = operations[counter];
+        let newText = `${operation} ${number}`;
+        opsDisplay.innerText = newText;
+        opsDisplay.classList.add('fade-in');
+        
+        // Control seguro de audio
+        const bip = document.getElementById('sound');
+        if(bip) { bip.currentTime = 0; bip.play().catch(()=>{}); }
+        
+        counter++;
+        setTimeout(() => {
+            opsDisplay.classList.remove('fade-in');
+        }, 400); 
         timeoutId = setTimeout(nextOperation, speed);
+    } else {
+        opsDisplay.innerText = '= ?';
+        opsDisplay.classList.add('fade-in');
+        setTimeout(() => {
+            opsDisplay.classList.remove('fade-in');
+        }, 400);
     }
+}
 
-    function nextOperation() {
-        if (counter < amount - 1) {
-            let { operation, number } = operations[counter];
-            let newText = `${operation} ${number}`;
-            document.getElementById('operations').innerText = newText;
-            document.getElementById('operations').classList.add('fade-in');
-            document.getElementById('sound').play(); // Reproducir el sonido
-            counter++;
-            setTimeout(() => {
-                document.getElementById('operations').classList.remove('fade-in');
-            }, 500); // Duración de la animación
-            timeoutId = setTimeout(nextOperation, speed);
-        } else {
-            document.getElementById('operations').innerText = '= ?';
-            document.getElementById('operations').classList.add('fade-in');
-            setTimeout(() => {
-                document.getElementById('operations').classList.remove('fade-in');
-            }, 500); // Duración de la animación
-        }
+function checkResult() {
+    const answerInput = document.getElementById('answer');
+    const resultLog = document.getElementById('result');
+    let userResult = parseInt(answerInput.value);
+    
+    if (isNaN(userResult)) return;
+
+    let message;
+    let operationSequence = `${initialResult}`;
+    operations.forEach(op => {
+        operationSequence += ` ${op.operation} ${op.number}`;
+    });
+    operationSequence += ` = ${result}`;
+
+    // Limpieza de estados dinámicos previos
+    answerInput.classList.remove('correct-state', 'error-state');
+
+    if (userResult === result) {
+        message = '✓ ANÁLISIS CORRECTO:';
+        answerInput.classList.add('correct-state');
+        if(soundCorrect) { soundCorrect.currentTime = 0; soundCorrect.play().catch(()=>{}); }
+    } else {
+        message = '⚠ ANOMALÍA EN RESULTADO:';
+        answerInput.classList.add('error-state');
+        if(soundIncorrect) { soundIncorrect.currentTime = 0; soundIncorrect.play().catch(()=>{}); }
     }
+    
+    resultLog.innerText = `${message} Secuencia analizada -> [ ${operationSequence} ]`;
+    resultLog.classList.add('pop-effect');
+    setTimeout(() => resultLog.classList.remove('pop-effect'), 300);
+}
 
-    function checkResult() {
-        let userResult = parseInt(document.getElementById('answer').value);
-        let message;
-        let operationSequence = `${initialResult}`;
-        operations.forEach(op => {
-            operationSequence += ` ${op.operation} ${op.number}`;
-        });
-        operationSequence += ` = ${result}`;
+function resetGame() {
+    const answerInput = document.getElementById('answer');
+    answerInput.classList.remove('correct-state', 'error-state');
+    answerInput.value = '';
+    document.getElementById('result').innerText = '';
+    document.getElementById('operations').innerText = '—';
+}
 
-        if (userResult === result) {
-            message = '¡Correcto!';
-            soundCorrect.play(); // Reproducir sonido de correcto
-        } else {
-            message = `Incorrecto. La respuesta correcta era ${result}.`;
-            soundIncorrect.play(); // Reproducir sonido de incorrecto
-        }
-        document.getElementById('result').innerText = `${message} ${operationSequence}`;
-    }
+function startGame() {
+    resetGame();
+    generateOperations();
+}
 
-    function resetGame() {
-        document.getElementById('result').innerText = '';
-        document.getElementById('answer').value = '';
-        document.getElementById('operations').innerText = '';
-    }
-
-    function startGame() {
-        resetGame();
-        generateOperations();
-    }
-
-    function stopGame() {
-        clearTimeout(timeoutId); // Detener la generación de números
-        resetGame();
-    }
+function stopGame() {
+    clearTimeout(timeoutId);
+    resetGame();
+}
