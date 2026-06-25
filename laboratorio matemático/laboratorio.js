@@ -1,13 +1,138 @@
+/* ── ESTADO GLOBAL DEL LABORATORIO ── */
+/* Reemplaza el inicio de tu archivo por este (añadimos historial: []) */
 let g = {
   modo: "mostrar", nivel: "2x3", nombre: "", puntos: 0, racha: 0, ejercicios: 0,
-  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true
+  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true,
+  historial: [] // ➡️ AQUÍ SE GUARDARÁN LAS CUENTAS COMPLETADAS
 };
 
+/* ── SISTEMA DE GUARDADO AUTOMÁTICO INDIVIDUAL (localStorage) ── */
 window.onload = function () {
-  const n = localStorage.getItem("lab_nombre");
-  if (n) document.getElementById("nombre").value = n;
+  const nombreInput = document.getElementById("nombre");
+  const ultimoNombre = localStorage.getItem("lab_ultimo_nombre");
+  
+  if (ultimoNombre) {
+    nombreInput.value = ultimoNombre;
+    // Cargamos el historial del último usuario inmediatamente
+    actualizarHistorialEnPantallaInicio(ultimoNombre);
+  }
+  
+  // Escuchamos en tiempo real si escriben un nombre diferente
+  nombreInput.addEventListener("input", (e) => {
+    const nombreActual = e.target.value.trim();
+    actualizarHistorialEnPantallaInicio(nombreActual);
+  });
 };
 
+function guardarProgreso() {
+  const nombreInput = document.getElementById("nombre").value.trim();
+  if (!nombreInput) return;
+
+  g.nombre = nombreInput;
+  
+  // Guardamos TODO el estado actual, incluido el historial
+  localStorage.setItem(`lab_progreso_${nombreInput}`, JSON.stringify(g));
+  localStorage.setItem("lab_ultimo_nombre", nombreInput);
+  
+  console.log(`🔬 Progreso e historial de ${nombreInput} guardados.`);
+}
+
+function cargarProgreso(nombreEstudiante) {
+  const datosGuardados = localStorage.getItem(`lab_progreso_${nombreEstudiante}`);
+  
+  if (datosGuardados) {
+    try {
+      const progresoRecuperado = JSON.parse(datosGuardados);
+      
+      g.puntos = progresoRecuperado.puntos || 0;
+      g.racha = progresoRecuperado.racha || 0;
+      g.ejercicios = progresoRecuperado.ejercicios || 0;
+      g.modo = progresoRecuperado.modo || "mostrar";
+      g.nivel = progresoRecuperado.nivel || "2x3";
+      g.permitirCeros = progresoRecuperado.permitirCeros !== undefined ? progresoRecuperado.permitirCeros : true;
+      
+      // ➡️ REGLA DE SEGURIDAD: Recuperar el historial o dejarlo como array vacío si no existe
+      g.historial = progresoRecuperado.historial || [];
+
+      console.log(`🎉 Progreso e historial de ${nombreEstudiante} recuperados con éxito.`);
+    } catch (e) {
+      console.error("Error al leer el progreso, iniciando limpio.", e);
+      resetearVariablesGlobales();
+    }
+  } else {
+    resetearVariablesGlobales();
+  }
+  
+  actualizarPanel();
+}
+
+function actualizarHistorialEnPantallaInicio(nombreEstudiante) {
+  const bloque = document.getElementById("bloque-historial-inicio");
+  const lista = document.getElementById("lista-historial-inicio");
+  
+  if (!nombreEstudiante) {
+    bloque.style.display = "none";
+    return;
+  }
+
+  // Buscamos si este estudiante tiene un registro guardado en el navegador
+  const datosGuardados = localStorage.getItem(`lab_progreso_${nombreEstudiante}`);
+  
+  if (datosGuardados) {
+    try {
+      const progreso = JSON.parse(datosGuardados);
+      
+      // Actualizamos las pequeñas métricas del menú
+      document.getElementById("ini-puntos").textContent = progreso.puntos || 0;
+      document.getElementById("ini-racha").textContent = progreso.racha || 0;
+      document.getElementById("ini-ejercicios").textContent = progreso.ejercicios || 0;
+      
+      // Rellenamos la lista de operaciones
+      lista.innerHTML = "";
+      if (progreso.historial && progreso.historial.length > 0) {
+        progreso.historial.forEach(cuenta => {
+          lista.innerHTML += `<li style="margin-bottom: 4px;">✅ ${cuenta}</li>`;
+        });
+      } else {
+        lista.innerHTML = `<li style="color: #6b7280; list-style: none; margin-left: -20px;">Ninguna operación verificada aún.</li>`;
+      }
+      
+      bloque.style.display = "block";
+    } catch (e) {
+      console.error(e);
+      bloque.style.display = "none";
+    }
+  } else {
+    // Si el usuario no existe en la base local, mostramos que es un perfil nuevo
+    document.getElementById("ini-puntos").textContent = "0";
+    document.getElementById("ini-racha").textContent = "0";
+    document.getElementById("ini-ejercicios").textContent = "0";
+    lista.innerHTML = `<li style="color: #059669; list-style: none; margin-left: -20px;">🔬 ¡Científico Nuevo detectado! Listo para comenzar.</li>`;
+    bloque.style.display = "block";
+  }
+}
+
+// Función auxiliar para limpiar el estado global si el alumno es nuevo
+function resetearVariablesGlobales() {
+  g.puntos = 0;
+  g.racha = 0;
+  g.ejercicios = 0;
+  g.historial = []; // ➡️ Limpiamos el historial al reiniciar el laboratorio
+}
+
+function borrarProgresoLaboratorio() {
+  const nombreInput = document.getElementById("nombre").value.trim();
+  if (!nombreInput) return;
+
+  if (confirm(`🔬 ¿Seguro que deseas reiniciar a cero el progreso de ${nombreInput}?`)) {
+    localStorage.removeItem(`lab_progreso_${nombreInput}`);
+    resetearVariablesGlobales();
+    actualizarPanel();
+    alert(`Progreso de ${nombreInput} reseteado con éxito.`);
+  }
+}
+
+/* ── CONTROL DE INTERFAZ Y CONFIGURACIÓN ── */
 function selModo(el) {
   document.querySelectorAll(".modo-btn").forEach(b => b.classList.remove("sel"));
   el.classList.add("sel");
@@ -21,6 +146,7 @@ function selNivel(el) {
   document.getElementById("panel-manual").style.display = (g.nivel === "manual") ? "block" : "none";
 }
 
+/* ── LÓGICA MATEMÁTICA Y DESCOMPOSICIÓN ── */
 function numRandomSinCeros(cifras) {
   let numStr = "";
   for(let i=0; i<cifras; i++) {
@@ -34,6 +160,10 @@ function numRandom(cifras) {
   const min = Math.pow(10, cifras - 1);
   const max = Math.pow(10, cifras) - 1;
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function decompose(n) { // Mantenemos el alias si se requiere, o usamos descomponer directamente
+  return descomponer(n);
 }
 
 function descomponer(n) {
@@ -57,13 +187,23 @@ function actualizarPanel() {
   document.getElementById("txt-ejercicios").textContent = g.ejercicios;
 }
 
+/* ── FLUJO DEL JUEGO ── */
 function iniciar() {
   const nombre = document.getElementById("nombre").value.trim();
-  if (nombre) { g.nombre = nombre; localStorage.setItem("lab_nombre", nombre); }
+  
+  if (!nombre) {
+    alert("Por favor, ingresa tu nombre de científico para comenzar.");
+    return;
+  }
+
+  // ➡️ CARGAMOS EL PROGRESO ESPECÍFICO DE ESTE NOMBRE ANTES DE ENTRAR
+  cargarProgreso(nombre);
+  
+  g.nombre = nombre;
   g.modo = document.querySelector(".modo-btn.sel").dataset.modo;
   g.nivel = document.querySelector(".niv-btn.sel").dataset.nivel;
   g.permitirCeros = document.getElementById("chk-ceros").checked;
-  g.puntos = 0; g.racha = 0; g.ejercicios = 0;
+  
   actualizarPanel();
   document.getElementById("pantalla-inicio").style.display = "none";
   document.getElementById("pantalla-juego").style.display = "block";
@@ -71,8 +211,15 @@ function iniciar() {
 }
 
 function volverAlMenu() {
+  // Guardamos el estado actual antes de salir de la pantalla de juego
+  guardarProgreso();
+
   document.getElementById("pantalla-juego").style.display = "none";
   document.getElementById("pantalla-inicio").style.display = "block";
+  
+  // Refrescamos el panel del menú de inicio
+  const nombreActual = document.getElementById("nombre").value.trim();
+  actualizarHistorialEnPantallaInicio(nombreActual);
 }
 
 function nuevoEjercicio() {
@@ -101,6 +248,9 @@ function nuevoEjercicio() {
   g.partes1 = descomponer(g.n1);
   g.partes2 = descomponer(g.n2);
   g.ejercicios++;
+
+  // Guardado automático al avanzar de ejercicio
+  guardarProgreso();
 
   document.getElementById("txt-operacion").textContent = `${g.n1} × ${g.n2}`;
   
@@ -174,7 +324,7 @@ function nuevoEjercicio() {
   }
   bots += `<button class="btn-juego btn-nuevo" onclick="nuevoEjercicio()">🔀 Siguiente</button>`;
   bots += `<button class="btn-juego btn-volver" onclick="volverAlMenu()">🏠 Inicio</button>`;
-  
+  bots += `<button class="btn-juego btn-exportar" onclick="exportarPDF()" style="background:#059669;color:white;">📄 Exportar Reporte</button>`;  
   document.getElementById("area-botones").innerHTML = bots;
   
   if (!modoMostrar && !modoDescomp) {
@@ -190,6 +340,7 @@ function nuevoEjercicio() {
   }
 }
 
+/* ── COMPROBACIONES Y EVALUACIÓN ── */
 function verificarGuiasAlVuelo() {
   const inputsFil = Array.from(document.querySelectorAll("[data-tipo='guia-fil']"));
   const inputsCol = Array.from(document.querySelectorAll("[data-tipo='guia-col']"));
@@ -329,9 +480,21 @@ function verificar() {
     
     mostrarCuentaEscolar();
     lanzarConfeti(); 
+    
+    // ➡️ REGISTRAR EN EL HISTORIAL (Añade estas líneas aquí)
+  const operacionActual = `${g.n1} × ${g.n2} = ${g.n1 * g.n2}`;
+  g.historial.push(operacionActual);
+
+  // Guardado automático al resolver con éxito
+  guardarProgreso();
   } else {
     reproducirSonido('error');
-    g.racha = 0; actualizarPanel();
+    g.racha = 0; 
+    actualizarPanel();
+    
+    // Guardado automático tras perder la racha
+    guardarProgreso();
+
     msg.className = "mensaje err";
     msg.textContent = `🔬 Se encontraron ${errores} anomalías (en rojo). ¡A revisarlas!`;
     msg.style.display = "block";
@@ -489,4 +652,37 @@ function reproducirSonido(tipo) {
     osc.start();
     osc.stop(ctx.currentTime + 0.15);
   }
+}
+
+/* ── EXPORTACIÓN CIENTÍFICA A PDF NATIVO ── */
+/* Reemplaza tu función exportarPDF() por esta versión actualizada */
+function exportarPDF() {
+  const nombreCientifico = g.nombre || document.getElementById("nombre").value.trim() || "Científico Anónimo";
+  
+  document.getElementById("rep-nombre").textContent = nombreCientifico;
+  document.getElementById("rep-puntos").textContent = g.puntos;
+  document.getElementById("rep-racha").textContent = g.racha;
+  document.getElementById("rep-ejercicios").textContent = g.ejercicios;
+  
+  // ➡️ INYECTAR EL HISTORIAL DE CUENTAS EN EL REPORTE (Sin número de experimento)
+  const listaHistorial = document.getElementById("rep-historial-lista");
+  listaHistorial.innerHTML = ""; 
+  
+  if (g.historial && g.historial.length > 0) {
+    g.historial.forEach((cuenta) => {
+      // Ahora solo creamos una celda por fila con la cuenta limpia
+      listaHistorial.innerHTML += `<tr><td>${cuenta}</td></tr>`;
+    });
+  } else {
+    // Si no hay cuentas, se avisa ocupando la única columna existente
+    listaHistorial.innerHTML = `<tr><td style="text-align:center; color: #666;">No se registraron experimentos en esta sesión.</td></tr>`;
+  }
+  
+  const hoy = new Date();
+  const fechaFormateada = hoy.toLocaleDateString('es-ES', { 
+    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+  document.getElementById("rep-fecha").textContent = fechaFormateada;
+
+  window.print();
 }

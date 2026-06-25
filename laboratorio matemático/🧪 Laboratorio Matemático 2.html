@@ -24,6 +24,20 @@
           <input id="nombre" type="text" placeholder="Tu nombre o código de laboratorio…">
         </div>
 
+        <div id="bloque-historial-inicio" style="margin: 20px 0; padding: 15px; background: #f3f4f6; border-radius: 8px; border: 1px solid #e5e7eb; display: none;">
+          <h3 style="margin-top: 0; color: #1f2937;">📊 Bitácora de Sesión Actual</h3>
+          
+          <div style="display: flex; gap: 15px; margin-bottom: 10px; font-size: 0.95rem;">
+            <p><b>Puntos:</b> <span id="ini-puntos">0</span></p>
+            <p><b>Racha:</b> <span id="ini-racha">0</span></p>
+            <p><b>Ejercicios:</b> <span id="ini-ejercicios">0</span></p>
+          </div>
+          
+          <h4 style="margin-bottom: 5px; color: #4b5563; font-size: 0.9rem;">Operaciones Registradas:</h4>
+          <ul id="lista-historial-inicio" style="max-height: 120px; overflow-y: auto; padding-left: 20px; margin: 0; font-family: monospace; font-size: 0.9rem; color: #374151;">
+            </ul>
+        </div>
+
         <label class="seccion-label">Modo de Trabajo</label>
         <div class="modos">
           <div class="modo-btn sel" data-modo="mostrar" onclick="selModo(this)">
@@ -101,6 +115,57 @@
       </div>
     </div>
   </div>
+
+  <div id="reporte-cientifico" class="solo-impresion">
+  <div class="encabezado-reporte">
+    <h1>🧪 LABORATORIO MATEMÁTICO v4.0</h1>
+    <h2>Informe Oficial de Resultados Científicos</h2>
+  </div>
+  
+  <div class="datos-alumno">
+    <p><b>Científico/a a cargo:</b> <span id="rep-nombre">─</span></p>
+    <p><b>Fecha del Experimento:</b> <span id="rep-fecha">─</span></p>
+  </div>
+
+  <table class="tabla-reporte">
+    <thead>
+      <tr>
+        <th>Métrica Evaluada</th>
+        <th>Resultado Obtenido</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Puntaje Total Acumulado</b></td>
+        <td><span id="rep-puntos">0</span> pts</td>
+      </tr>
+      <tr>
+        <td><b>Mayor Racha de Aciertos</b></td>
+        <td><span id="rep-racha">0</span> 🔥</td>
+      </tr>
+      <tr>
+        <td><b>Ejercicios Científicos Solicitados</b></td>
+        <td><span id="rep-ejercicios">0</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>📋 Bitácora de Operaciones Verificadas</h3>
+  <table class="tabla-reporte">
+    <thead>
+      <tr>
+        <th>Ecuación y Resultado Científico</th>
+      </tr>
+    </thead>
+    <tbody id="rep-historial-lista">
+      </tbody>
+  </table>
+
+  <div class="firma-reporte">
+    <p>__________________________________________</p>
+    <p>Sello de Validación del Laboratorio</p>
+  </div>
+</div>
 
   <script src="laboratorio.js"></script>
 </body>

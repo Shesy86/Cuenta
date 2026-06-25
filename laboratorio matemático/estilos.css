@@ -153,3 +153,82 @@ th, td { border: 1px solid #cbd5e1; padding: 14px 12px; text-align: center; vert
   100% { transform: scale(1); }
 }
 .pop-score { animation: scorePop .4s ease; }
+
+/* Ocultar el reporte por defecto en la pantalla */
+.solo-impresion {
+  display: none;
+}
+
+/* REGLAS EXCLUSIVAS PARA CUANDO SE IMPRIME O SE GUARDA EN PDF */
+@media print {
+  /* Ocultamos absolutamente todo lo que compone el juego y la interfaz */
+  body * {
+    display: none !important;
+  }
+
+  /* Mostramos únicamente el contenedor del reporte científico */
+  #reporte-cientifico, #reporte-cientifico * {
+    display: block !important;
+  }
+  
+  #reporte-cientifico {
+    display: block !important;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: 'Courier New', Courier, monospace; /* Estilo científico/laboratorio */
+    color: #000;
+    background: #fff;
+  }
+
+  .encabezado-reporte {
+    text-align: center;
+    border-bottom: 3px double #000;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+  }
+
+  .datos-alumno {
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    line-height: 1.8;
+  }
+
+  /* Formato de tabla estilo reporte formal */
+  .tabla-reporte {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 50px;
+  }
+
+  .tabla-reporte th, .tabla-reporte td {
+    border: 1px solid #000;
+    padding: 12px;
+    text-align: left;
+  }
+
+  .tabla-reporte th {
+    background-color: #f2f2f2 !important;
+    -webkit-print-color-adjust: exact; /* Fuerza al navegador a imprimir el fondo gris */
+    print-color-adjust: exact;
+  }
+
+  .firma-reporte {
+    margin-top: 80px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  /* Evita que una fila de la bitácora se parta a la mitad entre dos páginas */
+  .tabla-reporte tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  h3 {
+    margin-top: 30px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+  }
+}
