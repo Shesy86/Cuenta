@@ -1,0 +1,438 @@
+let g = {
+  modo: "mostrar", nivel: "2x3", nombre: "", puntos: 0, racha: 0, ejercicios: 0,
+  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true
+};
+
+window.onload = function () {
+  const n = localStorage.getItem("lab_nombre");
+  if (n) document.getElementById("nombre").value = n;
+};
+
+function selModo(el) {
+  document.querySelectorAll(".modo-btn").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  g.modo = el.dataset.modo;
+}
+
+function selNivel(el) {
+  document.querySelectorAll(".niv-btn").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  g.nivel = el.dataset.nivel;
+  document.getElementById("panel-manual").style.display = (g.nivel === "manual") ? "block" : "none";
+}
+
+function numRandomSinCeros(cifras) {
+  let numStr = "";
+  for(let i=0; i<cifras; i++) {
+    let d = Math.floor(Math.random() * 9) + 1;
+    numStr += d.toString();
+  }
+  return parseInt(numStr);
+}
+
+function numRandom(cifras) {
+  const min = Math.pow(10, cifras - 1);
+  const max = Math.pow(10, cifras) - 1;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function descomponer(n) {
+  const txt = n.toString();
+  const partes = [];
+  for (let i = 0; i < txt.length; i++) {
+    const d = parseInt(txt[i]);
+    if (d !== 0) partes.push(d * Math.pow(10, txt.length - i - 1));
+  }
+  return partes;
+}
+
+function medalla(r) {
+  if (r >= 10) return "🏆🏆"; if (r >= 7) return "🥇"; if (r >= 5) return "🥈"; if (r >= 3) return "🥉"; return "—";
+}
+
+function actualizarPanel() {
+  document.getElementById("txt-puntos").textContent = g.puntos;
+  document.getElementById("txt-racha").textContent = g.racha;
+  document.getElementById("txt-medalla").textContent = medalla(g.racha);
+  document.getElementById("txt-ejercicios").textContent = g.ejercicios;
+}
+
+function iniciar() {
+  const nombre = document.getElementById("nombre").value.trim();
+  if (nombre) { g.nombre = nombre; localStorage.setItem("lab_nombre", nombre); }
+  g.modo = document.querySelector(".modo-btn.sel").dataset.modo;
+  g.nivel = document.querySelector(".niv-btn.sel").dataset.nivel;
+  g.permitirCeros = document.getElementById("chk-ceros").checked;
+  g.puntos = 0; g.racha = 0; g.ejercicios = 0;
+  actualizarPanel();
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("pantalla-juego").style.display = "block";
+  nuevoEjercicio();
+}
+
+function volverAlMenu() {
+  document.getElementById("pantalla-juego").style.display = "none";
+  document.getElementById("pantalla-inicio").style.display = "block";
+}
+
+function nuevoEjercicio() {
+  document.getElementById("box-pista-id").style.display = "none";
+  document.getElementById("msg").style.display = "none";
+  document.getElementById("area-algoritmo").innerHTML = "";
+
+  if (g.nivel === "manual") {
+    let v1 = parseInt(document.getElementById("num-manual-1").value);
+    let v2 = parseInt(document.getElementById("num-manual-2").value);
+    if (isNaN(v1) || isNaN(v2) || v1 < 2 || v2 < 2) {
+      alert("Por favor ingresa números válidos mayores a 1.");
+      volverAlMenu();
+      return;
+    }
+    g.n1 = v1; g.n2 = v2;
+  } else {
+    const [c1, c2] = g.nivel === "2x2" ? [2,2] : g.nivel === "2x3" ? [2,3] : [3,3];
+    if (g.permitirCeros) {
+      g.n1 = numRandom(c1); g.n2 = numRandom(c2);
+    } else {
+      g.n1 = numRandomSinCeros(c1); g.n2 = numRandomSinCeros(c2);
+    }
+  }
+
+  g.partes1 = descomponer(g.n1);
+  g.partes2 = descomponer(g.n2);
+  g.ejercicios++;
+
+  document.getElementById("txt-operacion").textContent = `${g.n1} × ${g.n2}`;
+  
+  if (g.modo === "descomp") {
+    document.getElementById("txt-descomp").innerHTML = `🔬 <b>¡Desafío Científico!</b> Descompón los números guía en los casilleros amarillos con <span style="color:#b45309"><b>?</b></span> para desbloquear la matriz.`;
+  } else {
+    document.getElementById("txt-descomp").innerHTML =
+      `🔬 Descomposición activa: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
+  }
+
+  const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
+  const resultado = g.n1 * g.n2;
+  const modoMostrar = g.modo === "mostrar";
+  const modoDescomp = g.modo === "descomp";
+
+  let filas = "";
+  g.partes1.forEach((f, fi) => {
+    let celdaGuiaFil = modoDescomp 
+      ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-fil" placeholder="?"></th>`
+      : `<th class="enc-fil">${f}</th>`;
+      
+    filas += `<tr>${celdaGuiaFil}`;
+    
+    g.partes2.forEach(c => {
+      const val = f * c;
+      filas += modoMostrar
+        ? `<td>${val}</td>`
+        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod" disabled></td>`;
+    });
+    
+    const sv = sumasFila[fi];
+    filas += modoMostrar
+      ? `<td class="col-suma">${sv}</td>`
+      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:105px" disabled></td>`;
+    filas += `</tr>`;
+  });
+
+  const celdaRes = modoMostrar
+    ? `<td class="cel-resultado">${resultado}</td>`
+    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:115px" disabled></td>`;
+
+  let cabeceraColumnas = g.partes2.map((c, ci) => {
+    return modoDescomp 
+      ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-col" placeholder="?"></th>`
+      : `<th class="enc-col">${c}</th>`;
+  }).join("");
+
+  const tabla = `
+    <table>
+      <thead><tr>
+        <th></th>
+        ${cabeceraColumnas}
+        <th class="enc-col" style="background:#fffdeb;color:#92400e;">Suma fila</th>
+      </tr></thead>
+      <tbody>
+        ${filas}
+        <tr class="fil-total">
+          <th>Total</th>
+          ${g.partes2.map(()=>`<td></td>`).join("")}
+          ${celdaRes}
+        </tr>
+      </tbody>
+    </table>`;
+
+  document.getElementById("area-tabla").innerHTML = tabla;
+
+  let bots = "";
+  if (!modoMostrar) {
+    bots += `<button class="btn-juego btn-verificar" onclick="verificar()">✨ Verificar Laboratorio</button>`;
+    bots += `<button class="btn-juego btn-pista" onclick="darPista()">💡 Recibir Pista</button>`;
+  }
+  bots += `<button class="btn-juego btn-nuevo" onclick="nuevoEjercicio()">🔀 Siguiente</button>`;
+  bots += `<button class="btn-juego btn-volver" onclick="volverAlMenu()">🏠 Inicio</button>`;
+  
+  document.getElementById("area-botones").innerHTML = bots;
+  
+  if (!modoMostrar && !modoDescomp) {
+    document.querySelectorAll(".inp-celda").forEach(i => i.disabled = false);
+  }
+
+  if (modoMostrar) mostrarCuentaEscolar();
+  actualizarPanel();
+
+  if (modoDescomp) {
+    const guias = document.querySelectorAll(".inp-guia");
+    guias.forEach(g => g.addEventListener("input", verificarGuiasAlVuelo));
+  }
+}
+
+function verificarGuiasAlVuelo() {
+  const inputsFil = Array.from(document.querySelectorAll("[data-tipo='guia-fil']"));
+  const inputsCol = Array.from(document.querySelectorAll("[data-tipo='guia-col']"));
+  
+  const valoresFil = inputsFil.map(i => i.value !== "" ? Number(i.value) : null);
+  const valoresCol = inputsCol.map(i => i.value !== "" ? Number(i.value) : null);
+
+  let ordenElegido = null;
+
+  if (valoresFil[0] !== null) {
+    if (valoresFil[0] === g.partes1[0]) ordenElegido = "normal";
+    else if (valoresFil[0] === g.partes2[0]) ordenElegido = "invertido";
+  } else if (valoresCol[0] !== null) {
+    if (valoresCol[0] === g.partes2[0]) ordenElegido = "normal";
+    else if (valoresCol[0] === g.partes1[0]) ordenElegido = "invertido";
+  }
+
+  let metaFil = ordenElegido === "invertido" ? g.partes2 : g.partes1;
+  let metaCol = ordenElegido === "invertido" ? g.partes1 : g.partes2;
+
+  if (ordenElegido === "invertido" && (inputsFil.length !== g.partes2.length || inputsCol.length !== g.partes1.length)) {
+    ordenElegido = "normal";
+    metaFil = g.partes1; metaCol = g.partes2;
+  }
+
+  if (g.n1 !== g.n2 && ordenElegido) {
+    let todoIgual = valoresFil.length === valoresCol.length && valoresFil.every((v, i) => v !== null && v === valoresCol[i]);
+    if (todoIgual) {
+      document.getElementById("txt-descomp").innerHTML = `🔬 <span style="color:#b91c1c;"><b>¡Cuidado!</b> Estás duplicando el mismo factor. Usa ambos números.</span>`;
+      inputsFil.forEach(i => { i.classList.add("incorrecto"); i.classList.remove("correcto"); });
+      inputsCol.forEach(i => { i.classList.add("incorrecto"); i.classList.remove("correcto"); });
+      return;
+    }
+  }
+
+  inputsFil.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaFil[idx]) { inp.classList.add("correcto"); inp.classList.remove("incorrecto"); }
+    else { inp.classList.add("incorrecto"); inp.classList.remove("correcto"); }
+  });
+
+  inputsCol.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaCol[idx]) { inp.classList.add("correcto"); inp.classList.remove("incorrecto"); }
+    else { inp.classList.add("incorrecto"); inp.classList.remove("correcto"); }
+  });
+
+  let estructuraFilOk = metaFil.every((val, idx) => valoresFil[idx] === val);
+  let estructuraColOk = metaCol.every((val, idx) => valoresCol[idx] === val);
+
+  if (estructuraFilOk && estructuraColOk) {
+    const prods = document.querySelectorAll("[data-tipo='prod']");
+    prods.forEach(p => {
+      let fVal = Number(p.closest("tr").querySelector("[data-tipo='guia-fil']").value);
+      let cIndex = Array.from(p.closest("tr").querySelectorAll("[data-tipo='prod']")).indexOf(p);
+      let cVal = Number(document.querySelectorAll("[data-tipo='guia-col']")[cIndex].value);
+      p.dataset.correcto = fVal * cVal;
+      p.disabled = false;
+    });
+
+    const sumas = document.querySelectorAll("[data-tipo='suma']");
+    sumas.forEach(s => {
+      let filaProds = Array.from(s.closest("tr").querySelectorAll("[data-tipo='prod']"));
+      s.dataset.correcto = filaProds.reduce((acc, curr) => acc + Number(curr.dataset.correcto), 0);
+      s.disabled = false;
+    });
+
+    document.querySelector("[data-tipo='resultado']").disabled = false;
+    document.getElementById("txt-descomp").innerHTML = `🎉 ¡Descomposición posicional perfecta! Celdas desbloqueadas.`;
+    inputsFil.forEach(i => i.disabled = true);
+    inputsCol.forEach(i => i.disabled = true);
+  }
+}
+
+function darPista() {
+  const inputs = document.querySelectorAll(".inp-celda");
+  let vacio = null;
+  for (let inp of inputs) { if (inp.value === "" && !inp.disabled) { vacio = inp; break; } }
+  if (!vacio) vacio = document.querySelector(".inp-guia[value='']");
+  
+  const boxPista = document.getElementById("box-pista-id");
+  if (!vacio) {
+    boxPista.textContent = "¡Todas las celdas están completas! Haz clic en Verificar.";
+    boxPista.style.display = "block"; return;
+  }
+
+  const tipo = vacio.dataset.tipo;
+  if (tipo === "guia-fil" || tipo === "guia-col") {
+    boxPista.innerHTML = `💡 <b>Pista:</b> Escribe las descomposiciones en estricto orden de valor posicional (centenas, decenas, unidades).`;
+  } else if (tipo === "prod") {
+    boxPista.innerHTML = `💡 <b>Pista:</b> Multiplica la guía de su fila por la guía de su columna.`;
+  } else if (tipo === "suma") {
+    boxPista.innerHTML = `💡 <b>Pista:</b> Suma los números de los casilleros blancos de esta línea horizontal.`;
+  } else {
+    boxPista.innerHTML = `💡 <b>Pista Final:</b> Suma verticalmente toda la columna de "Suma fila".`;
+  }
+  boxPista.style.display = "block";
+}
+
+function verificar() {
+  const inputs = document.querySelectorAll(".inp-celda");
+  let errores = 0; let puntosGanados = 0;
+
+  inputs.forEach(inp => {
+    if (inp.dataset.tipo.startsWith("guia") && inp.disabled) { puntosGanados += 5; return; }
+    const correcto = Number(inp.dataset.correcto);
+    const val = Number(inp.value);
+    
+    inp.classList.remove("correcto","incorrecto");
+    void inp.offsetWidth; 
+
+    if (inp.value === "" || val !== correcto) {
+      inp.classList.add("incorrecto"); errores++;
+    } else {
+      inp.classList.add("correcto"); puntosGanados += 10;
+    }
+  });
+
+  const msg = document.getElementById("msg");
+  if (errores === 0) {
+    let bonusModo = g.modo === "descomp" ? 80 : 50; 
+    g.puntos += puntosGanados + bonusModo; g.racha++;
+    actualizarPanel();
+
+    const el = document.getElementById("txt-puntos");
+    el.classList.add("pop-score");
+    el.addEventListener("animationend", () => el.classList.remove("pop-score"), {once:true});
+
+    msg.className = "mensaje ok";
+    msg.textContent = `🎉 ¡Excelente Experimento! Todo correcto. Recibiste +${puntosGanados + bonusModo} puntos.`;
+    msg.style.display = "block";
+    inputs.forEach(i => i.disabled = true);
+    
+    mostrarCuentaEscolar();
+    lanzarConfeti(); 
+  } else {
+    g.racha = 0; actualizarPanel();
+    msg.className = "mensaje err";
+    msg.textContent = `🔬 Se encontraron ${errores} anomalías (en rojo). ¡A revisarlas!`;
+    msg.style.display = "block";
+  }
+}
+
+function mostrarCuentaEscolar() {
+  const arriba = Math.max(g.n1, g.n2); const abajo = Math.min(g.n1, g.n2);
+  const total = arriba * abajo; const strAbajo = abajo.toString();
+  const escalones = [];
+  
+  for (let i = strAbajo.length - 1; i >= 0; i--) {
+    const cifra = parseInt(strAbajo[i]);
+    const valorEscalon = cifra * arriba * Math.pow(10, strAbajo.length - 1 - i);
+    if (valorEscalon !== 0 || strAbajo.length === 1) escalones.push(valorEscalon);
+  }
+
+  let htmlPasos = "";
+  escalones.forEach(es => { htmlPasos += `<div>${es}</div>`; });
+
+  const html = `
+    <div class="algoritmo">
+      <h3>✏️ Cuaderno Científico (Algoritmo Tradicional)</h3>
+      <div class="flex-centro">
+        <div class="cuenta-vertical">
+          <div>&nbsp;&nbsp;${arriba}</div>
+          <div>×&nbsp;${abajo}</div>
+          <span class="linea-cuenta"></span>
+          ${htmlPasos}
+          <span class="linea-cuenta"></span>
+          <div style="color: #b91c1c;">${total}</div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("area-algoritmo").innerHTML = html;
+}
+
+/* ── MOTOR DE PARTÍCULAS DE CONFETI NATIVO ── */
+let confetiParticulas = [];
+let confetiCtx = null;
+let confetiCanvas = null;
+let confetiAnimacionFrame = null;
+
+function lanzarConfeti() {
+  confetiCanvas = document.getElementById("canvas-confeti");
+  confetiCtx = confetiCanvas.getContext("2d");
+  confetiCanvas.width = window.innerWidth;
+  confetiCanvas.height = window.innerHeight;
+  confetiCanvas.style.display = "block";
+  
+  confetiParticulas = [];
+  const colores = ["#ff3366", "#33ccff", "#33ff99", "#ffcc33", "#ae33ff", "#ff6633"];
+  
+  for (let i = 0; i < 120; i++) {
+    confetiParticulas.push({
+      x: confetiCanvas.width / 2 + (Math.random() * 100 - 50),
+      y: confetiCanvas.height + 20,
+      radio: Math.random() * 6 + 4,
+      color: colores[Math.floor(Math.random() * colores.length)],
+      vx: Math.random() * 14 - 7,
+      vy: -(Math.random() * 12 + 10),
+      gravedad: 0.3,
+      rotacion: Math.random() * 360,
+      vRotacion: Math.random() * 4 - 2
+    });
+  }
+  
+  if (confetiAnimacionFrame) cancelAnimationFrame(confetiAnimacionFrame);
+  animarConfeti();
+  
+  setTimeout(() => {
+    confetiCanvas.style.display = "none";
+    cancelAnimationFrame(confetiAnimacionFrame);
+  }, 4000);
+}
+
+function animarConfeti() {
+  confetiCtx.clearRect(0, 0, confetiCanvas.width, confetiCanvas.height);
+  
+  let vivas = false;
+  confetiParticulas.forEach(p => {
+    p.vy += p.gravedad;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rotacion += p.vRotacion;
+    
+    if (p.y < confetiCanvas.height + 20) vivas = true;
+    
+    confetiCtx.save();
+    confetiCtx.translate(p.x, p.y);
+    confetiCtx.rotate((p.rotacion * Math.PI) / 180);
+    confetiCtx.fillStyle = p.color;
+    confetiCtx.fillRect(-p.radio, -p.radio, p.radio * 2, p.radio * 2);
+    confetiCtx.restore();
+  });
+  
+  if (vivas) {
+    confetiAnimacionFrame = requestAnimationFrame(animarConfeti);
+  }
+}
+
+window.addEventListener("resize", () => {
+  if (confetiCanvas && confetiCanvas.style.display === "block") {
+    confetiCanvas.width = window.innerWidth;
+    confetiCanvas.height = window.innerHeight;
+  }
+});
