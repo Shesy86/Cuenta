@@ -83,7 +83,7 @@ function nuevoEjercicio() {
   if (g.nivel === "manual") {
     let v1 = parseInt(document.getElementById("num-manual-1").value);
     let v2 = parseInt(document.getElementById("num-manual-2").value);
-    if (isNaN(v1) || isNaN(v2) || v1 < 2 || v2 < 2) {
+    if (isNaN(v1) || v2 < 2 || v1 < 2) {
       alert("Por favor ingresa números válidos mayores a 1.");
       volverAlMenu();
       return;
@@ -267,6 +267,7 @@ function verificarGuiasAlVuelo() {
 }
 
 function darPista() {
+  reproducirSonido('pista');
   const inputs = document.querySelectorAll(".inp-celda");
   let vacio = null;
   for (let inp of inputs) { if (inp.value === "" && !inp.disabled) { vacio = inp; break; } }
@@ -312,6 +313,7 @@ function verificar() {
 
   const msg = document.getElementById("msg");
   if (errores === 0) {
+    reproducirSonido('exito');
     let bonusModo = g.modo === "descomp" ? 80 : 50; 
     g.puntos += puntosGanados + bonusModo; g.racha++;
     actualizarPanel();
@@ -328,6 +330,7 @@ function verificar() {
     mostrarCuentaEscolar();
     lanzarConfeti(); 
   } else {
+    reproducirSonido('error');
     g.racha = 0; actualizarPanel();
     msg.className = "mensaje err";
     msg.textContent = `🔬 Se encontraron ${errores} anomalías (en rojo). ¡A revisarlas!`;
@@ -436,3 +439,54 @@ window.addEventListener("resize", () => {
     confetiCanvas.height = window.innerHeight;
   }
 });
+
+/* ── MOTOR DE AUDIO CIENTÍFICO NATIVO (SINTETIZADOR WEB) ── */
+function reproducirSonido(tipo) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  
+  const ctx = new AudioContext();
+  
+  if (tipo === 'exito') {
+    const notas = [523.25, 659.25, 783.99, 1046.50];
+    notas.forEach((frecuencia, i) => {
+      setTimeout(() => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(frecuencia, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      }, i * 80);
+    });
+  } 
+  else if (tipo === 'error') {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(60, ctx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.3);
+  } 
+  else if (tipo === 'pista') {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  }
+}
