@@ -183,3 +183,22 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   100% { transform: scale(1); opacity: 1; }
 }
 .fade-in { animation: popIn 0.2s ease; }
+
+/* Optimización de inputs en pantallas móviles */
+@media (max-width: 600px) {
+  .inp-celda {
+    width: 65px !important;
+    padding: 6px 4px !important;
+    font-size: 0.95rem !important;
+  }
+  
+  th.enc-col, th.enc-fil {
+    font-size: 0.9rem !important;
+    padding: 4px !important;
+  }
+
+  table {
+    margin: 0 auto;
+    width: 100%;
+  }
+}
