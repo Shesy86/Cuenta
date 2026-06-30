@@ -2,7 +2,7 @@ let operations = [];
 let initialResult = 0;
 let result = 0;
 let counter = 0;
-let speed = 1000;
+let speed = 1500; // Tiempo calculado en milisegundos por defecto
 let amount = 5; 
 let topRange = 15; 
 let timeoutId;
@@ -11,8 +11,20 @@ const soundCorrect = document.getElementById('soundCorrect');
 const soundIncorrect = document.getElementById('soundIncorrect');
 
 function updateSpeedLabel() {
-    speed = document.getElementById('speed').value;
-    document.getElementById('speedLabel').innerText = speed;
+    const level = parseInt(document.getElementById('speed').value);
+    document.getElementById('speedLabel').innerText = level;
+    
+    // Convertimos el nivel visual en milisegundos reales (Invertido)
+    // Nivel 1 = 2500ms (Lento) | Nivel 5 = 500ms (Rápido)
+    const speedMap = {
+        1: 2500,
+        2: 2000,
+        3: 1500,
+        4: 1000,
+        5: 500
+    };
+    
+    speed = speedMap[level];
 }
 
 function updateAmountLabel() {
