@@ -84,7 +84,6 @@ function checkResult() {
     const resultLog = document.getElementById('result');
     const rawValue = answerInput.value.trim();
     
-    // Si está vacío, no hacer nada
     if (rawValue === "") return;
 
     let message;
@@ -96,8 +95,7 @@ function checkResult() {
 
     answerInput.classList.remove('correct-state', 'error-state');
 
-    // SOLUCIÓN AL ERROR: Validamos que SOLO contenga números.
-    // Si contiene letras o caracteres mezclados, va directo al "Else" (Incorrecto).
+    // Comprueba de forma estricta que no se cuele ninguna letra
     const isPureNumber = /^\d+$/.test(rawValue);
     let userResult = isPureNumber ? parseInt(rawValue) : null;
 
