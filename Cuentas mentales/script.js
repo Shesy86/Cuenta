@@ -45,16 +45,8 @@ function generateOperations() {
     
     const opsDisplay = document.getElementById('operations');
     opsDisplay.innerText = result;
-    opsDisplay.classList.add('fade-in'); // Agrega el efecto visual al primer número
+    opsDisplay.classList.add('fade-in');
 
-    // REPRODUCIR BIP EN EL PRIMER NÚMERO
-    const bip = document.getElementById('sound');
-    if (bip) { 
-        bip.currentTime = 0; 
-        bip.play().catch(() => {}); 
-    }
-
-    // Quita el efecto visual después de un momento
     setTimeout(() => {
         opsDisplay.classList.remove('fade-in');
     }, 400);
@@ -76,7 +68,6 @@ function generateOperations() {
         operations.push({ operation, number });
     }
 
-    // Aseguramos que lea la velocidad actual antes de arrancar
     updateSpeedLabel();
     timeoutId = setTimeout(nextOperation, speed);
 }
@@ -151,6 +142,14 @@ function resetGame() {
 
 function startGame() {
     resetGame();
+    
+    // Forzamos la reproducción del bip en el instante exacto del clic del usuario
+    const bip = document.getElementById('sound');
+    if (bip) { 
+        bip.currentTime = 0; 
+        bip.play().catch((e) => console.log("Audio bloqueado:", e)); 
+    }
+    
     generateOperations();
 }
 
