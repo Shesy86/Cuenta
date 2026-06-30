@@ -62,7 +62,6 @@ function nextOperation() {
         opsDisplay.innerText = newText;
         opsDisplay.classList.add('fade-in');
         
-        // Control seguro de audio
         const bip = document.getElementById('sound');
         if(bip) { bip.currentTime = 0; bip.play().catch(()=>{}); }
         
@@ -83,9 +82,10 @@ function nextOperation() {
 function checkResult() {
     const answerInput = document.getElementById('answer');
     const resultLog = document.getElementById('result');
-    let userResult = parseInt(answerInput.value);
+    const rawValue = answerInput.value.trim();
     
-    if (isNaN(userResult)) return;
+    // Si está vacío, no hacer nada
+    if (rawValue === "") return;
 
     let message;
     let operationSequence = `${initialResult}`;
@@ -94,10 +94,14 @@ function checkResult() {
     });
     operationSequence += ` = ${result}`;
 
-    // Limpieza de estados dinámicos previos
     answerInput.classList.remove('correct-state', 'error-state');
 
-    if (userResult === result) {
+    // SOLUCIÓN AL ERROR: Validamos que SOLO contenga números.
+    // Si contiene letras o caracteres mezclados, va directo al "Else" (Incorrecto).
+    const isPureNumber = /^\d+$/.test(rawValue);
+    let userResult = isPureNumber ? parseInt(rawValue) : null;
+
+    if (isPureNumber && userResult === result) {
         message = '✓ ANÁLISIS CORRECTO:';
         answerInput.classList.add('correct-state');
         if(soundCorrect) { soundCorrect.currentTime = 0; soundCorrect.play().catch(()=>{}); }
