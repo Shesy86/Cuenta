@@ -45,6 +45,19 @@ function generateOperations() {
     
     const opsDisplay = document.getElementById('operations');
     opsDisplay.innerText = result;
+    opsDisplay.classList.add('fade-in'); // Agrega el efecto visual al primer número
+
+    // REPRODUCIR BIP EN EL PRIMER NÚMERO
+    const bip = document.getElementById('sound');
+    if (bip) { 
+        bip.currentTime = 0; 
+        bip.play().catch(() => {}); 
+    }
+
+    // Quita el efecto visual después de un momento
+    setTimeout(() => {
+        opsDisplay.classList.remove('fade-in');
+    }, 400);
 
     for (let i = 0; i < amount - 1; i++) {
         let number = Math.floor(Math.random() * topRange) + 1;
@@ -63,6 +76,8 @@ function generateOperations() {
         operations.push({ operation, number });
     }
 
+    // Aseguramos que lea la velocidad actual antes de arrancar
+    updateSpeedLabel();
     timeoutId = setTimeout(nextOperation, speed);
 }
 
