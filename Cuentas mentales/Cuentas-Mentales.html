@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo Mental - Bitácora de Laboratorio</title>
+    <title>🧪 Laboratorio Matemático — ¡Módulo de Cálculo Mental!</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Encabezado de Informe -->
-        <header class="lab-header">
-            <h1>MÓDULO DE CÁLCULO MENTAL</h1>
-            <p class="subtitle">Análisis analítico de secuencias numéricas rápidas.</p>
-        </header>
+
+    <div class="contenedor">
+        <!-- Encabezado de Informe Estilo Laboratorio -->
+        <div class="cabecera">
+            <h1>🧪 Laboratorio Matemático</h1>
+            <p>Módulo de Análisis Analítico de Secuencias Rápidas</p>
+        </div>
         
-        <!-- Panel de Control / Configuración del Experimento -->
-        <section class="lab-card controls-panel">
-            <h3 class="section-title">Parámetros del Experimento</h3>
+        <!-- Panel de Control / Parámetros del Experimento -->
+        <section class="card">
+            <h3 class="seccion-label">Parámetros del Experimento</h3>
             
             <div class="control-group">
                 <label for="speed">Frecuencia de Muestreo: <span id="speedLabel" class="telemetry">1000</span> ms</label>
@@ -33,25 +34,28 @@
                 <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
             </div>
 
-            <button class="btn btn-success btn-main" onclick="startGame()">Iniciar Secuencia</button>
+            <!-- Botón de Inicio reordenado arriba -->
+            <button class="btn-primario" onclick="startGame()">▶ Iniciar Secuencia</button>
         </section>
         
         <!-- Zona de Ejecución del Experimento -->
-        <main class="lab-card game-panel">
+        <main class="card">
             <div id="operations" class="display-monitoreo">—</div>
             
             <div class="interaction-zone">
-                <input type="text" id="answer" placeholder="Esperando datos..." autocomplete="off">
-                <button class="btn btn-action round-btn" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
+                <input type="text" id="answer" placeholder="Esperando datos analíticos..." autocomplete="off">
+                <!-- Botón de verificación perfectamente redondo -->
+                <button class="round-btn btn-verificar" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
             </div>
             
-            <div class="action-triggers">
-                <button class="btn btn-danger" onclick="stopGame()">Detener Secuencia</button>
+            <div class="area-acciones-juego">
+                <!-- Botón de detener cambiado de texto -->
+                <button class="btn-danger-custom" onclick="stopGame()">🛑 Detener Secuencia</button>
             </div>
         </main>
         
         <!-- Bitácora de Resultados -->
-        <div id="result" class="lab-log"></div>
+        <div id="result" class="mensaje"></div>
 
         <audio id="sound" src="bip.mp3"></audio>
         <audio id="soundCorrect" src="correcto.mp3"></audio>
