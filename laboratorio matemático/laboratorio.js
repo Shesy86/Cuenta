@@ -261,41 +261,48 @@ function nuevoEjercicio() {
       `🔬 Descomposición activa: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
   }
 
-  const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
+  // ... (dejas intacto el inicio de nuevoEjercicio hasta el cálculo de sumasFila) ...
+
+  // ➡️ CÁLCULOS INVERTIDOS PARA DISEÑO VERTICAL (MÓVIL)
+  // Ahora las sumas se calculan por cada elemento de partes2 (que serán nuestras filas)
+  const sumasFila = g.partes2.map(c => g.partes1.reduce((a, f) => a + f * c, 0));
   const resultado = g.n1 * g.n2;
   const modoMostrar = g.modo === "mostrar";
   const modoDescomp = g.modo === "descomp";
 
   let filas = "";
-  g.partes1.forEach((f, fi) => {
+  // Recorremos partes2 para armar las filas (hacia abajo)
+  g.partes2.forEach((c, ci) => {
     let celdaGuiaFil = modoDescomp 
-      ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-fil" placeholder="?"></th>`
-      : `<th class="enc-fil">${f}</th>`;
+      ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-fil" placeholder="?"></th>`
+      : `<th class="enc-fil">${c}</th>`;
       
     filas += `<tr>${celdaGuiaFil}`;
     
-    g.partes2.forEach(c => {
+    // Recorremos partes1 para armar las celdas internas (columnas)
+    g.partes1.forEach(f => {
       const val = f * c;
       filas += modoMostrar
         ? `<td>${val}</td>`
         : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod" disabled></td>`;
     });
     
-    const sv = sumasFila[fi];
+    const sv = sumasFila[ci];
     filas += modoMostrar
       ? `<td class="col-suma">${sv}</td>`
-      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:105px" disabled></td>`;
+      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:90px" disabled></td>`;
     filas += `</tr>`;
   });
 
   const celdaRes = modoMostrar
     ? `<td class="cel-resultado">${resultado}</td>`
-    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:115px" disabled></td>`;
+    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:100px" disabled></td>`;
 
-  let cabeceraColumnas = g.partes2.map((c, ci) => {
+  // Las cabeceras de las columnas ahora corresponden a partes1
+  let cabeceraColumnas = g.partes1.map((f, fi) => {
     return modoDescomp 
-      ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-col" placeholder="?"></th>`
-      : `<th class="enc-col">${c}</th>`;
+      ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-col" placeholder="?"></th>`
+      : `<th class="enc-col">${f}</th>`;
   }).join("");
 
   const tabla = `
@@ -309,11 +316,15 @@ function nuevoEjercicio() {
         ${filas}
         <tr class="fil-total">
           <th>Total</th>
-          ${g.partes2.map(()=>`<td></td>`).join("")}
+          ${g.partes1.map(()=>`<td></td>`).join("")}
           ${celdaRes}
         </tr>
       </tbody>
     </table>`;
+
+  document.getElementById("area-tabla").innerHTML = tabla;
+
+  // ... (dejas intacto el resto de la función con los botones y listeners de abajo) ...
 
   document.getElementById("area-tabla").innerHTML = tabla;
 
