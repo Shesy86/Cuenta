@@ -269,62 +269,83 @@ function nuevoEjercicio() {
   const modoMostrar = g.modo === "mostrar";
   const modoDescomp = g.modo === "descomp";
 
-  let filas = "";
+  let filasHtml = "";
+  
+  // Generamos las filas basándonos en partes2
   g.partes2.forEach((c, ci) => {
-    let celdaGuiaFil = modoDescomp 
-      ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-fil" placeholder="?"></th>`
-      : `<th class="enc-fil">${c}</th>`;
+    let celdaGuia = "";
+    if (modoDescomp) {
+      celdaGuia = '<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="' + ci + '" data-tipo="guia-fil" placeholder="?"></th>';
+    } else {
+      celdaGuia = '<th class="enc-fil">' + c + '</th>';
+    }
       
-    filas += `<tr>${celdaGuiaFil}`;
+    filasHtml += "<tr>" + celdaGuia;
     
+    // Columnas internas basadas en partes1
     g.partes1.forEach(f => {
       const val = f * c;
-      filas += modoMostrar
-        ? `<td>${val}</td>`
-        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod" disabled></td>`;
+      if (modoMostrar) {
+        filasHtml += "<td>" + val + "</td>";
+      } else {
+        filasHtml += '<td><input class="inp-celda" type="number" data-correcto="' + val + '" data-f1="' + f + '" data-f2="' + c + '" data-tipo="prod" disabled></td>';
+      }
     });
     
     const sv = sumasFila[ci];
-    filas += modoMostrar
-      ? `<td class="col-suma">${sv}</td>`
-      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:90px" disabled></td>`;
-    filas += `</tr>`;
+    if (modoMostrar) {
+      filasHtml += '<td class="col-suma">' + sv + '</td>';
+    } else {
+      filasHtml += '<td class="col-suma"><input class="inp-celda" type="number" data-correcto="' + sv + '" data-tipo="suma" style="width:90px" disabled></td>';
+    }
+    filasHtml += "</tr>";
   });
 
-  const celdaRes = modoMostrar
-    ? `<td class="cel-resultado">${resultado}</td>`
-    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:100px" disabled></td>`;
+  // Celda final del resultado total
+  let celdaResHtml = "";
+  if (modoMostrar) {
+    celdaResHtml = '<td class="cel-resultado">' + resultado + '</td>';
+  } else {
+    celdaResHtml = '<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="' + resultado + '" data-tipo="resultado" style="width:100px" disabled></td>';
+  }
 
-  let cabeceraColumnas = g.partes1.map((f, fi) => {
-    return modoDescomp 
-      ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-col" placeholder="?"></th>`
-      : `<th class="enc-col">${f}</th>`;
-  }).join("");
+  // Cabeceras superiores basadas en partes1
+  let cabeceraColumnasHtml = "";
+  g.partes1.forEach((f, fi) => {
+    if (modoDescomp) {
+      cabeceraColumnasHtml += '<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="' + fi + '" data-tipo="guia-col" placeholder="?"></th>';
+    } else {
+      cabeceraColumnasHtml += '<th class="enc-col">' + f + '</th>';
+    }
+  });
 
-  // 🛠️ AQUÍ ESTABA EL ERROR (Corregido el map vacío que rompía el script)
-  let celdasVaciasVacias = "";
+  // Generamos los espacios vacíos exactos de la última fila para no romper las columnas del HTML
+  let celdasVaciasHtml = "";
   g.partes1.forEach(() => {
-    celdasVaciasVacias += "<td></td>";
+    celdasVaciasHtml += "<td></td>";
   });
 
-  const tabla = `
-    <table>
-      <thead><tr>
-        <th></th>
-        ${cabeceraColumnas}
-        <th class="enc-col" style="background:#fffdeb;color:#92400e;">Suma fila</th>
-      </tr></thead>
-      <tbody>
-        ${filas}
-        <tr class="fil-total">
-          <th>Total</th>
-          ${celdasVaciasVacias}
-          ${celdaRes}
-        </tr>
-      </tbody>
-    </table>`;
+  // Ensamblado final del HTML garantizando el cierre estricto de todas las etiquetas
+  const tablaHtml = 
+    '<table>' +
+      '<thead>' +
+        '<tr>' +
+          '<th></th>' +
+          cabeceraColumnasHtml +
+          '<th class="enc-col" style="background:#fffdeb;color:#92400e;">Suma fila</th>' +
+        '</tr>' +
+      '</thead>' +
+      '<tbody>' +
+        filasHtml +
+        '<tr class="fil-total">' +
+          '<th>Total</th>' +
+          celdasVaciasHtml +
+          celdaResHtml +
+        '</tr>' +
+      '</tbody>' +
+    '</table>';
 
-  document.getElementById("area-tabla").innerHTML = tabla;
+  document.getElementById("area-tabla").innerHTML = tablaHtml;
 
   // ... (dejas intacto el resto de la función con los botones y listeners de abajo) ...
 
