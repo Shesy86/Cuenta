@@ -264,14 +264,12 @@ function nuevoEjercicio() {
   // ... (dejas intacto el inicio de nuevoEjercicio hasta el cálculo de sumasFila) ...
 
   // ➡️ CÁLCULOS INVERTIDOS PARA DISEÑO VERTICAL (MÓVIL)
-  // Ahora las sumas se calculan por cada elemento de partes2 (que serán nuestras filas)
   const sumasFila = g.partes2.map(c => g.partes1.reduce((a, f) => a + f * c, 0));
   const resultado = g.n1 * g.n2;
   const modoMostrar = g.modo === "mostrar";
   const modoDescomp = g.modo === "descomp";
 
   let filas = "";
-  // Recorremos partes2 para armar las filas (hacia abajo)
   g.partes2.forEach((c, ci) => {
     let celdaGuiaFil = modoDescomp 
       ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-fil" placeholder="?"></th>`
@@ -279,7 +277,6 @@ function nuevoEjercicio() {
       
     filas += `<tr>${celdaGuiaFil}`;
     
-    // Recorremos partes1 para armar las celdas internas (columnas)
     g.partes1.forEach(f => {
       const val = f * c;
       filas += modoMostrar
@@ -298,12 +295,17 @@ function nuevoEjercicio() {
     ? `<td class="cel-resultado">${resultado}</td>`
     : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:100px" disabled></td>`;
 
-  // Las cabeceras de las columnas ahora corresponden a partes1
   let cabeceraColumnas = g.partes1.map((f, fi) => {
     return modoDescomp 
       ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-col" placeholder="?"></th>`
       : `<th class="enc-col">${f}</th>`;
   }).join("");
+
+  // 🛠️ AQUÍ ESTABA EL ERROR (Corregido el map vacío que rompía el script)
+  let celdasVaciasVacias = "";
+  g.partes1.forEach(() => {
+    celdasVaciasVacias += "<td></td>";
+  });
 
   const tabla = `
     <table>
@@ -316,7 +318,7 @@ function nuevoEjercicio() {
         ${filas}
         <tr class="fil-total">
           <th>Total</th>
-          ${g.partes1.map(()=>`<td></td>`).join("")}
+          ${celdasVaciasVacias}
           ${celdaRes}
         </tr>
       </tbody>
