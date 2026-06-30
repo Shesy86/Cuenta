@@ -33,7 +33,6 @@
                 <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
             </div>
 
-            <!-- BOTÓN INICIAR MÁS ARRIBA, DENTRO DEL PANEL DE CONTROL -->
             <button class="btn btn-success btn-main" onclick="startGame()">Iniciar Secuencia</button>
         </section>
         
@@ -43,12 +42,10 @@
             
             <div class="interaction-zone">
                 <input type="text" id="answer" placeholder="Esperando datos..." autocomplete="off">
-                <!-- BOTÓN REDONDO -->
                 <button class="btn btn-action round-btn" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
             </div>
             
             <div class="action-triggers">
-                <!-- TEXTO CAMBIADO A DETENER SECUENCIA -->
                 <button class="btn btn-danger" onclick="stopGame()">Detener Secuencia</button>
             </div>
         </main>
