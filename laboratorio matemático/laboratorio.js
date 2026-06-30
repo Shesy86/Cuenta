@@ -361,20 +361,21 @@ function verificarGuiasAlVuelo() {
 
   let ordenElegido = null;
 
+  // Ajustado al nuevo orden vertical
   if (valoresFil[0] !== null) {
-    if (valoresFil[0] === g.partes1[0]) ordenElegido = "normal";
-    else if (valoresFil[0] === g.partes2[0]) ordenElegido = "invertido";
+    if (valoresFil[0] === g.partes2[0]) ordenElegido = "normal";
+    else if (valoresFil[0] === g.partes1[0]) ordenElegido = "invertido";
   } else if (valoresCol[0] !== null) {
-    if (valoresCol[0] === g.partes2[0]) ordenElegido = "normal";
-    else if (valoresCol[0] === g.partes1[0]) ordenElegido = "invertido";
+    if (valoresCol[0] === g.partes1[0]) ordenElegido = "normal";
+    else if (valoresCol[0] === g.partes2[0]) ordenElegido = "invertido";
   }
 
-  let metaFil = ordenElegido === "invertido" ? g.partes2 : g.partes1;
-  let metaCol = ordenElegido === "invertido" ? g.partes1 : g.partes2;
+  let metaFil = ordenElegido === "invertido" ? g.partes1 : g.partes2;
+  let metaCol = ordenElegido === "invertido" ? g.partes2 : g.partes1;
 
-  if (ordenElegido === "invertido" && (inputsFil.length !== g.partes2.length || inputsCol.length !== g.partes1.length)) {
+  if (ordenElegido === "invertido" && (inputsFil.length !== g.partes1.length || inputsCol.length !== g.partes2.length)) {
     ordenElegido = "normal";
-    metaFil = g.partes1; metaCol = g.partes2;
+    metaFil = g.partes2; metaCol = g.partes1;
   }
 
   if (g.n1 !== g.n2 && ordenElegido) {
@@ -386,6 +387,47 @@ function verificarGuiasAlVuelo() {
       return;
     }
   }
+
+  inputsFil.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaFil[idx]) { inp.classList.add("correcto"); inp.classList.remove("incorrecto"); }
+    else { inp.classList.add("incorrecto"); inp.classList.remove("correcto"); }
+  });
+
+  inputsCol.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaCol[idx]) { inp.classList.add("correcto"); inp.classList.remove("incorrecto"); }
+    else { inp.classList.add("incorrecto"); inp.classList.remove("correcto"); }
+  });
+
+  let estructuraFilOk = metaFil.every((val, idx) => valoresFil[idx] === val);
+  let estructuraColOk = metaCol.every((val, idx) => valoresCol[idx] === val);
+
+  if (estructuraFilOk && estructuraColOk) {
+    const prods = document.querySelectorAll("[data-tipo='prod']");
+    prods.forEach(p => {
+      let fVal = Number(p.closest("tr").querySelector("[data-tipo='guia-fil']").value);
+      let cIndex = Array.from(p.closest("tr").querySelectorAll("[data-tipo='prod']")).indexOf(p);
+      let cVal = Number(document.querySelectorAll("[data-tipo='guia-col']")[cIndex].value);
+      p.dataset.correcto = fVal * cVal;
+      p.disabled = false;
+    });
+
+    const sumas = document.querySelectorAll("[data-tipo='suma']");
+    sumas.forEach(s => {
+      let filaProds = Array.from(s.closest("tr").querySelectorAll("[data-tipo='prod']"));
+      s.dataset.correcto = filaProds.reduce((acc, curr) => acc + Number(curr.dataset.correcto), 0);
+      s.disabled = false;
+    });
+
+    document.querySelector("[data-tipo='resultado']").disabled = false;
+    document.getElementById("txt-descomp").innerHTML = `🎉 ¡Descomposición posicional perfecta! Celdas desbloqueadas.`;
+    inputsFil.forEach(i => i.disabled = true);
+    inputsCol.forEach(i => i.disabled = true);
+  }
+}
 
   inputsFil.forEach((inp, idx) => {
     let val = Number(inp.value);
