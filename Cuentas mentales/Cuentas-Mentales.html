@@ -8,11 +8,13 @@
 </head>
 <body>
     <div class="container">
+        <!-- Encabezado de Informe -->
         <header class="lab-header">
             <h1>MÓDULO DE CÁLCULO MENTAL</h1>
             <p class="subtitle">Análisis analítico de secuencias numéricas rápidas.</p>
         </header>
         
+        <!-- Panel de Control / Configuración del Experimento -->
         <section class="lab-card controls-panel">
             <h3 class="section-title">Parámetros del Experimento</h3>
             
@@ -30,22 +32,28 @@
                 <label for="topRange">Umbral Superior (Rango): <span id="topRangeLabel" class="telemetry">15</span></label>
                 <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
             </div>
+
+            <!-- BOTÓN INICIAR MÁS ARRIBA, DENTRO DEL PANEL DE CONTROL -->
+            <button class="btn btn-success btn-main" onclick="startGame()">Iniciar Secuencia</button>
         </section>
         
+        <!-- Zona de Ejecución del Experimento -->
         <main class="lab-card game-panel">
             <div id="operations" class="display-monitoreo">—</div>
             
             <div class="interaction-zone">
                 <input type="text" id="answer" placeholder="Esperando datos..." autocomplete="off">
-                <button class="btn btn-action" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
+                <!-- BOTÓN REDONDO -->
+                <button class="btn btn-action round-btn" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
             </div>
             
             <div class="action-triggers">
-                <button class="btn btn-success" onclick="startGame()">Iniciar Secuencia</button>
-                <button class="btn btn-danger" onclick="stopGame()">Abortar Secuencia</button>
+                <!-- TEXTO CAMBIADO A DETENER SECUENCIA -->
+                <button class="btn btn-danger" onclick="stopGame()">Detener Secuencia</button>
             </div>
         </main>
         
+        <!-- Bitácora de Resultados -->
         <div id="result" class="lab-log"></div>
 
         <audio id="sound" src="bip.mp3"></audio>
