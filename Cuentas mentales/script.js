@@ -45,11 +45,6 @@ function generateOperations() {
     
     const opsDisplay = document.getElementById('operations');
     opsDisplay.innerText = result;
-    opsDisplay.classList.add('fade-in');
-
-    setTimeout(() => {
-        opsDisplay.classList.remove('fade-in');
-    }, 400);
 
     for (let i = 0; i < amount - 1; i++) {
         let number = Math.floor(Math.random() * topRange) + 1;
@@ -68,7 +63,6 @@ function generateOperations() {
         operations.push({ operation, number });
     }
 
-    updateSpeedLabel();
     timeoutId = setTimeout(nextOperation, speed);
 }
 
@@ -142,14 +136,6 @@ function resetGame() {
 
 function startGame() {
     resetGame();
-    
-    // Forzamos la reproducción del bip en el instante exacto del clic del usuario
-    const bip = document.getElementById('sound');
-    if (bip) { 
-        bip.currentTime = 0; 
-        bip.play().catch((e) => console.log("Audio bloqueado:", e)); 
-    }
-    
     generateOperations();
 }
 
