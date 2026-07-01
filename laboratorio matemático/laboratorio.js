@@ -261,24 +261,29 @@ function nuevoEjercicio() {
       `🔬 Descomposición activa: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
   }
 
-  const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
+  // --- REEMPLAZAR EN NUEVOEJERCICIO() ---
+  // Calculamos las sumas por fila y por columna de forma segura
+  const sumasFila = g.partes2.map(f => g.partes1.reduce((a,c) => a + f*c, 0));
+  const sumasCol = g.partes1.map(c => g.partes2.reduce((a,f) => a + f*c, 0));
   const resultado = g.n1 * g.n2;
   const modoMostrar = g.modo === "mostrar";
   const modoDescomp = g.modo === "descomp";
 
   let filas = "";
-  g.partes1.forEach((f, fi) => {
+  // Iteramos partes2 (filas)
+  g.partes2.forEach((f, fi) => {
     let celdaGuiaFil = modoDescomp 
       ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-fil" placeholder="?"></th>`
       : `<th class="enc-fil">${f}</th>`;
       
     filas += `<tr>${celdaGuiaFil}`;
     
-    g.partes2.forEach(c => {
+    // Iteramos partes1 (columnas)
+    g.partes1.forEach(c => {
       const val = f * c;
       filas += modoMostrar
         ? `<td>${val}</td>`
-        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod" disabled></td>`;
+        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${c}" data-f2="${f}" data-tipo="prod" disabled></td>`;
     });
     
     const sv = sumasFila[fi];
@@ -288,16 +293,28 @@ function nuevoEjercicio() {
     filas += `</tr>`;
   });
 
+  // NUEVO: Generamos la fila de celdas para la "Suma col"
+  // NUEVO: Generamos la fila de celdas para la "Suma col"
+  let celdasSumaCol = "";
+  g.partes1.forEach((c, ci) => {
+    const sc = sumasCol[ci];
+    celdasSumaCol += modoMostrar
+      ? `<td style="background:#fffdeb; color:#92400e; font-weight:800;">${sc}</td>`
+      : `<td><input class="inp-celda" type="number" data-correcto="${sc}" data-tipo="suma-col" style="background:#fffdeb; border-color:#f59e0b; color:#b45309;" disabled></td>`;
+  });
+
+  // El casillero del resultado final (ahora irá en el vértice)
   const celdaRes = modoMostrar
     ? `<td class="cel-resultado">${resultado}</td>`
     : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:115px" disabled></td>`;
 
-  let cabeceraColumnas = g.partes2.map((c, ci) => {
+  let cabeceraColumnas = g.partes1.map((c, ci) => {
     return modoDescomp 
       ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-col" placeholder="?"></th>`
       : `<th class="enc-col">${c}</th>`;
   }).join("");
 
+  // Estructura limpia de la tabla: fusionamos la Suma Col y el Resultado en una única línea final
   const tabla = `
     <table>
       <thead><tr>
@@ -307,9 +324,9 @@ function nuevoEjercicio() {
       </tr></thead>
       <tbody>
         ${filas}
-        <tr class="fil-total">
-          <th>Total</th>
-          ${g.partes2.map(()=>`<td></td>`).join("")}
+        <tr style="background: #fffdeb; border-top: 3px solid #94a3b8;">
+          <th style="color:#92400e; font-weight:800; background: #fffdeb;">Suma col</th>
+          ${celdasSumaCol}
           ${celdaRes}
         </tr>
       </tbody>
@@ -405,6 +422,17 @@ function verificarGuiasAlVuelo() {
 
     const sumas = document.querySelectorAll("[data-tipo='suma']");
     sumas.forEach(s => {
+      // NUEVO: Habilitar y calcular respuestas correctas para Suma Columna
+    const sumasColumnas = document.querySelectorAll("[data-tipo='suma-col']");
+    sumasColumnas.forEach((s, sIdx) => {
+      let columnasProds = [];
+      document.querySelectorAll("tbody tr").forEach(fila => {
+        let p = fila.querySelectorAll("[data-tipo='prod']")[sIdx];
+        if (p) columnasProds.push(Number(p.dataset.correcto));
+      });
+      s.dataset.correcto = columnasProds.reduce((acc, curr) => acc + curr, 0);
+      s.disabled = false;
+    });
       let filaProds = Array.from(s.closest("tr").querySelectorAll("[data-tipo='prod']"));
       s.dataset.correcto = filaProds.reduce((acc, curr) => acc + Number(curr.dataset.correcto), 0);
       s.disabled = false;
@@ -433,12 +461,12 @@ function darPista() {
   const tipo = vacio.dataset.tipo;
   if (tipo === "guia-fil" || tipo === "guia-col") {
     boxPista.innerHTML = `💡 <b>Pista:</b> Escribe las descomposiciones en estricto orden de valor posicional (centenas, decenas, unidades).`;
-  } else if (tipo === "prod") {
-    boxPista.innerHTML = `💡 <b>Pista:</b> Multiplica la guía de su fila por la guía de su columna.`;
   } else if (tipo === "suma") {
     boxPista.innerHTML = `💡 <b>Pista:</b> Suma los números de los casilleros blancos de esta línea horizontal.`;
+  } else if (tipo === "suma-col") { // ➡️ NUEVO
+    boxPista.innerHTML = `💡 <b>Pista:</b> Suma verticalmente los números de los casilleros blancos de esta columna.`;
   } else {
-    boxPista.innerHTML = `💡 <b>Pista Final:</b> Suma verticalmente toda la columna de "Suma fila".`;
+    boxPista.innerHTML = `💡 <b>Pista Final:</b> Suma horizontalmente la línea de "Suma col" o verticalmente la columna de "Suma fila".`;
   }
   boxPista.style.display = "block";
 }
