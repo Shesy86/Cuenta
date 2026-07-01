@@ -12,16 +12,17 @@ const soundIncorrect = document.getElementById('soundIncorrect');
 
 function updateSpeedLabel() {
     const level = parseInt(document.getElementById('speed').value);
+    
+    // Mostramos el nivel (1 al 5) en la interfaz
     document.getElementById('speedLabel').innerText = level;
     
-    // Convertimos el nivel visual en milisegundos reales (Invertido)
-    // Nivel 1 = 2500ms (Lento) | Nivel 5 = 500ms (Rápido)
+    // Mapeo: Nivel alto (5) = menos milisegundos (más rápido)
     const speedMap = {
-        1: 2500,
-        2: 2000,
-        3: 1500,
-        4: 1000,
-        5: 500
+        1: 2500, // Muy lento
+        2: 2000, // Lento
+        3: 1500, // Normal
+        4: 1000, // Rápido
+        5: 500   // Súper rápido
     };
     
     speed = speedMap[level];
