@@ -8,16 +8,20 @@
 </head>
 <body>
 
-    <div class="contenedor">
+    <!-- CORREGIDO: "container" en vez de "contenedor" -->
+    <div class="container">
         <!-- Encabezado de Informe Estilo Laboratorio -->
-        <div class="cabecera">
+        <!-- CORREGIDO: "lab-header" y "subtitle" -->
+        <div class="lab-header">
             <h1>🧠 Cuentas mentales</h1>
-            <p>Módulo de Análisis Analítico de Secuencias Rápidas</p>
+            <p class="subtitle">Módulo de Análisis Analítico de Secuencias Rápidas</p>
         </div>
         
         <!-- Panel de Control / Parámetros del Experimento -->
-        <section class="card">
-            <h3 class="seccion-label">Parámetros del Experimento</h3>
+        <!-- CORREGIDO: "controls-panel" en vez de "card" -->
+        <section class="controls-panel">
+            <!-- CORREGIDO: "section-title" -->
+            <h3 class="section-title">Parámetros del Experimento</h3>
             
             <div class="control-group">
                 <label for="speed">Frecuencia de Muestreo: <span id="speedLabel" class="telemetry">1000</span> ms</label>
@@ -34,28 +38,31 @@
                 <input type="range" id="topRange" min="10" max="20" value="15" oninput="updateTopRangeLabel()">
             </div>
 
-            <!-- Botón de Inicio reordenado arriba -->
-            <button class="btn-primario" onclick="startGame()">▶ Iniciar Secuencia</button>
+            <!-- CORREGIDO: Clases unificadas a ".btn .btn-success" -->
+            <button class="btn btn-success" style="width: 100%;" onclick="startGame()">▶ Iniciar Secuencia</button>
         </section>
         
         <!-- Zona de Ejecución del Experimento -->
-        <main class="card">
+        <!-- CORREGIDO: "lab-card" en vez de "card" -->
+        <main class="lab-card">
             <div id="operations" class="display-monitoreo">—</div>
             
             <div class="interaction-zone">
                 <input type="text" id="answer" placeholder="Esperando datos analíticos..." autocomplete="off">
-                <!-- Botón de verificación perfectamente redondo -->
-                <button class="round-btn btn-verificar" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
+                <!-- CORREGIDO: Clases unificadas a ".btn .btn-action .round-btn" -->
+                <button class="btn btn-action round-btn" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
             </div>
             
-            <div class="area-acciones-juego">
-                <!-- Botón de detener cambiado de texto -->
-                <button class="btn-danger-custom" onclick="stopGame()">🛑 Detener Secuencia</button>
+            <!-- CORREGIDO: "action-triggers" para que use la envoltura flex del CSS -->
+            <div class="action-triggers">
+                <!-- CORREGIDO: Clases unificadas a ".btn .btn-danger" -->
+                <button class="btn btn-danger" onclick="stopGame()">🛑 Detener Secuencia</button>
             </div>
         </main>
         
         <!-- Bitácora de Resultados -->
-        <div id="result" class="mensaje"></div>
+        <!-- CORREGIDO: "lab-log" en vez de "mensaje" -->
+        <div id="result" class="lab-log" style="display: none;"></div>
 
         <audio id="sound" src="bip.mp3"></audio>
         <audio id="soundCorrect" src="correcto.mp3"></audio>
