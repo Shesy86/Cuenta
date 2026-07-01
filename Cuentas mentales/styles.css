@@ -1,65 +1,70 @@
 /* ==========================================================================
-   ── ESTILO "SCIENTIFIC LAB & FUN" (COINCIDENCIA EXACTA CON JUEGO BASE) ──
+   ── ESTILO "BRIGHT & FUN" (ADAPTADO AL MÓDULO DE CÁLCULO MENTAL) ──
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  /* Degradado tecnológico limpio: Gris muy claro a sutiles toques esmeralda/azulados */
-  background: linear-gradient(135deg, #f3f4f6 0%, #ecfdf5 100%);
+  /* Fondo degradado azul cielo a verde menta suave del nuevo juego */
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
   min-height: 100vh;
   padding: 30px 16px;
-  color: #1f2937; /* Gris oscuro neutro de alta legibilidad */
+  color: #0f172a; /* Azul pizarra muy oscuro para excelente contraste */
 }
 
 .container { max-width: 880px; margin: auto; position: relative; }
 
-/* Tarjeta contenedora con la misma estructura premium */
+/* Tarjetas con bordes sutiles y sombras ligeras del estilo nuevo */
 .lab-card, .controls-panel {
   background: #ffffff;
   border-radius: 24px;
   padding: 32px;
-  box-shadow: 0 10px 30px rgba(31, 41, 55, 0.04), 0 1px 3px rgba(31, 41, 55, 0.02);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.02);
   margin-bottom: 24px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #e2e8f0;
   transition: transform 0.3s ease;
 }
 
-/* ── CABECERA CIENTÍFICA REFINADA ── */
+/* ── CABECERA ESTILO NUEVA IDENTIDAD ── */
 .lab-header { text-align: center; margin-bottom: 28px; }
 .lab-header h1 { 
   font-size: 2.5rem; 
-  color: #1f2937; 
+  color: #1e3a8a; /* Azul profundo corporativo/educativo */
   display: flex; 
   align-items: center; 
   justify-content: center; 
   gap: 12px; 
   font-weight: 800; 
-  text-transform: uppercase;
 }
-.lab-header .subtitle { color: #4b5563; margin-top: 8px; font-size: 1.1rem; font-weight: 600; }
+.lab-header .subtitle { 
+  color: #64748b; /* Gris azulado neutro */
+  margin-top: 8px; 
+  font-size: 1.1rem; 
+  font-weight: 600; 
+}
 
-/* Etiquetas de secciones idénticas al juego base */
+/* Etiquetas de secciones y grupos de control */
 .section-title, .control-group label {
-  font-size: .9rem; font-weight: 800; color: #374151;
+  font-size: .9rem; font-weight: 800; color: #334155;
   text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; display: block;
 }
 
-/* ── CONTROLES Y DESLIZADORES (SLIDERS) ── */
+/* Controles de grupo */
 .control-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
 
+/* Telemetría numérica del juego */
 .telemetry {
   font-family: 'Courier New', Courier, monospace;
   font-weight: 800;
-  background: #f3f4f6;
+  background: #f8fafc;
   padding: 2px 8px;
   border-radius: 8px;
-  color: #1f2937;
+  color: #1e3a8a;
   font-size: 1.05rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #cbd5e1;
 }
 
-/* Estilo unificado para entradas de texto */
+/* Entradas de texto adaptadas */
 input[type=text] {
   padding: 14px 16px; border: 2.5px solid #cbd5e1;
   border-radius: 16px; font-size: 1.1rem; width: 100%;
@@ -68,42 +73,42 @@ input[type=text] {
 }
 input[type=text]:focus { 
   outline: none; 
-  border-color: #1f2937; 
-  box-shadow: 0 0 0 4px rgba(31, 41, 55, 0.1); 
+  border-color: #3b82f6; /* Foco azul brillante */
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); 
   background: #ffffff;
 }
 
-/* Deslizadores personalizados */
+/* Deslizadores personalizados adaptados al acento azul */
 input[type="range"] {
   appearance: none; -webkit-appearance: none;
-  width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; outline: none;
+  width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; outline: none;
   margin: 10px 0;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
-  background: #1f2937; cursor: pointer; transition: transform 0.1s;
+  background: #3b82f6; cursor: pointer; transition: transform 0.1s;
 }
 input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-/* ── MONITOR DE TELEMETRÍA (OPERACIONES) ── */
+/* ── MONITOR DE OPERACIONES (PANTALLA DE NÚMEROS) ── */
 .display-monitoreo {
   text-align: center; 
   margin-bottom: 24px; 
   background: #f8fafc; 
   padding: 24px; 
   border-radius: 20px; 
-  border: 2.5px solid #e5e7eb;
+  border: 2px solid #e2e8f0;
   font-family: 'Courier New', Courier, monospace;
   font-size: 3.2rem;
   font-weight: 900;
-  color: #1f2937;
+  color: #1e3a8a; /* Color azul de operaciones */
   letter-spacing: 1px;
 }
 
-/* Área de interacción adaptada */
-.interaction-zone { display: flex; gap: 14px; margin-bottom: 16px; }
+/* Área de interacción */
+.interaction-zone { display: flex; gap: 14px; margin-bottom: 16px; width: 100%; align-items: center; }
 
-/* ── BOTONES DE ACCIÓN PREMIUM DE LABORATORIO ── */
+/* ── BOTONES DE ACCIÓN PREMIUM CON GRADIENTES NUEVOS ── */
 .btn {
   padding: 14px 24px; border: none; border-radius: 16px; font-size: 1rem;
   font-weight: 800; cursor: pointer; transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -111,62 +116,76 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 }
 .btn:hover { transform: translateY(-2px); }
 
-/* Botón flecha (Verificar) */
+/* Botón Iniciar Secuencia (Gradiente azul eléctrico nuevo) */
+.btn-success {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(29, 78, 216, 0.3);
+}
+.btn-success:hover { box-shadow: 0 8px 24px rgba(29, 78, 216, 0.4); }
+
+/* Botón flecha Verificar (Gradiente verde esmeralda brillante nuevo) */
 .btn-action {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
+}
+.btn-action:hover { box-shadow: 0 8px 22px rgba(16, 185, 129, 0.35); }
+
+/* Botón Detener Secuencia (Rojo Coral Intenso nuevo) */
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+.btn-danger:hover { box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4); }
+
+/* Estructura para los gatillos inferiores */
+.action-triggers { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; width: 100%; }
+.action-triggers .btn { width: 100%; flex: none; padding: 16px; font-size: 1.1rem; }
+
+/* NUEVO: Botón redondo de verificación estilo Premium Esférico */
+.round-btn {
+  width: 56px;          
+  height: 56px;
+  padding: 0 !important;
+  border-radius: 50% !important; 
+  flex-shrink: 0;       
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   color: white;
   font-size: 1.4rem;
-  padding: 0 28px;
-  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.25);
 }
-.btn-action:hover { box-shadow: 0 8px 22px rgba(5, 150, 105, 0.35); }
 
-/* Botones inferiores de ejecución */
-.action-triggers { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; width: 100%; }
-.action-triggers .btn { flex: 1; min-width: 160px; padding: 16px; font-size: 1.1rem; }
-
-.btn-success {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  color: white;
-  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
-}
-.btn-success:hover { box-shadow: 0 8px 24px rgba(5, 150, 105, 0.4); }
-
-.btn-danger {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
-  color: white;
-  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.3);
-}
-.btn-danger:hover { box-shadow: 0 8px 24px rgba(185, 28, 28, 0.4); }
-
-/* ── FEEDBACK DE INPUT EN TIEMPO REAL ── */
+/* ── FEEDBACK DE INPUTS EN TIEMPO REAL ── */
 #answer.correct-state { 
-  border-color: #059669; 
+  border-color: #10b981; 
   background: #ecfdf5; 
-  color: #047857; 
-  transform: scale(1.01);
+  color: #065f46; 
+  transform: scale(1.02);
 }
 #answer.error-state { 
-  border-color: #b91c1c; 
+  border-color: #ef4444; 
   background: #fef2f2; 
   color: #991b1b; 
   animation: shake 0.4s ease; 
 }
 
-/* ── BITÁCORA DE REPORTES (ZONA DE LOGS / RESULTADO) ── */
+/* ── BITÁCORA AMARILLA DE REPORTES (ZONA DE RESULTADO) ── */
 .lab-log {
   margin-top: 18px; 
-  padding: 18px; 
+  padding: 16px; 
   border-radius: 16px; 
   font-weight: 700; 
   font-size: 1.05rem; 
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
-  /* Tono amarillo/ámbar suave de guía */
+  /* Caja amarilla del juego nuevo */
   background: #fffdeb; 
-  color: #b45309; 
+  color: #92400e; 
   border: 2px solid #fef08a;
-  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.08);
+  box-shadow: 0 4px 12px rgba(146, 64, 14, 0.08);
 }
 
 /* ── ANIMACIONES REFINADAS ── */
@@ -189,15 +208,10 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 }
 .pop-effect { animation: pop 0.3s ease-in-out; }
 
-/* ── REGLAS DE IMPRESIÓN (INFORME OFICIAL DE LABORATORIO) ── */
+/* ── REGLAS DE IMPRESIÓN / REPORTE OFICIAL ── */
 @media print {
   body * { display: none !important; }
-
-  /* Si utilizas la caja dinámicamente o tienes un clon estático para imprimir */
-  #reporte-cientifico, #reporte-cientifico * {
-    display: block !important;
-  }
-  
+  #reporte-cientifico, #reporte-cientifico * { display: block !important; }
   #reporte-cientifico {
     display: block !important;
     width: 100%;
@@ -207,76 +221,5 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
     font-family: 'Courier New', Courier, monospace;
     color: #000;
     background: #fff;
-  }
-
-  .encabezado-reporte {
-    text-align: center;
-    border-bottom: 3px double #000;
-    padding-bottom: 15px;
-    margin-bottom: 30px;
-  }
-
-  .tabla-reporte {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 50px;
-  }
-
-  .tabla-reporte th, .tabla-reporte td {
-    border: 1px solid #000;
-    padding: 12px;
-    text-align: left;
-  }
-
-  .tabla-reporte th {
-    background-color: #f3f4f6 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .tabla-reporte tr {
-    page-break-inside: avoid;
-    break-inside: avoid;
-
-     /* ... (Todo el CSS anterior se mantiene igual, modificamos o agregamos lo siguiente) ... */
-
-/* Botón principal estirado dentro de la configuración */
-.btn-main {
-  width: 100%;
-  margin-top: 10px;
-  padding: 16px;
-  font-size: 1.1rem;
-}
-
-/* MODIFICACIÓN: Ajustes en la zona de interacción */
-.interaction-zone { 
-  display: flex; 
-  gap: 14px; 
-  margin-bottom: 16px; 
-  width: 100%;
-  align-items: center; /* Alinea verticalmente el input con el botón redondo */
-}
-
-/* NUEVO: Botón redondo de verificación estilo Premium Gamified */
-.round-btn {
-  width: 56px;                   /* Alto y ancho idénticos para círculo perfecto */
-  height: 56px;
-  padding: 0 !important;         /* Resetea paddings del .btn general */
-  border-radius: 50% !important; /* Fuerza la forma circular */
-  flex-shrink: 0;                /* Evita que el flexbox lo deforme */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;                  /* Quita el borde por defecto del botón */
-  color: white;                  /* Fuerza la flecha blanca */
-}
-
-/* Ajuste fino del botón "Detener secuencia" para que ocupe todo el ancho abajo */
-.action-triggers .btn-danger {
-  width: 100%;
-  flex: none;
-  padding: 16px;
-  font-size: 1.1rem;
-}
   }
 }
