@@ -94,6 +94,10 @@ function nextOperation() {
 function checkResult() {
     const answerInput = document.getElementById('answer');
     const resultLog = document.getElementById('result');
+    
+    // Hacemos visible la caja de la bitácora al verificar el resultado
+    resultLog.style.display = 'block'; 
+    
     const rawValue = answerInput.value.trim();
     
     if (rawValue === "") return;
@@ -130,7 +134,11 @@ function resetGame() {
     const answerInput = document.getElementById('answer');
     answerInput.classList.remove('correct-state', 'error-state');
     answerInput.value = '';
+    
+    // Limpiamos el texto y ocultamos la bitácora para el nuevo juego
     document.getElementById('result').innerText = '';
+    document.getElementById('result').style.display = 'none'; 
+    
     document.getElementById('operations').innerText = '—';
 }
 
