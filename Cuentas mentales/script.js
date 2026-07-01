@@ -104,7 +104,7 @@ function checkResult() {
     const answerInput = document.getElementById('answer');
     const resultLog = document.getElementById('result');
     
-    // Hacemos visible la caja de la bitácora al verificar el resultado
+    // Forzamos que la caja amarilla sea visible
     resultLog.style.display = 'block'; 
     
     const rawValue = answerInput.value.trim();
@@ -112,6 +112,8 @@ function checkResult() {
     if (rawValue === "") return;
 
     let message;
+    
+    // CONSTRUCCIÓN DE LA SECUENCIA: Asegura que tome el número inicial y cada operación
     let operationSequence = `${initialResult}`;
     operations.forEach(op => {
         operationSequence += ` ${op.operation} ${op.number}`;
@@ -120,7 +122,7 @@ function checkResult() {
 
     answerInput.classList.remove('correct-state', 'error-state');
 
-    // Comprueba de forma estricta que no se cuele ninguna letra
+    // Comprobación estricta del número ingresado
     const isPureNumber = /^\d+$/.test(rawValue);
     let userResult = isPureNumber ? parseInt(rawValue) : null;
 
@@ -134,7 +136,10 @@ function checkResult() {
         if(soundIncorrect) { soundIncorrect.currentTime = 0; soundIncorrect.play().catch(()=>{}); }
     }
     
+    // Inyectamos el texto final de manera explícita en la bitácora
     resultLog.innerText = `${message} Secuencia analizada -> [ ${operationSequence} ]`;
+    
+    // Aplicamos el efecto visual de impacto
     resultLog.classList.add('pop-effect');
     setTimeout(() => resultLog.classList.remove('pop-effect'), 300);
 }
