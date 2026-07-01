@@ -47,6 +47,14 @@ function generateOperations() {
     const opsDisplay = document.getElementById('operations');
     opsDisplay.innerText = result;
 
+    // --- NUEVO: Reproducir el sonido bip con el primer número ---
+    const bip = document.getElementById('sound');
+    if (bip) { 
+        bip.currentTime = 0; 
+        bip.play().catch(() => {}); 
+    }
+    // -----------------------------------------------------------
+
     for (let i = 0; i < amount - 1; i++) {
         let number = Math.floor(Math.random() * topRange) + 1;
         let operation;
