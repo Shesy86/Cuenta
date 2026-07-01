@@ -24,8 +24,10 @@
             <h3 class="section-title">Parámetros del Experimento</h3>
             
             <div class="control-group">
-                <label for="speed">Frecuencia de Muestreo: <span id="speedLabel" class="telemetry">1000</span> ms</label>
-                <input type="range" id="speed" min="500" max="5000" value="1000" step="500" oninput="updateSpeedLabel()">
+                <!-- Cambiado: Ahora muestra "Nivel" en lugar de "ms" -->
+                <label for="speed">Frecuencia de Muestreo: Nivel <span id="speedLabel" class="telemetry">3</span></label>
+                <!-- Cambiado: min="1", max="5", value="3", step="1" -->
+                <input type="range" id="speed" min="1" max="5" value="3" step="1" oninput="updateSpeedLabel()">
             </div>
             
             <div class="control-group">
@@ -49,7 +51,7 @@
             
             <div class="interaction-zone">
                 <input type="text" id="answer" placeholder="Esperando datos analíticos..." autocomplete="off">
-                <!-- CORREGIDO: Clases unificadas a ".btn .btn-action .round-btn" -->
+                <!-- Aseguramos las clases exactas para el círculo perfecto -->
                 <button class="btn btn-action round-btn" onclick="checkResult()" aria-label="Validar resultado">&#8594;</button>
             </div>
             
