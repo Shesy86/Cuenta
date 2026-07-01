@@ -1,234 +1,688 @@
-/* ── CONFIGURACIÓN GENERAL Y ESTILO "BRIGHT & FUN" ── */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── ESTADO GLOBAL DEL LABORATORIO ── */
+/* Reemplaza el inicio de tu archivo por este (añadimos historial: []) */
+let g = {
+  modo: "mostrar", nivel: "2x3", nombre: "", puntos: 0, racha: 0, ejercicios: 0,
+  n1: 0, n2: 0, partes1: [], partes2: [], permitirCeros: true,
+  historial: [] // ➡️ AQUÍ SE GUARDARÁN LAS CUENTAS COMPLETADAS
+};
 
-body {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
-  min-height: 100vh;
-  padding: 30px 16px;
-  color: #0f172a;
-}
-
-.contenedor { max-width: 880px; margin: auto; position: relative; }
-
-.card {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.02);
-  margin-bottom: 24px;
-  border: 2px solid #e2e8f0;
-  transition: transform 0.3s ease;
-}
-
-.cabecera { text-align: center; margin-bottom: 28px; }
-.cabecera h1 { font-size: 2.5rem; color: #1e3a8a; display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 800; }
-.cabecera p  { color: #64748b; margin-top: 8px; font-size: 1.1rem; font-weight: 600; }
-
-.campo { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-.seccion-label {
-  font-size: .9rem; font-weight: 800; color: #334155;
-  text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; display: block;
-}
-
-input[type=text], input[type=number] {
-  padding: 14px 16px; border: 2.5px solid #cbd5e1;
-  border-radius: 16px; font-size: 1rem; width: 100%;
-  font-weight: 600; transition: all .2s ease;
-}
-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
-
-.config-checkbox {
-  display: flex; align-items: center; gap: 12px; margin: 20px 0;
-  cursor: pointer; font-weight: 700; color: #334155; font-size: 1rem; user-select: none;
-}
-.config-checkbox input { width: 22px; height: 22px; cursor: pointer; accent-color: #3b82f6; }
-
-.inputs-personalizados { display: flex; gap: 14px; margin-bottom: 16px; }
-
-/* ── MODOS Y NIVELES GAMIFICADOS ── */
-.modos, .niveles { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
-.modo-btn, .niv-btn {
-  flex: 1; min-width: 160px; padding: 16px 12px;
-  border: 2.5px solid #e2e8f0; border-radius: 20px;
-  background: #f8fafc; cursor: pointer; text-align: center;
-  font-size: .95rem; font-weight: 800; color: #475569;
-  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1); user-select: none;
-}
-.modo-btn:hover, .niv-btn:hover { transform: translateY(-2px); border-color: #cbd5e1; }
-.modo-btn.sel { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); }
-.niv-btn.sel { border-color: #8b5cf6; background: #f5f3ff; color: #6d28d9; box-shadow: 0 8px 20px rgba(139, 92, 246, 0.15); }
-
-.modo-icono, .niv-stars { font-size: 1.8rem; display: block; margin-bottom: 6px; transition: transform 0.2s; }
-.modo-btn.sel .modo-icono { transform: scale(1.15); }
-.modo-desc, .niv-desc { font-size: .8rem; font-weight: 500; color: #64748b; margin-top: 6px; line-height: 1.3; }
-
-/* ── BOTONES DE ACCIÓN PREMIUM ── */
-.btn-primario {
-  width: 100%; padding: 16px; border: none; border-radius: 18px;
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%); color: white; font-size: 1.2rem;
-  font-weight: 800; cursor: pointer; transition: all .2s;
-  box-shadow: 0 6px 20px rgba(29, 78, 216, 0.3);
-}
-.btn-primario:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(29, 78, 216, 0.4); }
-
-.area-acciones-juego { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-.btn-juego { padding: 14px 24px; border: none; border-radius: 16px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 8px; }
-.btn-juego:hover { transform: translateY(-2px); }
-.btn-verificar { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25); }
-.btn-pista { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; box-shadow: 0 6px 18px rgba(245, 158, 11, 0.25); }
-.btn-nuevo { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; box-shadow: 0 6px 18px rgba(139, 92, 246, 0.25); }
-.btn-volver { background: #ffffff; color: #475569; border: 2.5px solid #cbd5e1; }
-
-/* ── SCOREBOARD VIBRANTE ── */
-.panel-puntaje {
-  display: flex; gap: 16px; flex-wrap: wrap;
-  background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); border-radius: 24px; padding: 20px; margin-bottom: 24px;
-  box-shadow: 0 10px 25px rgba(30, 58, 138, 0.25);
-}
-.stat { text-align: center; flex: 1; min-width: 90px; background: rgba(255, 255, 255, 0.06); padding: 10px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); }
-.stat-num { font-size: 2rem; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-.stat-lbl { font-size: .8rem; color: #93c5fd; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 700; }
-
-/* ── TABLA MATEMÁTICA Y RESPUESTAS ── */
-.enunciado { text-align: center; margin-bottom: 24px; background: #f8fafc; padding: 18px; border-radius: 20px; border: 2px solid #e2e8f0; }
-.operacion { font-size: 2.8rem; font-weight: 900; color: #1e3a8a; letter-spacing: 1px; }
-.descomposicion { color: #475569; margin-top: 8px; font-size: 1.05rem; font-weight: 600; }
-
-.tabla-wrap { overflow-x: auto; margin-bottom: 12px; border-radius: 20px; border: 2.5px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-table { width: 100%; border-collapse: collapse; font-size: 1.05rem; min-width: 450px; background: white; }
-th, td { border: 1px solid #cbd5e1; padding: 14px 12px; text-align: center; vertical-align: middle; }
-.enc-col { background: #eff6ff; color: #1d4ed8; font-weight: 800; }
-.enc-fil { background: #f0fdf4; color: #15803d; font-weight: 800; }
-.col-suma { background: #fffdeb; font-weight: 800; color: #92400e; border-left: 3px solid #fef08a; }
-.cel-resultado { background: #fff5f5; font-weight: 900; color: #b91c1c; font-size: 1.3rem; }
-.fil-total td, .fil-total th { background: #f8fafc; font-weight: 800; color: #334155; border-top: 3px solid #94a3b8; }
-
-.inp-celda {
-  width: 100px; padding: 10px 8px; border: 2.5px solid #cbd5e1; border-radius: 12px;
-  text-align: center; font-size: 1.1rem; font-weight: 700; transition: all .2s;
-  background: #fafafa;
-}
-.inp-celda:focus { outline: none; border-color: #3b82f6; background: #fff; }
-.inp-celda.correcto { border-color: #10b981; background: #ecfdf5; color: #065f46; transform: scale(1.02); }
-.inp-celda.incorrecto { border-color: #ef4444; background: #fef2f2; color: #991b1b; animation: shake 0.4s ease; }
-
-.inp-guia { width: 85px; background: #fffbeb; border-color: #f59e0b; color: #b45309; }
-
-/* ── FEEDBACK ANIMADO Y CARTEL DE ALERTAS ── */
-.mensaje { margin-top: 18px; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 1.05rem; display: none; text-align: center; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.mensaje.ok   { background: #d1fae5; color: #065f46; border: 2px solid #6ee7b7; box-shadow: 0 4px 12px rgba(16,185,129,0.15); }
-.mensaje.err  { background: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; box-shadow: 0 4px 12px rgba(239,68,68,0.15); }
-.box-pista { background: #fef9c3; color: #713f12; border: 2px solid #fef08a; padding: 14px 18px; border-radius: 16px; margin-top: 18px; font-size: 1rem; font-weight: 700; display: none; box-shadow: 0 4px 12px rgba(234,179,8,0.1); }
-
-/* ── ALGORITMO VERTICAL ESCOLAR ── */
-.algoritmo { margin-top: 24px; padding: 24px; background: #f8fafc; border-radius: 20px; border: 2.5px solid #e2e8f0; }
-.algoritmo h3 { font-size: .95rem; text-transform: uppercase; letter-spacing: .8px; color: #475569; margin-bottom: 16px; text-align: center; font-weight: 800; }
-.flex-centro { display: flex; justify-content: center; }
-.cuenta-vertical {
-  font-family: 'Courier New', monospace; font-size: 1.6rem; font-weight: 800; line-height: 1.6; color: #1e3a8a;
-  display: inline-flex; flex-direction: column; align-items: flex-end; margin: 0 auto;
-}
-.linea-cuenta { border-top: 4px solid #334155; margin: 6px 0; width: 100%; display: block; }
-
-/* ── CANVAS DE CONFETI NATIVO ── */
-#canvas-confeti {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  pointer-events: none; z-index: 9999; display: none;
-}
-
-/* ── ANIMACIONES CSS ── */
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-6px); }
-  75% { transform: translateX(6px); }
-}
-@keyframes popIn {
-  0% { transform: scale(0.9); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-@keyframes scorePop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); color: #60a5fa; }
-  100% { transform: scale(1); }
-}
-.pop-score { animation: scorePop .4s ease; }
-
-/* Ocultar el reporte por defecto en la pantalla */
-.solo-impresion {
-  display: none;
-}
-
-/* REGLAS EXCLUSIVAS PARA CUANDO SE IMPRIME O SE GUARDA EN PDF */
-@media print {
-  /* Ocultamos absolutamente todo lo que compone el juego y la interfaz */
-  body * {
-    display: none !important;
-  }
-
-  /* Mostramos únicamente el contenedor del reporte científico */
-  #reporte-cientifico, #reporte-cientifico * {
-    display: block !important;
+/* ── SISTEMA DE GUARDADO AUTOMÁTICO INDIVIDUAL (localStorage) ── */
+window.onload = function () {
+  const nombreInput = document.getElementById("nombre");
+  const ultimoNombre = localStorage.getItem("lab_ultimo_nombre");
+  
+  if (ultimoNombre) {
+    nombreInput.value = ultimoNombre;
+    // Cargamos el historial del último usuario inmediatamente
+    actualizarHistorialEnPantallaInicio(ultimoNombre);
   }
   
-  #reporte-cientifico {
-    display: block !important;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 30px;
-    font-family: 'Courier New', Courier, monospace; /* Estilo científico/laboratorio */
-    color: #000;
-    background: #fff;
-  }
+  // Escuchamos en tiempo real si escriben un nombre diferente
+  nombreInput.addEventListener("input", (e) => {
+    const nombreActual = e.target.value.trim();
+    actualizarHistorialEnPantallaInicio(nombreActual);
+  });
+};
 
-  .encabezado-reporte {
-    text-align: center;
-    border-bottom: 3px double #000;
-    padding-bottom: 15px;
-    margin-bottom: 30px;
-  }
+function guardarProgreso() {
+  const nombreInput = document.getElementById("nombre").value.trim();
+  if (!nombreInput) return;
 
-  .datos-alumno {
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-    line-height: 1.8;
-  }
+  g.nombre = nombreInput;
+  
+  // Guardamos TODO el estado actual, incluido el historial
+  localStorage.setItem(`lab_progreso_${nombreInput}`, JSON.stringify(g));
+  localStorage.setItem("lab_ultimo_nombre", nombreInput);
+  
+  console.log(`🔬 Progreso e historial de ${nombreInput} guardados.`);
+}
 
-  /* Formato de tabla estilo reporte formal */
-  .tabla-reporte {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 50px;
-  }
+function cargarProgreso(nombreEstudiante) {
+  const datosGuardados = localStorage.getItem(`lab_progreso_${nombreEstudiante}`);
+  
+  if (datosGuardados) {
+    try {
+      const progresoRecuperado = JSON.parse(datosGuardados);
+      
+      g.puntos = progresoRecuperado.puntos || 0;
+      g.racha = progresoRecuperado.racha || 0;
+      g.ejercicios = progresoRecuperado.ejercicios || 0;
+      g.modo = progresoRecuperado.modo || "mostrar";
+      g.nivel = progresoRecuperado.nivel || "2x3";
+      g.permitirCeros = progresoRecuperado.permitirCeros !== undefined ? progresoRecuperado.permitirCeros : true;
+      
+      // ➡️ REGLA DE SEGURIDAD: Recuperar el historial o dejarlo como array vacío si no existe
+      g.historial = progresoRecuperado.historial || [];
 
-  .tabla-reporte th, .tabla-reporte td {
-    border: 1px solid #000;
-    padding: 12px;
-    text-align: left;
-  }
-
-  .tabla-reporte th {
-    background-color: #f2f2f2 !important;
-    -webkit-print-color-adjust: exact; /* Fuerza al navegador a imprimir el fondo gris */
-    print-color-adjust: exact;
-  }
-
-  .firma-reporte {
-    margin-top: 80px;
-    text-align: center;
-    font-size: 0.9rem;
-  }
-
-  /* Evita que una fila de la bitácora se parta a la mitad entre dos páginas */
-  .tabla-reporte tr {
-    page-break-inside: avoid;
-    break-inside: avoid;
+      console.log(`🎉 Progreso e historial de ${nombreEstudiante} recuperados con éxito.`);
+    } catch (e) {
+      console.error("Error al leer el progreso, iniciando limpio.", e);
+      resetearVariablesGlobales();
+    }
+  } else {
+    resetearVariablesGlobales();
   }
   
-  h3 {
-    margin-top: 30px;
-    border-bottom: 1px solid #000;
-    padding-bottom: 5px;
+  actualizarPanel();
+}
+
+function actualizarHistorialEnPantallaInicio(nombreEstudiante) {
+  const bloque = document.getElementById("bloque-historial-inicio");
+  const lista = document.getElementById("lista-historial-inicio");
+  
+  if (!nombreEstudiante) {
+    bloque.style.display = "none";
+    return;
   }
+
+  // Buscamos si este estudiante tiene un registro guardado en el navegador
+  const datosGuardados = localStorage.getItem(`lab_progreso_${nombreEstudiante}`);
+  
+  if (datosGuardados) {
+    try {
+      const progreso = JSON.parse(datosGuardados);
+      
+      // Actualizamos las pequeñas métricas del menú
+      document.getElementById("ini-puntos").textContent = progreso.puntos || 0;
+      document.getElementById("ini-racha").textContent = progreso.racha || 0;
+      document.getElementById("ini-ejercicios").textContent = progreso.ejercicios || 0;
+      
+      // Rellenamos la lista de operaciones
+      lista.innerHTML = "";
+      if (progreso.historial && progreso.historial.length > 0) {
+        progreso.historial.forEach(cuenta => {
+          lista.innerHTML += `<li style="margin-bottom: 4px;">✅ ${cuenta}</li>`;
+        });
+      } else {
+        lista.innerHTML = `<li style="color: #6b7280; list-style: none; margin-left: -20px;">Ninguna operación verificada aún.</li>`;
+      }
+      
+      bloque.style.display = "block";
+    } catch (e) {
+      console.error(e);
+      bloque.style.display = "none";
+    }
+  } else {
+    // Si el usuario no existe en la base local, mostramos que es un perfil nuevo
+    document.getElementById("ini-puntos").textContent = "0";
+    document.getElementById("ini-racha").textContent = "0";
+    document.getElementById("ini-ejercicios").textContent = "0";
+    lista.innerHTML = `<li style="color: #059669; list-style: none; margin-left: -20px;">🔬 ¡Científico Nuevo detectado! Listo para comenzar.</li>`;
+    bloque.style.display = "block";
+  }
+}
+
+// Función auxiliar para limpiar el estado global si el alumno es nuevo
+function resetearVariablesGlobales() {
+  g.puntos = 0;
+  g.racha = 0;
+  g.ejercicios = 0;
+  g.historial = []; // ➡️ Limpiamos el historial al reiniciar el laboratorio
+}
+
+function borrarProgresoLaboratorio() {
+  const nombreInput = document.getElementById("nombre").value.trim();
+  if (!nombreInput) return;
+
+  if (confirm(`🔬 ¿Seguro que deseas reiniciar a cero el progreso de ${nombreInput}?`)) {
+    localStorage.removeItem(`lab_progreso_${nombreInput}`);
+    resetearVariablesGlobales();
+    actualizarPanel();
+    alert(`Progreso de ${nombreInput} reseteado con éxito.`);
+  }
+}
+
+/* ── CONTROL DE INTERFAZ Y CONFIGURACIÓN ── */
+function selModo(el) {
+  document.querySelectorAll(".modo-btn").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  g.modo = el.dataset.modo;
+}
+
+function selNivel(el) {
+  document.querySelectorAll(".niv-btn").forEach(b => b.classList.remove("sel"));
+  el.classList.add("sel");
+  g.nivel = el.dataset.nivel;
+  document.getElementById("panel-manual").style.display = (g.nivel === "manual") ? "block" : "none";
+}
+
+/* ── LÓGICA MATEMÁTICA Y DESCOMPOSICIÓN ── */
+function numRandomSinCeros(cifras) {
+  let numStr = "";
+  for(let i=0; i<cifras; i++) {
+    let d = Math.floor(Math.random() * 9) + 1;
+    numStr += d.toString();
+  }
+  return parseInt(numStr);
+}
+
+function numRandom(cifras) {
+  const min = Math.pow(10, cifras - 1);
+  const max = Math.pow(10, cifras) - 1;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function decompose(n) { // Mantenemos el alias si se requiere, o usamos descomponer directamente
+  return descomponer(n);
+}
+
+function descomponer(n) {
+  const txt = n.toString();
+  const partes = [];
+  for (let i = 0; i < txt.length; i++) {
+    const d = parseInt(txt[i]);
+    if (d !== 0) partes.push(d * Math.pow(10, txt.length - i - 1));
+  }
+  return partes;
+}
+
+function medalla(r) {
+  if (r >= 10) return "🏆🏆"; if (r >= 7) return "🥇"; if (r >= 5) return "🥈"; if (r >= 3) return "🥉"; return "—";
+}
+
+function actualizarPanel() {
+  document.getElementById("txt-puntos").textContent = g.puntos;
+  document.getElementById("txt-racha").textContent = g.racha;
+  document.getElementById("txt-medalla").textContent = medalla(g.racha);
+  document.getElementById("txt-ejercicios").textContent = g.ejercicios;
+}
+
+/* ── FLUJO DEL JUEGO ── */
+function iniciar() {
+  const nombre = document.getElementById("nombre").value.trim();
+  
+  if (!nombre) {
+    alert("Por favor, ingresa tu nombre de científico para comenzar.");
+    return;
+  }
+
+  // ➡️ CARGAMOS EL PROGRESO ESPECÍFICO DE ESTE NOMBRE ANTES DE ENTRAR
+  cargarProgreso(nombre);
+  
+  g.nombre = nombre;
+  g.modo = document.querySelector(".modo-btn.sel").dataset.modo;
+  g.nivel = document.querySelector(".niv-btn.sel").dataset.nivel;
+  g.permitirCeros = document.getElementById("chk-ceros").checked;
+  
+  actualizarPanel();
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("pantalla-juego").style.display = "block";
+  nuevoEjercicio();
+}
+
+function volverAlMenu() {
+  // Guardamos el estado actual antes de salir de la pantalla de juego
+  guardarProgreso();
+
+  document.getElementById("pantalla-juego").style.display = "none";
+  document.getElementById("pantalla-inicio").style.display = "block";
+  
+  // Refrescamos el panel del menú de inicio
+  const nombreActual = document.getElementById("nombre").value.trim();
+  actualizarHistorialEnPantallaInicio(nombreActual);
+}
+
+function nuevoEjercicio() {
+  document.getElementById("box-pista-id").style.display = "none";
+  document.getElementById("msg").style.display = "none";
+  document.getElementById("area-algoritmo").innerHTML = "";
+
+  if (g.nivel === "manual") {
+    let v1 = parseInt(document.getElementById("num-manual-1").value);
+    let v2 = parseInt(document.getElementById("num-manual-2").value);
+    if (isNaN(v1) || v2 < 2 || v1 < 2) {
+      alert("Por favor ingresa números válidos mayores a 1.");
+      volverAlMenu();
+      return;
+    }
+    g.n1 = v1; g.n2 = v2;
+  } else {
+    const [c1, c2] = g.nivel === "2x2" ? [2,2] : g.nivel === "2x3" ? [2,3] : [3,3];
+    if (g.permitirCeros) {
+      g.n1 = numRandom(c1); g.n2 = numRandom(c2);
+    } else {
+      g.n1 = numRandomSinCeros(c1); g.n2 = numRandomSinCeros(c2);
+    }
+  }
+
+  g.partes1 = descomponer(g.n1);
+  g.partes2 = descomponer(g.n2);
+  g.ejercicios++;
+
+  // Guardado automático al avanzar de ejercicio
+  guardarProgreso();
+
+  document.getElementById("txt-operacion").textContent = `${g.n1} × ${g.n2}`;
+  
+  if (g.modo === "descomp") {
+    document.getElementById("txt-descomp").innerHTML = `🔬 <b>¡Desafío Científico!</b> Descompón los números guía en los casilleros amarillos con <span style="color:#b45309"><b>?</b></span> para desbloquear la matriz.`;
+  } else {
+    document.getElementById("txt-descomp").innerHTML =
+      `🔬 Descomposición activa: &nbsp;<b>${g.n1}</b> = ${g.partes1.join(" + ")} &nbsp;|&nbsp; <b>${g.n2}</b> = ${g.partes2.join(" + ")}`;
+  }
+
+  const sumasFila = g.partes1.map(f => g.partes2.reduce((a,c) => a + f*c, 0));
+  const resultado = g.n1 * g.n2;
+  const modoMostrar = g.modo === "mostrar";
+  const modoDescomp = g.modo === "descomp";
+
+  let filas = "";
+  g.partes1.forEach((f, fi) => {
+    let celdaGuiaFil = modoDescomp 
+      ? `<th class="enc-fil"><input class="inp-celda inp-guia" type="number" data-index="${fi}" data-tipo="guia-fil" placeholder="?"></th>`
+      : `<th class="enc-fil">${f}</th>`;
+      
+    filas += `<tr>${celdaGuiaFil}`;
+    
+    g.partes2.forEach(c => {
+      const val = f * c;
+      filas += modoMostrar
+        ? `<td>${val}</td>`
+        : `<td><input class="inp-celda" type="number" data-correcto="${val}" data-f1="${f}" data-f2="${c}" data-tipo="prod" disabled></td>`;
+    });
+    
+    const sv = sumasFila[fi];
+    filas += modoMostrar
+      ? `<td class="col-suma">${sv}</td>`
+      : `<td class="col-suma"><input class="inp-celda" type="number" data-correcto="${sv}" data-tipo="suma" style="width:105px" disabled></td>`;
+    filas += `</tr>`;
+  });
+
+  const celdaRes = modoMostrar
+    ? `<td class="cel-resultado">${resultado}</td>`
+    : `<td class="cel-resultado"><input class="inp-celda" type="number" data-correcto="${resultado}" data-tipo="resultado" style="width:115px" disabled></td>`;
+
+  let cabeceraColumnas = g.partes2.map((c, ci) => {
+    return modoDescomp 
+      ? `<th class="enc-col"><input class="inp-celda inp-guia" type="number" data-index="${ci}" data-tipo="guia-col" placeholder="?"></th>`
+      : `<th class="enc-col">${c}</th>`;
+  }).join("");
+
+  const tabla = `
+    <table>
+      <thead><tr>
+        <th></th>
+        ${cabeceraColumnas}
+        <th class="enc-col" style="background:#fffdeb;color:#92400e;">Suma fila</th>
+      </tr></thead>
+      <tbody>
+        ${filas}
+        <tr class="fil-total">
+          <th>Total</th>
+          ${g.partes2.map(()=>`<td></td>`).join("")}
+          ${celdaRes}
+        </tr>
+      </tbody>
+    </table>`;
+
+  document.getElementById("area-tabla").innerHTML = tabla;
+
+  let bots = "";
+  if (!modoMostrar) {
+    bots += `<button class="btn-juego btn-verificar" onclick="verificar()">✨ Verificar Laboratorio</button>`;
+    bots += `<button class="btn-juego btn-pista" onclick="darPista()">💡 Recibir Pista</button>`;
+  }
+  bots += `<button class="btn-juego btn-nuevo" onclick="nuevoEjercicio()">🔀 Siguiente</button>`;
+  bots += `<button class="btn-juego btn-volver" onclick="volverAlMenu()">🏠 Inicio</button>`;
+  bots += `<button class="btn-juego btn-exportar" onclick="exportarPDF()" style="background:#059669;color:white;">📄 Exportar Reporte</button>`;  
+  document.getElementById("area-botones").innerHTML = bots;
+  
+  if (!modoMostrar && !modoDescomp) {
+    document.querySelectorAll(".inp-celda").forEach(i => i.disabled = false);
+  }
+
+  if (modoMostrar) mostrarCuentaEscolar();
+  actualizarPanel();
+
+  if (modoDescomp) {
+    const guias = document.querySelectorAll(".inp-guia");
+    guias.forEach(g => g.addEventListener("input", verificarGuiasAlVuelo));
+  }
+}
+
+/* ── COMPROBACIONES Y EVALUACIÓN ── */
+function verificarGuiasAlVuelo() {
+  const inputsFil = Array.from(document.querySelectorAll("[data-tipo='guia-fil']"));
+  const inputsCol = Array.from(document.querySelectorAll("[data-tipo='guia-col']"));
+  
+  const valoresFil = inputsFil.map(i => i.value !== "" ? Number(i.value) : null);
+  const valoresCol = inputsCol.map(i => i.value !== "" ? Number(i.value) : null);
+
+  let ordenElegido = null;
+
+  if (valoresFil[0] !== null) {
+    if (valoresFil[0] === g.partes1[0]) ordenElegido = "normal";
+    else if (valoresFil[0] === g.partes2[0]) ordenElegido = "invertido";
+  } else if (valoresCol[0] !== null) {
+    if (valoresCol[0] === g.partes2[0]) ordenElegido = "normal";
+    else if (valoresCol[0] === g.partes1[0]) ordenElegido = "invertido";
+  }
+
+  let metaFil = ordenElegido === "invertido" ? g.partes2 : g.partes1;
+  let metaCol = ordenElegido === "invertido" ? g.partes1 : g.partes2;
+
+  if (ordenElegido === "invertido" && (inputsFil.length !== g.partes2.length || inputsCol.length !== g.partes1.length)) {
+    ordenElegido = "normal";
+    metaFil = g.partes1; metaCol = g.partes2;
+  }
+
+  if (g.n1 !== g.n2 && ordenElegido) {
+    let todoIgual = valoresFil.length === valoresCol.length && valoresFil.every((v, i) => v !== null && v === valoresCol[i]);
+    if (todoIgual) {
+      document.getElementById("txt-descomp").innerHTML = `🔬 <span style="color:#b91c1c;"><b>¡Cuidado!</b> Estás duplicando el mismo factor. Usa ambos números.</span>`;
+      inputsFil.forEach(i => { i.classList.add("incorrecto"); i.classList.remove("correcto"); });
+      inputsCol.forEach(i => { i.classList.add("incorrecto"); i.classList.remove("correcto"); });
+      return;
+    }
+  }
+
+  inputsFil.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaFil[idx]) { inp.classList.add("correcto"); inp.classList.remove("incorrecto"); }
+    else { inp.classList.add("incorrecto"); inp.classList.remove("correcto"); }
+  });
+
+  inputsCol.forEach((inp, idx) => {
+    let val = Number(inp.value);
+    if (inp.value === "") { inp.classList.remove("correcto", "incorrecto"); return; }
+    if (val === metaCol[idx]) { inp.classList.add("correcto"); inp.classList.remove("incorrecto"); }
+    else { inp.classList.add("incorrecto"); inp.classList.remove("correcto"); }
+  });
+
+  let estructuraFilOk = metaFil.every((val, idx) => valoresFil[idx] === val);
+  let estructuraColOk = metaCol.every((val, idx) => valoresCol[idx] === val);
+
+  if (estructuraFilOk && estructuraColOk) {
+    const prods = document.querySelectorAll("[data-tipo='prod']");
+    prods.forEach(p => {
+      let fVal = Number(p.closest("tr").querySelector("[data-tipo='guia-fil']").value);
+      let cIndex = Array.from(p.closest("tr").querySelectorAll("[data-tipo='prod']")).indexOf(p);
+      let cVal = Number(document.querySelectorAll("[data-tipo='guia-col']")[cIndex].value);
+      p.dataset.correcto = fVal * cVal;
+      p.disabled = false;
+    });
+
+    const sumas = document.querySelectorAll("[data-tipo='suma']");
+    sumas.forEach(s => {
+      let filaProds = Array.from(s.closest("tr").querySelectorAll("[data-tipo='prod']"));
+      s.dataset.correcto = filaProds.reduce((acc, curr) => acc + Number(curr.dataset.correcto), 0);
+      s.disabled = false;
+    });
+
+    document.querySelector("[data-tipo='resultado']").disabled = false;
+    document.getElementById("txt-descomp").innerHTML = `🎉 ¡Descomposición posicional perfecta! Celdas desbloqueadas.`;
+    inputsFil.forEach(i => i.disabled = true);
+    inputsCol.forEach(i => i.disabled = true);
+  }
+}
+
+function darPista() {
+  reproducirSonido('pista');
+  const inputs = document.querySelectorAll(".inp-celda");
+  let vacio = null;
+  for (let inp of inputs) { if (inp.value === "" && !inp.disabled) { vacio = inp; break; } }
+  if (!vacio) vacio = document.querySelector(".inp-guia[value='']");
+  
+  const boxPista = document.getElementById("box-pista-id");
+  if (!vacio) {
+    boxPista.textContent = "¡Todas las celdas están completas! Haz clic en Verificar.";
+    boxPista.style.display = "block"; return;
+  }
+
+  const tipo = vacio.dataset.tipo;
+  if (tipo === "guia-fil" || tipo === "guia-col") {
+    boxPista.innerHTML = `💡 <b>Pista:</b> Escribe las descomposiciones en estricto orden de valor posicional (centenas, decenas, unidades).`;
+  } else if (tipo === "prod") {
+    boxPista.innerHTML = `💡 <b>Pista:</b> Multiplica la guía de su fila por la guía de su columna.`;
+  } else if (tipo === "suma") {
+    boxPista.innerHTML = `💡 <b>Pista:</b> Suma los números de los casilleros blancos de esta línea horizontal.`;
+  } else {
+    boxPista.innerHTML = `💡 <b>Pista Final:</b> Suma verticalmente toda la columna de "Suma fila".`;
+  }
+  boxPista.style.display = "block";
+}
+
+function verificar() {
+  const inputs = document.querySelectorAll(".inp-celda");
+  let errores = 0; let puntosGanados = 0;
+
+  inputs.forEach(inp => {
+    if (inp.dataset.tipo.startsWith("guia") && inp.disabled) { puntosGanados += 5; return; }
+    const correcto = Number(inp.dataset.correcto);
+    const val = Number(inp.value);
+    
+    inp.classList.remove("correcto","incorrecto");
+    void inp.offsetWidth; 
+
+    if (inp.value === "" || val !== correcto) {
+      inp.classList.add("incorrecto"); errores++;
+    } else {
+      inp.classList.add("correcto"); puntosGanados += 10;
+    }
+  });
+
+  const msg = document.getElementById("msg");
+  if (errores === 0) {
+    reproducirSonido('exito');
+    let bonusModo = g.modo === "descomp" ? 80 : 50; 
+    g.puntos += puntosGanados + bonusModo; g.racha++;
+    actualizarPanel();
+
+    const el = document.getElementById("txt-puntos");
+    el.classList.add("pop-score");
+    el.addEventListener("animationend", () => el.classList.remove("pop-score"), {once:true});
+
+    msg.className = "mensaje ok";
+    msg.textContent = `🎉 ¡Excelente Experimento! Todo correcto. Recibiste +${puntosGanados + bonusModo} puntos.`;
+    msg.style.display = "block";
+    inputs.forEach(i => i.disabled = true);
+    
+    mostrarCuentaEscolar();
+    lanzarConfeti(); 
+    
+    // ➡️ REGISTRAR EN EL HISTORIAL (Añade estas líneas aquí)
+  const operacionActual = `${g.n1} × ${g.n2} = ${g.n1 * g.n2}`;
+  g.historial.push(operacionActual);
+
+  // Guardado automático al resolver con éxito
+  guardarProgreso();
+  } else {
+    reproducirSonido('error');
+    g.racha = 0; 
+    actualizarPanel();
+    
+    // Guardado automático tras perder la racha
+    guardarProgreso();
+
+    msg.className = "mensaje err";
+    msg.textContent = `🔬 Se encontraron ${errores} anomalías (en rojo). ¡A revisarlas!`;
+    msg.style.display = "block";
+  }
+}
+
+function mostrarCuentaEscolar() {
+  const arriba = Math.max(g.n1, g.n2); const abajo = Math.min(g.n1, g.n2);
+  const total = arriba * abajo; const strAbajo = abajo.toString();
+  const escalones = [];
+  
+  for (let i = strAbajo.length - 1; i >= 0; i--) {
+    const cifra = parseInt(strAbajo[i]);
+    const valorEscalon = cifra * arriba * Math.pow(10, strAbajo.length - 1 - i);
+    if (valorEscalon !== 0 || strAbajo.length === 1) escalones.push(valorEscalon);
+  }
+
+  let htmlPasos = "";
+  escalones.forEach(es => { htmlPasos += `<div>${es}</div>`; });
+
+  const html = `
+    <div class="algoritmo">
+      <h3>✏️ Cuaderno Científico (Algoritmo Tradicional)</h3>
+      <div class="flex-centro">
+        <div class="cuenta-vertical">
+          <div>&nbsp;&nbsp;${arriba}</div>
+          <div>×&nbsp;${abajo}</div>
+          <span class="linea-cuenta"></span>
+          ${htmlPasos}
+          <span class="linea-cuenta"></span>
+          <div style="color: #b91c1c;">${total}</div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("area-algoritmo").innerHTML = html;
+}
+
+/* ── MOTOR DE PARTÍCULAS DE CONFETI NATIVO ── */
+let confetiParticulas = [];
+let confetiCtx = null;
+let confetiCanvas = null;
+let confetiAnimacionFrame = null;
+
+function lanzarConfeti() {
+  confetiCanvas = document.getElementById("canvas-confeti");
+  confetiCtx = confetiCanvas.getContext("2d");
+  confetiCanvas.width = window.innerWidth;
+  confetiCanvas.height = window.innerHeight;
+  confetiCanvas.style.display = "block";
+  
+  confetiParticulas = [];
+  const colores = ["#ff3366", "#33ccff", "#33ff99", "#ffcc33", "#ae33ff", "#ff6633"];
+  
+  for (let i = 0; i < 120; i++) {
+    confetiParticulas.push({
+      x: confetiCanvas.width / 2 + (Math.random() * 100 - 50),
+      y: confetiCanvas.height + 20,
+      radio: Math.random() * 6 + 4,
+      color: colores[Math.floor(Math.random() * colores.length)],
+      vx: Math.random() * 14 - 7,
+      vy: -(Math.random() * 12 + 10),
+      gravedad: 0.3,
+      rotacion: Math.random() * 360,
+      vRotacion: Math.random() * 4 - 2
+    });
+  }
+  
+  if (confetiAnimacionFrame) cancelAnimationFrame(confetiAnimacionFrame);
+  animarConfeti();
+  
+  setTimeout(() => {
+    confetiCanvas.style.display = "none";
+    cancelAnimationFrame(confetiAnimacionFrame);
+  }, 4000);
+}
+
+function animarConfeti() {
+  confetiCtx.clearRect(0, 0, confetiCanvas.width, confetiCanvas.height);
+  
+  let vivas = false;
+  confetiParticulas.forEach(p => {
+    p.vy += p.gravedad;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rotacion += p.vRotacion;
+    
+    if (p.y < confetiCanvas.height + 20) vivas = true;
+    
+    confetiCtx.save();
+    confetiCtx.translate(p.x, p.y);
+    confetiCtx.rotate((p.rotacion * Math.PI) / 180);
+    confetiCtx.fillStyle = p.color;
+    confetiCtx.fillRect(-p.radio, -p.radio, p.radio * 2, p.radio * 2);
+    confetiCtx.restore();
+  });
+  
+  if (vivas) {
+    confetiAnimacionFrame = requestAnimationFrame(animarConfeti);
+  }
+}
+
+window.addEventListener("resize", () => {
+  if (confetiCanvas && confetiCanvas.style.display === "block") {
+    confetiCanvas.width = window.innerWidth;
+    confetiCanvas.height = window.innerHeight;
+  }
+});
+
+/* ── MOTOR DE AUDIO CIENTÍFICO NATIVO (SINTETIZADOR WEB) ── */
+function reproducirSonido(tipo) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  
+  const ctx = new AudioContext();
+  
+  if (tipo === 'exito') {
+    const notas = [523.25, 659.25, 783.99, 1046.50];
+    notas.forEach((frecuencia, i) => {
+      setTimeout(() => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(frecuencia, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      }, i * 80);
+    });
+  } 
+  else if (tipo === 'error') {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(60, ctx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.3);
+  } 
+  else if (tipo === 'pista') {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  }
+}
+
+/* ── EXPORTACIÓN CIENTÍFICA A PDF NATIVO ── */
+/* Reemplaza tu función exportarPDF() por esta versión actualizada */
+function exportarPDF() {
+  const nombreCientifico = g.nombre || document.getElementById("nombre").value.trim() || "Científico Anónimo";
+  
+  document.getElementById("rep-nombre").textContent = nombreCientifico;
+  document.getElementById("rep-puntos").textContent = g.puntos;
+  document.getElementById("rep-racha").textContent = g.racha;
+  document.getElementById("rep-ejercicios").textContent = g.ejercicios;
+  
+  // ➡️ INYECTAR EL HISTORIAL DE CUENTAS EN EL REPORTE (Sin número de experimento)
+  const listaHistorial = document.getElementById("rep-historial-lista");
+  listaHistorial.innerHTML = ""; 
+  
+  if (g.historial && g.historial.length > 0) {
+    g.historial.forEach((cuenta) => {
+      // Ahora solo creamos una celda por fila con la cuenta limpia
+      listaHistorial.innerHTML += `<tr><td>${cuenta}</td></tr>`;
+    });
+  } else {
+    // Si no hay cuentas, se avisa ocupando la única columna existente
+    listaHistorial.innerHTML = `<tr><td style="text-align:center; color: #666;">No se registraron experimentos en esta sesión.</td></tr>`;
+  }
+  
+  const hoy = new Date();
+  const fechaFormateada = hoy.toLocaleDateString('es-ES', { 
+    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+  document.getElementById("rep-fecha").textContent = fechaFormateada;
+
+  window.print();
 }

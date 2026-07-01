@@ -1,153 +1,172 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔬 Portal del Laboratorio Matemático</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f0f7ff;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  color: #1e293b;
-}
-
-.contenedor-portal {
-  max-width: 750px;
-  width: 100%;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 40px 30px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  border: 1px solid #e2e8f0;
-  text-align: center;
-}
-
-.cabecera-portal h1 {
-  font-size: 2.5rem;
-  color: #1e3a8a;
-  margin-bottom: 10px;
-}
-
-.cabecera-portal p {
-  color: #64748b;
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 35px;
-}
-
-.menu-juegos {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.tarjeta-juego {
-  flex: 1;
-  min-width: 280px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 25px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.tarjeta-juego:hover {
-  transform: translateY(-5px);
-  border-color: #3b82f6;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
-  background: #f0f7ff;
-}
-
-.juego-icono {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-}
-
-.juego-titulo {
-  font-size: 1.4rem;
-  color: #1e3a8a;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.juego-desc {
-  font-size: 0.95rem;
-  color: #475569;
-  line-height: 1.4;
-  margin-bottom: 20px;
-}
-
-.btn-jugar {
-  width: 100%;
-  padding: 12px;
-  background: #1d4ed8;
-  color: white;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1rem;
-  transition: background 0.2s;
-}
-
-.tarjeta-juego:hover .btn-jugar {
-  background: #2563eb;
-}
-
-.footer-portal {
-  margin-top: 35px;
-  font-size: 0.85rem;
-  color: #94a3b8;
-  font-weight: 500;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧪 Laboratorio Matemático v4.0 — ¡Edición Gamificada!</title>
+  
+  <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
-<div class="contenedor-portal">
-  <div class="cabecera-portal">
-    <h1>🔬 Laboratorio Científico</h1>
-    <p>¡Selecciona el experimento matemático que deseas iniciar hoy!</p>
+  <canvas id="canvas-confeti"></canvas>
+
+  <div class="contenedor">
+    <div class="cabecera">
+      <h1>🧪 Laboratorio Matemático</h1>
+      <p>Experimentos y Descomposiciones Numéricas</p>
+    </div>
+
+    <div id="pantalla-inicio">
+      <div class="card">
+        <div class="campo">
+          <label class="seccion-label">Nombre del Científico/a</label>
+          <input id="nombre" type="text" placeholder="Tu nombre o código de laboratorio…">
+        </div>
+
+        <div id="bloque-historial-inicio" style="margin: 20px 0; padding: 15px; background: #f3f4f6; border-radius: 8px; border: 1px solid #e5e7eb; display: none;">
+          <h3 style="margin-top: 0; color: #1f2937;">📊 Bitácora de Sesión Actual</h3>
+          
+          <div style="display: flex; gap: 15px; margin-bottom: 10px; font-size: 0.95rem;">
+            <p><b>Puntos:</b> <span id="ini-puntos">0</span></p>
+            <p><b>Racha:</b> <span id="ini-racha">0</span></p>
+            <p><b>Ejercicios:</b> <span id="ini-ejercicios">0</span></p>
+          </div>
+          
+          <h4 style="margin-bottom: 5px; color: #4b5563; font-size: 0.9rem;">Operaciones Registradas:</h4>
+          <ul id="lista-historial-inicio" style="max-height: 120px; overflow-y: auto; padding-left: 20px; margin: 0; font-family: monospace; font-size: 0.9rem; color: #374151;">
+            </ul>
+        </div>
+
+        <label class="seccion-label">Modo de Trabajo</label>
+        <div class="modos">
+          <div class="modo-btn sel" data-modo="mostrar" onclick="selModo(this)">
+            <span class="modo-icono">👀</span>
+            Mostrar Proceso
+            <div class="modo-desc">La tabla aparece resuelta automáticamente</div>
+          </div>
+          <div class="modo-btn" data-modo="todo" onclick="selModo(this)">
+            <span class="modo-icono">🧠</span>
+            Completar Tabla
+            <div class="modo-desc">El sistema descompone, tú calculas la tabla</div>
+          </div>
+          <div class="modo-btn" data-modo="descomp" onclick="selModo(this)">
+            <span class="modo-icono">🧪</span>
+            Descomposición Manual
+            <div class="modo-desc">¡Tú tienes que descomponer los números guía!</div>
+          </div>
+        </div>
+
+        <label class="seccion-label">Tipo de Ejercicio / Nivel</label>
+        <div class="niveles">
+          <div class="niv-btn" data-nivel="2x2" onclick="selNivel(this)">
+            <span class="niv-stars">⭐</span>Nivel 2×2
+            <div class="niv-desc">Ej: 23 × 14</div>
+          </div>
+          <div class="niv-btn sel" data-nivel="2x3" onclick="selNivel(this)">
+            <span class="niv-stars">⭐⭐</span>Nivel 2×3
+            <div class="niv-desc">Ej: 24 × 123</div>
+          </div>
+          <div class="niv-btn" data-nivel="3x3" onclick="selNivel(this)">
+            <span class="niv-stars">⭐⭐⭐</span>Nivel 3×3
+            <div class="niv-desc">Ej: 124 × 235</div>
+          </div>
+          <div class="niv-btn" data-nivel="manual" onclick="selNivel(this)">
+            <span class="niv-stars">✏️</span>Personalizado
+            <div class="niv-desc">Elige tus números</div>
+          </div>
+        </div>
+
+        <label class="config-checkbox">
+          <input type="checkbox" id="chk-ceros" checked>
+          Permitir números con cero al azar (Ej: 20, 105)
+        </label>
+
+        <div id="panel-manual" style="display: none; background: #f8fafc; padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px dashed #cbd5e1;">
+          <label class="seccion-label" style="font-size: 0.78rem;">Ingresa tus propios factores:</label>
+          <div class="inputs-personalizados">
+            <input type="number" id="num-manual-1" placeholder="Número 1" min="10" max="999">
+            <input type="number" id="num-manual-2" placeholder="Número 2" min="10" max="999">
+          </div>
+        </div>
+
+        <button class="btn-primario" onclick="iniciar()">▶ Iniciar Experimento</button>
+      </div>
+    </div>
+
+    <div id="pantalla-juego" style="display:none;">
+      <div class="panel-puntaje">
+        <div class="stat"><div class="stat-num" id="txt-puntos">0</div><div class="stat-lbl">Puntos</div></div>
+        <div class="stat"><div class="stat-num" id="txt-racha">0</div><div class="stat-lbl">Racha ✓</div></div>
+        <div class="stat"><div class="stat-num" id="txt-medalla">—</div><div class="stat-lbl">Medalla</div></div>
+        <div class="stat"><div class="stat-num" id="txt-ejercicios">0</div><div class="stat-lbl">Ejercicios</div></div>
+      </div>
+
+      <div class="card">
+        <div class="enunciado">
+          <div class="operacion" id="txt-operacion"></div>
+          <div class="descomposicion" id="txt-descomp"></div>
+        </div>
+        <div class="tabla-wrap" id="area-tabla"></div>
+        <div id="box-pista-id" class="box-pista"></div>
+        <div id="msg" class="mensaje"></div>
+        <div class="area-acciones-juego" id="area-botones"></div>
+        <div id="area-algoritmo"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="menu-juegos">
-    
-    <a href="laboratorio matemático/🧪 Laboratorio Matemático 2.html" class="tarjeta-juego">
-      <div>
-        <div class="juego-icono">🧪</div>
-        <div class="juego-titulo">Laboratorio Matemático 2</div>
-        <div class="juego-desc">Aprende a descomponer números por filas y columnas, usa el sistema de pistas inteligentes y domina la cuenta tradicional de la escuela.</div>
-      </div>
-      <div class="btn-jugar">▶ Comenzar</div>
-    </a>
-
-    <a href="Cuentas mentales/Cuentas-Mentales.html" class="tarjeta-juego">
-      <div>
-        <div class="juego-icono">🧠</div>
-        <div class="juego-titulo">Juego de Cuentas Mentales</div>
-        <div class="juego-desc">Pon a prueba tu agilidad mental resolviendo operaciones rápidas directamente en tu cabeza. ¡Entrena tu cerebro!</div>
-      </div>
-      <div class="btn-jugar" style="background: #7c3aed;">▶ Comenzar</div>
-    </a>
-
+  <div id="reporte-cientifico" class="solo-impresion">
+  <div class="encabezado-reporte">
+    <h1>🧪 LABORATORIO MATEMÁTICO v4.0</h1>
+    <h2>Informe Oficial de Resultados Científicos</h2>
+  </div>
+  
+  <div class="datos-alumno">
+    <p><b>Científico/a a cargo:</b> <span id="rep-nombre">─</span></p>
+    <p><b>Fecha del Experimento:</b> <span id="rep-fecha">─</span></p>
   </div>
 
-  <div class="footer-portal">
-    Desarrollado en el Laboratorio Matemático Local
+  <table class="tabla-reporte">
+    <thead>
+      <tr>
+        <th>Métrica Evaluada</th>
+        <th>Resultado Obtenido</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Puntaje Total Acumulado</b></td>
+        <td><span id="rep-puntos">0</span> pts</td>
+      </tr>
+      <tr>
+        <td><b>Mayor Racha de Aciertos</b></td>
+        <td><span id="rep-racha">0</span> 🔥</td>
+      </tr>
+      <tr>
+        <td><b>Ejercicios Científicos Solicitados</b></td>
+        <td><span id="rep-ejercicios">0</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>📋 Bitácora de Operaciones Verificadas</h3>
+  <table class="tabla-reporte">
+    <thead>
+      <tr>
+        <th>Ecuación y Resultado Científico</th>
+      </tr>
+    </thead>
+    <tbody id="rep-historial-lista">
+      </tbody>
+  </table>
+
+  <div class="firma-reporte">
+    <p>__________________________________________</p>
+    <p>Sello de Validación del Laboratorio</p>
   </div>
 </div>
 
+  <script src="laboratorio.js"></script>
 </body>
 </html>
