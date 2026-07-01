@@ -259,14 +259,16 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 /* NUEVO: Botón redondo de verificación estilo Premium Gamified */
 .round-btn {
-  width: 56px;          /* Alto y ancho idénticos para círculo perfecto */
+  width: 56px;                   /* Alto y ancho idénticos para círculo perfecto */
   height: 56px;
-  padding: 0 !important;/* Resetea paddings del .btn general */
+  padding: 0 !important;         /* Resetea paddings del .btn general */
   border-radius: 50% !important; /* Fuerza la forma circular */
-  flex-shrink: 0;       /* Evita que el flexbox lo deforme */
+  flex-shrink: 0;                /* Evita que el flexbox lo deforme */
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;                  /* Quita el borde por defecto del botón */
+  color: white;                  /* Fuerza la flecha blanca */
 }
 
 /* Ajuste fino del botón "Detener secuencia" para que ocupe todo el ancho abajo */
